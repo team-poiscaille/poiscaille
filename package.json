@@ -2,12 +2,14 @@
   "name": "poiscaille",
   "version": "1.0.0",
   "description": "Gene-based Real Time Strategy Game",
-  "main": "app/index.js",
+  "main": "app.js",
   "private": true,
   "scripts": {
     "build": "webpack",
     "dev": "webpack-dev-server",
-    "lint": "happiness",
+    "lint": "eslint app server.js",
+    "lint:fix": "eslint app server.js --fix",
+    "start": "node app.js",
     "watch": "webpack --watch"
   },
   "repository": {
@@ -27,6 +29,7 @@
   "homepage": "https://github.com/project-poiscaille/poiscaille#readme",
   "dependencies": {
     "express": "^4.16.4",
+    "socket.io": "^2.2.0",
     "vue": "^2.5.21"
   },
   "devDependencies": {
@@ -35,8 +38,10 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "css-loader": "^2.0.1",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "file-loader": "^2.0.0",
-    "happiness": "^10.0.2",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.5.0",

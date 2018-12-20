@@ -1,7 +1,7 @@
 class Poiscaille {
-	constructor() {
-		this.entities = [];
-	}
+  constructor() {
+    this.entities = [];
+  }
 }
 
 export default Poiscaille;

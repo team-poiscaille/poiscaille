@@ -7,8 +7,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const nodeEnv = (process.env.NODE_ENV || 'development').trim();
 
-const styleLoader = nodeEnv !== 'production' ?
-	'vue-style-loader'
+const styleLoader = nodeEnv !== 'production'
+	? 'vue-style-loader'
 	: MiniCssExtractPlugin.loader;
 
 const postcssLoader = {
@@ -41,7 +41,6 @@ const cssLoader = [
 	postcssLoader
 ];
 
-
 module.exports = {
 	entry: {
 		poiscaille: path.resolve(__dirname, 'app', 'index.js')
@@ -58,7 +57,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test:/\.vue$/,
+				test: /\.vue$/,
 				loader: 'vue-loader',
 				options: {
 					loaders: {
@@ -90,7 +89,7 @@ module.exports = {
 			},
 
 			{
-				test: /\.(png|jpe?g|gif|woff2?|otf|wav|ttf|eot|svg)(\?|\#.*)?$/,
+				test: /\.(png|jpe?g|gif|woff2?|otf|wav|ttf|eot|svg)(\?|#.*)?$/,
 				loader: 'file-loader',
 				options: {
 					name: 'files/[name].[ext]?[hash]'
@@ -115,7 +114,7 @@ module.exports = {
 	devtool: '#eval-source-map'
 };
 
-if(nodeEnv === 'production'){
+if (nodeEnv === 'production') {
 	module.exports.devtool = '#source-map';
 	module.exports.optimization = {
 		minimize: true
