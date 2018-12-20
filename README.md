@@ -1,6 +1,8 @@
-# poiscaille
+# Poiscaille
 
-> 유전자 기반의 턴제 전략 게임
+> Gene-based Real Time Strategy Game
+
+[![js-happiness-style](https://cdn.rawgit.com/JedWatson/happiness/master/badge.svg)](https://github.com/JedWatson/happiness)
 
 ## 목적
 
@@ -20,3 +22,29 @@
 
 - 일반 세포는 사람이 공격위치 찍어줘야 이동함. 적이 반경안에 들어오면 자동으로 달려들어 공격(근접 공격)함
 - 생산 세포도 이동할 수 있으나 공격은 할 수 없음
+
+## License
+
+```text
+Copyright (c) 2018 Project Poiscaille
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+poiscaille is licensed under the [MIT License](./LICENSE).
