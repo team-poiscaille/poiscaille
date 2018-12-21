@@ -3,7 +3,41 @@ body, html {
   padding: 0;
 }
 
-@keyframes fadein {
+.Fadein {
+  &-enter-active {
+    animation: Fadein .5s;
+  }
+
+  &-leave-active {
+    animation: Fadein .5s reverse;
+  }
+}
+
+.Popover {
+  &-enter-active {
+    animation: Popover .5s;
+  }
+
+  &-leave-active {
+    animation: Popover .5s reverse;
+  }
+}
+
+@keyframes Popover {
+  0% {
+    transform: translate(0, 100%);
+  }
+
+  50% {
+    transform: translate(0, -10%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes Fadein {
   from {
     opacity: 0;
   }

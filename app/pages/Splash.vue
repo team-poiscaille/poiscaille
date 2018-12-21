@@ -38,7 +38,7 @@
       padding: 0;
 
       opacity: 0;
-      animation: fadein 1s ease forwards 5.3s;
+      animation: Fadein 1s ease forwards 5.3s;
     }
   }
 
