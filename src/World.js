@@ -16,8 +16,7 @@ class World {
    * @returns {?Entity}
    */
   find(id) {
-    const { entities } = this;
-    return entities.find(entity => entity.getId() === id) || null;
+    return this.entities.find(entity => entity.getId() === id) || null;
   }
 
   /**
@@ -32,8 +31,7 @@ class World {
    * @returns {boolean}
    */
   has(id) {
-    const { entities } = this;
-    return entities.findIndex(entity => entity.getId() === id) >= 0;
+    return this.entities.findIndex(entity => entity.getId() === id) >= 0;
   }
 
   /**

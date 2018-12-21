@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
-const Utils = require('./util/Utils');
 
 let instance;
 
@@ -54,25 +53,18 @@ class Server {
   }
 
   /**
+   * @param {Player} player
+   * @returns {?Room}
+   */
+  getRoomOfPlayer(player) {
+    return this.rooms.find(room => room.hasPlayer(player)) || null;
+  }
+
+  /**
    * @returns {Array.<Room>}
    */
   getRooms() {
     return this.rooms;
-  }
-
-  /**
-   * @param {Player} player
-   *
-   * @returns {Room}
-   */
-  getRoomOfPlayer(player) {
-    for (const room of this.rooms) {
-      if (room.hasPlayer(player)) {
-        return room;
-      }
-    }
-
-    return null;
   }
 
   /**

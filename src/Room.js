@@ -6,23 +6,18 @@ class Room {
    * @param {Server} server
    */
   constructor(server) {
-    this.server = server;
-
-    this.world = new World();
     this.players = [];
+    this.server = server;
+    this.world = new World();
   }
 
   /**
    * Returns if room has player
-   *
-   * @param player
+   * @param {string} playerName
    * @returns {boolean}
    */
-  hasPlayer(player) {
-    for (const p of this.players) {
-      if (p === player) return true;
-    }
-    return false;
+  hasPlayer(playerName) {
+    return this.players.findIndex(player => player.getName() === playerName) >= 0;
   }
 
   /**

@@ -11,7 +11,7 @@ class Utils {
   static getRandomString(length, charSet = DEFAULT_CHARSET) {
     let text = '';
 
-    for(let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i += 1) {
       text += charSet.charAt(Utils.getRandomIntInclusive(0, charSet.length));
     }
 

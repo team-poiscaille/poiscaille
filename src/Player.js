@@ -1,4 +1,4 @@
-
+/** Class representing a player. */
 class Player {
   /**
    * @param {string} id           The unique ID to identify player
