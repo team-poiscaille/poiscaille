@@ -1,22 +1,22 @@
-const Map = require('./Map');
+const World = require('./World');
 
 class Room {
   constructor() {
-    this.map = new Map();
+    this.world = new World();
   }
 
   /**
-   * @returns {Map}
+   * @returns {World}
    */
-  getMap() {
-    return this.map;
+  getWorld() {
+    return this.world;
   }
 
   /**
-   * @param {Map} map
+   * @param {World} world
    */
-  setMap(map) {
-    this.map = map;
+  setWorld(world) {
+    this.world = world;
   }
 }
 

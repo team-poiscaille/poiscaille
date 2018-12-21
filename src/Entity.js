@@ -1,23 +1,16 @@
-class Entity {
+const Vector2 = require('./math/Vector2');
+
+class Entity extends Vector2 {
   /**
    * @param {string} name
    * @param {number} id
-   * @param {number} x
-   * @param {number} y
+   * @param {Vector2} pos
    */
-  constructor(name, id, x, y) {
+  constructor(name, id, pos) {
+    super(pos.x, pos.y);
+
     this.name = name;
     this.id = id;
-    this.x = x;
-    this.y = y;
-  }
-
-  /**
-   * @param {Entity} entity
-   * @returns {number}
-   */
-  caculateDistance(entity) {
-    return Math.hypot(this.x - entity.getCell(), this.y - entity.getY());
   }
 
   /**
@@ -35,20 +28,6 @@ class Entity {
   }
 
   /**
-   * @returns {number}
-   */
-  getX() {
-    return this.x;
-  }
-
-  /**
-   * @returns {number}
-   */
-  getY() {
-    return this.y;
-  }
-
-  /**
    * @param {number} id
    */
   setId(id) {
@@ -60,20 +39,6 @@ class Entity {
    */
   setName(name) {
     this.name = name;
-  }
-
-  /**
-   * @param {number} x
-   */
-  setX(x) {
-    this.x = x;
-  }
-
-  /**
-   * @param {number} y
-   */
-  setY(y) {
-    this.y = y;
   }
 }
 

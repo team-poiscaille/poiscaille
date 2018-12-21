@@ -1,4 +1,6 @@
-class Map {
+const CellManager = require('./CellManager');
+
+class World {
   constructor() {
     this.entities = [];
   }
@@ -47,4 +49,4 @@ class Map {
   }
 }
 
-module.exports = Map;
+module.exports = World;
