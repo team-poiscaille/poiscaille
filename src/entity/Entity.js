@@ -1,4 +1,4 @@
-const Vector2 = require('./math/Vector2');
+const Vector2 = require('../math/Vector2');
 
 /**
  * Class representing an entity.
