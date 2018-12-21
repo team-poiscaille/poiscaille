@@ -1,5 +1,3 @@
-const CellManager = require('./CellManager');
-
 class World {
   constructor() {
     this.entities = [];

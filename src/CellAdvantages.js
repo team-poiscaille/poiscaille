@@ -1,5 +1,6 @@
 /**
- * @enum
+ * @readonly
+ * @enum {number}
  */
 const CellAdvantages = {
   EFFECTIVE: 2,
