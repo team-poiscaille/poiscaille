@@ -1,11 +1,13 @@
 /** Class representing a player. */
 class Player {
   /**
+   * @param socket
    * @param {string} id           The unique ID to identify player
    * @param {string} username
    * @param {Room} room
    */
-  constructor(id, username, room) {
+  constructor(socket, id, username, room) {
+    this.socket = socket;
     this.id = id;
     this.username = username;
     this.room = room;
@@ -17,6 +19,10 @@ class Player {
     this.entities = [];
   }
 
+  getSocket() {
+    return this.socket;
+  }
+
   /**
    * Returns username of player
    *
@@ -26,6 +32,11 @@ class Player {
     return this.username;
   }
 
+  /**
+   * Add entity managed by the player
+   *
+   * @param entity
+   */
   addEntity(entity) {
     this.entities.push(entity);
   }

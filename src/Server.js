@@ -33,15 +33,11 @@ class Server {
       socket.on('init', (data) => {
         const id = Utils.getRandomString(32);
         const { username } = data;
-        that.player = new Player(id, username, null);
-      });
-
-      socket.on('my other event', (data) => {
-        console.log(data);
+        that.player = new Player(socket, id, username, null);
       });
 
       // Start match making
-      socket.on('player match', (data) => {
+      socket.on('player match', () => {
         this.addMatchingPlayer(that.player);
 
         that.socket.emit('ack player match');
@@ -99,7 +95,7 @@ class Server {
         const player = this.matching.shift();
         room.addPlayer(player);
       }
-      // TODO broadcast match to players
+      room.broadcastMatchMade();
       this.rooms.push(room);
     }
   }
