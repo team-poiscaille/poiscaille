@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
+const Utils = require('./util/Utils');
 
 let instance;
 
@@ -21,9 +22,11 @@ class Server {
     // See https://socket.io/docs/#Using-with-Express
     io.on('connection', (socket) => {
       socket.emit('news', { hello: 'world' });
+
       socket.on('my other event', (data) => {
         console.log(data);
       });
+
       this.socket = socket;
     });
 

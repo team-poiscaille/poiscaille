@@ -1,9 +1,13 @@
 
 class Player {
   /**
+   * @param {string} id           The unique ID to identify player
+   * @param {string} username
    * @param {Room} room
    */
-  constructor(room) {
+  constructor(id, username, room) {
+    this.id = id;
+    this.username = username;
     this.room = room;
 
     /**
@@ -11,6 +15,15 @@ class Player {
      * @type {Array.<Entity>}
      */
     this.entities = [];
+  }
+
+  /**
+   * Returns username of player
+   *
+   * @returns {string}
+   */
+  getName() {
+    return this.username;
   }
 
   addEntity(entity) {
