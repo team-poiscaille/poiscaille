@@ -2,8 +2,6 @@
 
 > Gene-based Real Time Strategy Game
 
-[![js-happiness-style](https://cdn.rawgit.com/JedWatson/happiness/master/badge.svg)](https://github.com/JedWatson/happiness)
-
 ## 목적
 
 상대의 모든 세포를 제거해라
