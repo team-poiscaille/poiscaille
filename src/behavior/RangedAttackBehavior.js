@@ -1,5 +1,9 @@
 const AttackBehavior = require('./AttackBehavior');
 
+/**
+ * Class representing a ranged attack behavior.
+ * @extends AttackBehavior
+ */
 class RangedAttackBehavior extends AttackBehavior {
   /**
    * @todo Set penalty (temp = 10)

@@ -1,3 +1,4 @@
+/** Class representing a cell behavior. */
 class CellBehavior {
   /**
    * @param {Cell} performer

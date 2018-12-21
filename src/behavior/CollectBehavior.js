@@ -1,6 +1,11 @@
 const CellBehavior = require('./CellBehavior');
 
-class CollectBehavior extends CellBehavior {/**
+/**
+ * Class representing a collect behavior.
+ * @extends CellBehavior
+ */
+class CollectBehavior extends CellBehavior {
+  /**
   * @todo Set min distance (temp = 10)
   * @param {Item} item
   * @returns {boolean}

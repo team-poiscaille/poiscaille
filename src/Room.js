@@ -1,5 +1,6 @@
 const World = require('./World');
 
+/** Class representing a room. */
 class Room {
   /**
    * @param {Server} server
@@ -28,7 +29,7 @@ class Room {
    * @param {Player} player
    */
   addPlayer(player) {
-    if(this.server.getRoomOfPlayer(player) !== null) return false;
+    if (this.server.getRoomOfPlayer(player) !== null) return false;
 
     this.players.push(player);
     player.setRoom(this);

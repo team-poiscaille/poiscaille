@@ -1,7 +1,11 @@
 /* eslint class-methods-use-this: off */
 const AttackBehavior = require('./AttackBehavior');
 
-class MeleeAttackBehavior extends AttackBehavior {
+/**
+ * Class representing a no attack behavior.
+ * @extends AttackBehavior
+ */
+class NoAttackBehavior extends AttackBehavior {
   /**
    * @param {Cell} cell
    */
@@ -16,4 +20,4 @@ class MeleeAttackBehavior extends AttackBehavior {
   }
 }
 
-module.exports = MeleeAttackBehavior;
+module.exports = NoAttackBehavior;

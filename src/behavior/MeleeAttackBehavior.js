@@ -1,5 +1,9 @@
 const AttackBehavior = require('./AttackBehavior');
 
+/**
+ * Class representing a melee attack behavior.
+ * @extends AttackBehavior
+ */
 class MeleeAttackBehavior extends AttackBehavior {
   /**
    * @param {Cell} cell

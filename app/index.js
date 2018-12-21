@@ -1,7 +1,7 @@
-import App from './App.vue';
-import Poiscaille from './src/Poiscaille';
 import Vue from 'vue';
 import Vuex from 'vuex';
+import App from './App.vue';
+import Poiscaille from './src/Poiscaille';
 
 import makeStore from './src/utils/makeStore';
 
