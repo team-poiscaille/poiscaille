@@ -11,7 +11,7 @@ class Room {
      */
     this.players = [];
     this.server = server;
-    this.world = new World();
+    this.world = new World(server.getSocket());
   }
 
   /**
@@ -42,10 +42,10 @@ class Room {
    */
   removePlayer(player) {
     const index = this.players.findIndex(player);
-    if(index < 0) return false;
+    if (index < 0) return false;
 
-    this.world.getAll().forEach(entity => {
-      if(entity.getOwner() === player) this.world.remove(entity.getId());
+    this.world.getAll().forEach((entity) => {
+      if (entity.getOwner() === player) this.world.remove(entity.getId());
     });
 
     this.players.splice(index, 1);
@@ -59,7 +59,7 @@ class Room {
    * @param {object} data
    */
   broadcast(event, data) {
-    this.players.forEach(player => {
+    this.players.forEach((player) => {
       player.getSocket().emit(event, data);
     });
   }
@@ -67,12 +67,12 @@ class Room {
   broadcastMatchMade() {
     const players = [];
     this.players.forEach(player => players.push({
-      'i': player.id,
-      'u': player.username
+      i: player.id,
+      u: player.username,
     }));
 
     this.broadcast('room match made', {
-      players
+      players,
     });
   }
 

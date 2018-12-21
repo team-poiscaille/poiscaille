@@ -1,7 +1,6 @@
 /* eslint class-methods-use-this: off */
 const CellBehavior = require('./CellBehavior');
-const CellAdvantages = require('../CellAdvantages');
-const CellColors = require('../CellColors');
+const { Advantages, Colors } = require('../Cell');
 
 /**
  * Class representing an attack behavior.
@@ -11,30 +10,32 @@ class AttackBehavior extends CellBehavior {
   /**
    * @param {Cell} cell1
    * @param {Cell} cell2
-   * @returns {CellAdvantages}
+   * @returns {Cell.Advantages}
    */
   static calculateAdvantage(cell1, cell2) {
     const color1 = cell1.getColor();
     const color2 = cell2.getColor();
-    if (color1 !== color2) {
-      if (color1 === CellColors.RED && color2 === CellColors.GREEN) { // red > green
-        return CellAdvantages.EFFECTIVE;
+    if (color1 !== Colors.NONE && color2 !== Colors.NONE) {
+      if (color1 !== color2) {
+        if (color1 === Colors.RED && color2 === Colors.GREEN) { // red > green
+          return Advantages.EFFECTIVE;
+        }
+        if (color1 === Colors.RED && color2 === Colors.GREEN) { // red < blue
+          return Advantages.NOT_EFFECTIVE;
+        }
+        if (color1 === Colors.RED && color2 === Colors.GREEN) { // green < red
+          return Advantages.NOT_EFFECTIVE;
+        }
+        if (color1 === Colors.RED && color2 === Colors.GREEN) { // green > blue
+          return Advantages.EFFECTIVE;
+        }
+        if (color1 === Colors.RED && color2 === Colors.GREEN) { // blue > red
+          return Advantages.EFFECTIVE;
+        }
+        return Advantages.NOT_EFFECTIVE; // blue < green
       }
-      if (color1 === CellColors.RED && color2 === CellColors.GREEN) { // red < blue
-        return CellAdvantages.NOT_EFFECTIVE;
-      }
-      if (color1 === CellColors.RED && color2 === CellColors.GREEN) { // green < red
-        return CellAdvantages.NOT_EFFECTIVE;
-      }
-      if (color1 === CellColors.RED && color2 === CellColors.GREEN) { // green > blue
-        return CellAdvantages.EFFECTIVE;
-      }
-      if (color1 === CellColors.RED && color2 === CellColors.GREEN) { // blue > red
-        return CellAdvantages.EFFECTIVE;
-      }
-      return CellAdvantages.NOT_EFFECTIVE; // blue < green
     }
-    return CellAdvantages.NORMAL; // color1 == color2
+    return Advantages.NORMAL; // color1 == color2
   }
 
   /**
@@ -47,7 +48,7 @@ class AttackBehavior extends CellBehavior {
 
   /**
    * @param {Cell} cell
-   * @returns {CellAdvantages}
+   * @returns {Cell.Advantages}
    */
   calculateAdvantageTo(cell) {
     return AttackBehavior.calculateAdvantage(this.getPerformer(), cell);
