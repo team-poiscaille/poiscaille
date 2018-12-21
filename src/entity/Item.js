@@ -3,11 +3,12 @@ const Entity = require('./Entity');
 class Item extends Entity {
   /**
    * @param {number} id
-   * @param {number} x
-   * @param {number} y
+   * @param {Vector2} pos
+   * @param {Player} owner
    */
-  constructor(id, x, y) {
-    super('item', id, x, y);
+  constructor(id, pos, owner) {
+    super('item', id, pos, owner);
+
     this.onCollectedListener = null;
   }
 

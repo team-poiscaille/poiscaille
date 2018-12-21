@@ -1,16 +1,21 @@
-const Vector2 = require('./math/Vector2');
+const Vector2 = require('../math/Vector2');
 
+/**
+ * Class representing an entity.
+ * @extends Vector2
+ */
 class Entity extends Vector2 {
   /**
    * @param {string} name
    * @param {number} id
    * @param {Vector2} pos
+   * @param {Player} owner
    */
-  constructor(name, id, pos) {
+  constructor(name, id, pos, owner) {
     super(pos.x, pos.y);
-
     this.name = name;
     this.id = id;
+    this.owner = owner;
   }
 
   /**
@@ -28,6 +33,14 @@ class Entity extends Vector2 {
   }
 
   /**
+   * Returns owner of the entity
+   * @returns {Player}
+   */
+  getOwner() {
+    return this.owner;
+  }
+
+  /**
    * @param {number} id
    */
   setId(id) {
@@ -39,6 +52,13 @@ class Entity extends Vector2 {
    */
   setName(name) {
     this.name = name;
+  }
+
+  /**
+   * @param {Player} owner
+   */
+  setOwner(owner) {
+    this.owner = owner;
   }
 }
 

@@ -1,8 +1,11 @@
 const AttackBehavior = require('./AttackBehavior');
 
-class RangedAttackBehavior extends AttackBehavior {
+/**
+ * Class representing a melee attack behavior.
+ * @extends AttackBehavior
+ */
+class MeleeAttackBehavior extends AttackBehavior {
   /**
-   * @todo Set penalty (temp = 10)
    * @param {Cell} cell
    */
   attack(cell) {
@@ -10,18 +13,17 @@ class RangedAttackBehavior extends AttackBehavior {
       const performer = this.getPerformer();
       const advantage = this.calculateAdvantageTo(cell);
       cell.damage(cell.getHp() - (performer.getAtk() - cell.getDef()) * advantage);
-      performer.setDef(performer.getDef() - 10);
     }
   }
 
   /**
-   * @todo Set min distance (temp = 50)
+   * @todo Set min distance (temp = 10)
    * @param {Cell} cell
    * @returns {boolean}
    */
   canAttack(cell) {
-    return this.getPerformer().calculateDistance(cell) <= 50;
+    return this.getPerformer().calculateDistance(cell) <= 10;
   }
 }
 
-module.exports = RangedAttackBehavior;
+module.exports = MeleeAttackBehavior;

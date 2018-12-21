@@ -1,3 +1,4 @@
+/** Class representing a damaged listener. */
 class OnDamagedListener {
   /**
    * @param {Function} onDamaged

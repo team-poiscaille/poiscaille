@@ -1,3 +1,4 @@
+/** Class representing a killed listener. */
 class OnKilledListener {
   /**
    * @param {Function} onKilled
