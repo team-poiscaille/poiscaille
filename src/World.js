@@ -1,3 +1,4 @@
+/** Class representing a world. */
 class World {
   constructor() {
     this.entities = [];

@@ -1,3 +1,4 @@
+/** Class representing a vector 2D. */
 class Vector2 {
   /**
    * @param {number} x

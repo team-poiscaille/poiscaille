@@ -1,5 +1,9 @@
 const Vector2 = require('./math/Vector2');
 
+/**
+ * Class representing an entity.
+ * @extends Vector2
+ */
 class Entity extends Vector2 {
   /**
    * @param {string} name

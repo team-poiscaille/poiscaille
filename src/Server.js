@@ -6,6 +6,7 @@ const Utils = require('./util/Utils');
 
 let instance;
 
+/** Class representing a server. */
 class Server {
   /**
    * @private
@@ -65,8 +66,8 @@ class Server {
    * @returns {Room}
    */
   getRoomOfPlayer(player) {
-    for(const room of this.rooms) {
-      if(room.hasPlayer(player)) {
+    for (const room of this.rooms) {
+      if (room.hasPlayer(player)) {
         return room;
       }
     }

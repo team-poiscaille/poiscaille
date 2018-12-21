@@ -3,6 +3,10 @@ const CellBehavior = require('./CellBehavior');
 const CellAdvantages = require('../CellAdvantages');
 const CellColors = require('../CellColors');
 
+/**
+ * Class representing an attack behavior.
+ * @extends CellBehavior
+ */
 class AttackBehavior extends CellBehavior {
   /**
    * @param {Cell} cell1

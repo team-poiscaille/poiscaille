@@ -1,5 +1,9 @@
 const Entity = require('./Entity');
 
+/**
+ * Class representing a cell.
+ * @extends Entity
+ */
 class Cell extends Entity {
   /**
    * @param {number} id
