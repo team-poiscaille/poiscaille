@@ -25,14 +25,13 @@
 </style>
 
 <script>
-  import Minimap from "./Minimap";
-  import UnitInfo from "./UnitInfo";
+  import Minimap from "../layout/Minimap.vue";
+  import UnitInfo from "../layout/UnitInfo.vue";
 
   export default {
     components: {
       Minimap,
-      UnitInfo,
-      UnitSkills
+      UnitInfo
     },
 
     data() {

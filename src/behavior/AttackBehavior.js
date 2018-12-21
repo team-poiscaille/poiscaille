@@ -1,12 +1,13 @@
+/* eslint class-methods-use-this: off */
 const CellBehavior = require('./CellBehavior');
 const CellAdvantages = require('../CellAdvantages');
 const CellColors = require('../CellColors');
 
 class AttackBehavior extends CellBehavior {
   /**
-   * @param {CellColors} cell1
-   * @param {CellColors} cell2
-   * @returns {CellAdvantage}
+   * @param {Cell} cell1
+   * @param {Cell} cell2
+   * @returns {CellAdvantages}
    */
   static calculateAdvantage(cell1, cell2) {
     const color1 = cell1.getColor();
@@ -32,10 +33,9 @@ class AttackBehavior extends CellBehavior {
     return CellAdvantages.NORMAL; // color1 == color2
   }
 
-  /* eslint class-methods-use-this: off */
   /**
    * @abstract
-   * @param {Cell} targetCell
+   * @param {Cell} cell
    */
   attack() {
     throw new Error('not implemented');
@@ -46,16 +46,16 @@ class AttackBehavior extends CellBehavior {
    * @returns {CellAdvantages}
    */
   calculateAdvantageTo(cell) {
-    return AttackBehavior.calculateAdvantage(this.performer, cell);
+    return AttackBehavior.calculateAdvantage(this.getPerformer(), cell);
   }
 
   /**
-   * @param {Cell} targetCell
+   * @abstract
+   * @param {Cell} cell
    * @returns {boolean}
    */
-  canAttack(targetCell) {
-    const { performer } = this;
-    return performer.caculateDistance(targetCell);
+  canAttack(cell) {
+    return this.getPerformer().calculateDistance(cell) <= 10;
   }
 }
 
