@@ -1,9 +1,9 @@
 const CellManager = require('./CellManager');
 
-class Map {
+class World {
   constructor() {
     this.cellManager = new CellManager();
   }
 }
 
-module.exports = Map;
+module.exports = World;

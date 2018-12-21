@@ -1,8 +1,8 @@
-const Map = require('./Map');
+const World = require('./World');
 
 class Room {
   constructor() {
-    this.map = new Map();
+    this.world = new World();
   }
 }
 
