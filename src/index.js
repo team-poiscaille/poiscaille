@@ -1,12 +1,6 @@
-const behavior = require('./behavior');
-const listener = require('./listener');
+const entity = require('./entity');
 const math = require('./math');
-const Cell = require('./Cell');
-const CellAdvantages = require('./CellAdvantages');
-const CellColors = require('./CellColors');
 const Config = require('./Config');
-const Entity = require('./Entity');
-const Item = require('./Item');
 const Player = require('./Player');
 const Room = require('./Room');
 const Server = require('./Server');
@@ -14,15 +8,9 @@ const Utils = require('./Utils');
 const World = require('./World');
 
 module.exports = {
-  behavior,
-  listener,
+  entity,
   math,
-  Cell,
-  CellAdvantages,
-  CellColors,
   Config,
-  Entity,
-  Item,
   Player,
   Room,
   Server,
