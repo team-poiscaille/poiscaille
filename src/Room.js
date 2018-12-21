@@ -6,17 +6,17 @@ class Room {
   }
 
   /**
-   * @returns {Map}
+   * @returns {World}
    */
-  getMap() {
-    return this.map;
+  getWorld() {
+    return this.world;
   }
 
   /**
-   * @param {Map} map
+   * @param {World} world
    */
-  setMap(map) {
-    this.map = map;
+  setWorld(world) {
+    this.world = world;
   }
 }
 
