@@ -8,7 +8,7 @@ class Cell extends Entity {
    * @param {number} hp
    * @param {number} atk
    * @param {number} def
-   * @param {CellColor} color
+   * @param {CellColors} color
    */
   constructor(id, x, y, hp, atk, def, color) {
     super('cell', id, x, y);
@@ -16,31 +16,10 @@ class Cell extends Entity {
     this.atk = atk;
     this.def = def;
     this.color = color;
-  }
-
-  /**
-   * @param {Cell} targetCell
-   */
-  attack(targetCell) {
-    const { atk } = this;
-    const advantage = this.calculateAdvantageTo(targetCell);
-    targetCell.setHp(targetCell.getHp() - (atk - targetCell.getDef()) * advantage);
-  }
-
-  /**
-   * @param {Cell} targetCell
-   * @returns {number}
-   */
-  calculateAdvantageTo(targetCell) {
-    const { color } = this;
-    return color.calculateAdvantageTo(targetCell.getColor());
-  }
-
-  /**
-   * @param {Item} item
-   */
-  collectItem(item) {
-    item.collectedBy(this);
+    this.attackBehavior = null;
+    this.collectBehavior = null;
+    this.onDamagedListener = null;
+    this.onKilledListener = null;
   }
 
   /**
@@ -71,6 +50,43 @@ class Cell extends Entity {
     return this.hp;
   }
 
+  kill() {
+    const { onKilledListener } = this;
+    this.hp = 0;
+    if (onKilledListener) {
+      onKilledListener.onKilled();
+    }
+  }
+
+  /**
+   * @param {number} x
+   * @param {number} y
+   */
+  moveTo(x, y) {
+    this.setX(x);
+    this.setY(y);
+  }
+
+  /**
+   * @param {Cell} targetCell
+   */
+  performAttack(targetCell) {
+    const { attackBehavior } = this;
+    if (attackBehavior) {
+      attackBehavior.attack(targetCell);
+    }
+  }
+
+  /**
+   * @param {Item} targetItem
+   */
+  performCollect(targetItem) {
+    const { collectBehavior } = this;
+    if (collectBehavior) {
+      collectBehavior.collect(targetItem);
+    }
+  }
+
   /**
    * @param {number} atk
    */
@@ -96,7 +112,17 @@ class Cell extends Entity {
    * @param {number} hp
    */
   setHp(hp) {
-    this.hp = hp;
+    if (hp < this.hp) {
+      const { onDamagedListener } = this;
+      if (onDamagedListener) {
+        onDamagedListener.onDamaged();
+      }
+    }
+    if (hp <= 0) {
+      this.kill();
+    } else {
+      this.hp = hp;
+    }
   }
 }
 

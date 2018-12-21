@@ -8,23 +8,24 @@ class Item extends Entity {
    */
   constructor(id, x, y) {
     super('item', id, x, y);
+    this.onCollectedListner = null;
   }
 
   /**
    * @param {Cell} cell
    */
   collectedBy(cell) {
-    const { onCollected } = this;
-    if (typeof onCollected === 'function') {
-      onCollected(cell);
+    const { onCollectedListner } = this;
+    if (typeof onCollectedListner === 'function') {
+      onCollectedListner.onCollected(cell);
     }
   }
 
   /**
-   * @param {Function} onCollected
+   * @param {OnCollectedListener} onCollectedListner
    */
-  setOnCollectedListner(onCollected) {
-    this.onCollected = onCollected;
+  setOnCollectedListner(onCollectedListner) {
+    this.onCollectedListner = onCollectedListner;
   }
 }
 

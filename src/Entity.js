@@ -13,6 +13,14 @@ class Entity {
   }
 
   /**
+   * @param {Entity} entity
+   * @returns {number}
+   */
+  caculateDistance(entity) {
+    return Math.hypot(this.x - entity.getCell(), this.y - entity.getY());
+  }
+
+  /**
    * @returns {number}
    */
   getId() {
