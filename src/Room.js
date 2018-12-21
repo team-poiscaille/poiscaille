@@ -6,6 +6,9 @@ class Room {
    * @param {Server} server
    */
   constructor(server) {
+    /**
+     * @type {Array.<Player>}
+     */
     this.players = [];
     this.server = server;
     this.world = new World();
@@ -29,6 +32,29 @@ class Room {
     this.players.push(player);
     player.setRoom(this);
     return true;
+  }
+
+  /**
+   * Broadcast event to players in room
+   *
+   * @param {string} event
+   * @param {object} data
+   */
+  broadcast(event, data) {
+    this.players.forEach(player => {
+      player.getSocket().emit(event, data);
+    });
+  }
+
+  broadcastMatchMade() {
+    const players = [];
+    this.players.forEach(player => players.push({
+      'u': player.username
+    }));
+
+    this.broadcast('room match made', {
+      players
+    });
   }
 
   /**
