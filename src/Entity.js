@@ -5,12 +5,14 @@ class Entity extends Vector2 {
    * @param {string} name
    * @param {number} id
    * @param {Vector2} pos
+   * @param {Player} owner
    */
-  constructor(name, id, pos) {
+  constructor(name, id, pos, owner) {
     super(pos.x, pos.y);
 
     this.name = name;
     this.id = id;
+    this.owner = owner;
   }
 
   /**
@@ -39,6 +41,14 @@ class Entity extends Vector2 {
    */
   setName(name) {
     this.name = name;
+  }
+
+  /**
+   * Returns owner of the entity
+   * @returns {Player}
+   */
+  getOwner() {
+    return this.owner;
   }
 }
 

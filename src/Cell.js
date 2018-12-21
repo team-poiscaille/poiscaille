@@ -3,15 +3,15 @@ const Entity = require('./Entity');
 class Cell extends Entity {
   /**
    * @param {number} id
-   * @param {number} x
-   * @param {number} y
+   * @param {Vector2} pos
+   * @param {Player} owner
    * @param {number} hp
    * @param {number} atk
    * @param {number} def
    * @param {CellColors} color
    */
-  constructor(id, x, y, hp, atk, def, color) {
-    super('cell', id, x, y);
+  constructor(id, pos, owner, hp, atk, def, color) {
+    super('cell', id, pos, owner);
     this.hp = hp;
     this.atk = atk;
     this.def = def;

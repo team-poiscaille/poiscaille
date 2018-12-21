@@ -5,6 +5,16 @@ class Player {
    */
   constructor(room) {
     this.room = room;
+
+    /**
+     * Entity which is managed by the player
+     * @type {Array.<Entity>}
+     */
+    this.entities = [];
+  }
+
+  addEntity(entity) {
+    this.entities.push(entity);
   }
 
   /**
