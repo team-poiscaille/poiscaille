@@ -7,4 +7,6 @@ const CellAdvantages = {
   NOT_EFFECTIVE: 0.5,
 };
 
+Object.freeze(CellAdvantages);
+
 module.exports = CellAdvantages;

@@ -7,9 +7,9 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack-dev-server",
-    "lint": "eslint app src server.js",
-    "lint:fix": "eslint app src server.js --fix",
-    "start": "node server.js",
+    "lint": "eslint app src main.js",
+    "lint:fix": "eslint app src main.js --fix",
+    "start": "node main.js",
     "watch": "webpack --watch"
   },
   "repository": {
