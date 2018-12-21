@@ -16,8 +16,8 @@ class Entity {
    * @param {Entity} entity
    * @returns {number}
    */
-  caculateDistance(entity) {
-    return Math.hypot(this.x - entity.getCell(), this.y - entity.getY());
+  calculateDistance(entity) {
+    return Math.hypot(this.x - entity.getX(), this.y - entity.getY());
   }
 
   /**
