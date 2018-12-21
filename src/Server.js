@@ -57,6 +57,21 @@ class Server {
   }
 
   /**
+   * @param {Player} player
+   *
+   * @returns {Room}
+   */
+  getRoomOfPlayer(player) {
+    for(const room of this.rooms) {
+      if(room.hasPlayer(player)) {
+        return room;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * @returns {http.Server}
    */
   getServer() {
