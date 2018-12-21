@@ -23,6 +23,17 @@ class Cell extends Entity {
   }
 
   /**
+   * @param {number} hp
+   */
+  damage(hp) {
+    const { onDamagedListener } = this;
+    this.hp = hp;
+    if (onDamagedListener) {
+      onDamagedListener.onDamaged(hp);
+    }
+  }
+
+  /**
    * @returns {number}
    */
   getAtk() {
@@ -95,6 +106,20 @@ class Cell extends Entity {
   }
 
   /**
+   * @param {AttackBehavior} attackBehavior
+   */
+  setAttackBehavior(attackBehavior) {
+    this.attackBehavior = attackBehavior;
+  }
+
+  /**
+   * @param {CollectBehavior} collectBehavior
+   */
+  setCollectBehavior(collectBehavior) {
+    this.collectBehavior = collectBehavior;
+  }
+
+  /**
    * @param {number} color
    */
   setColor(color) {
@@ -113,16 +138,27 @@ class Cell extends Entity {
    */
   setHp(hp) {
     if (hp < this.hp) {
-      const { onDamagedListener } = this;
-      if (onDamagedListener) {
-        onDamagedListener.onDamaged();
+      this.damage(hp);
+      if (hp <= 0) {
+        this.kill();
       }
-    }
-    if (hp <= 0) {
-      this.kill();
     } else {
       this.hp = hp;
     }
+  }
+
+  /**
+   * @param {OnDamagedListener} onDamagedListener
+   */
+  setOnDamagedListener(onDamagedListener) {
+    this.onDamagedListener = onDamagedListener;
+  }
+
+  /**
+   * @param {OnKilledListener} onKilledListener
+   */
+  setOnKilledListener(onKilledListener) {
+    this.onKilledListener = onKilledListener;
   }
 }
 

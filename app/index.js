@@ -1,11 +1,11 @@
-import makeStore from "./src/utils/makeStore";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import makeStore from './src/utils/makeStore';
 
-import App from "./App.vue";
-import Poiscaille from "./src/Poiscaille";
-import Vue from "vue";
-import Vuex from "vuex";
+import App from './App.vue';
+import Poiscaille from './src/Poiscaille';
 
-import "./less/index.less";
+import './less/index.less';
 
 Vue.use(Vuex);
 
@@ -17,5 +17,5 @@ new Vue({
   store,
   render(h) {
     return h(App);
-  }
+  },
 });
