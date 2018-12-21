@@ -24,7 +24,7 @@ class Room {
    * @param {Player} player
    */
   addPlayer(player) {
-    if (this.server.getRoomOfPlayer(player) !== null) return false;
+    if (player.getRoom() !== null) return false;
 
     this.players.push(player);
     player.setRoom(this);
