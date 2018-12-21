@@ -1,13 +1,9 @@
-const Vector2 = require('./math/Vector2');
 
-class Player extends Vector2 {
+class Player {
   /**
-   * @param {Vector2} pos
    * @param {Room} room
    */
-  constructor(pos, room) {
-    super(pos.x, pos.y);
-
+  constructor(room) {
     this.room = room;
   }
 
