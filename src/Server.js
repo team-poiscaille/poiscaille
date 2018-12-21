@@ -2,7 +2,8 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
-const Constants = require('./Constants');
+
+const Config = require('./Config');
 const Player = require('./Player');
 const Room = require('./Room');
 const Utils = require('./Utils');
@@ -92,9 +93,9 @@ class Server {
    * Match rooms for matching players
    */
   matchRooms() {
-    while (this.matching.length >= Constants.PLAYERS_PER_ROOM) {
+    while (this.matching.length >= Config.PLAYERS_PER_ROOM) {
       const room = new Room(this);
-      for (let i = 0; i < Constants.PLAYERS_PER_ROOM; i += 1) {
+      for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
         const player = this.matching.shift();
         room.addPlayer(player);
       }
