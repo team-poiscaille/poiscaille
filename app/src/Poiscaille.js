@@ -1,6 +1,8 @@
 class Poiscaille {
   constructor() {
-    this.entities = [];
+    this.entities = new Map();
+    this.items = new Map();
+    this.loadedChunk = [];
   }
 }
 
