@@ -11,12 +11,6 @@ class Player {
     this.id = id;
     this.username = username;
     this.room = room;
-
-    /**
-     * Entity which is managed by the player
-     * @type {Array.<Entity>}
-     */
-    this.entities = [];
   }
 
   getSocket() {
@@ -30,15 +24,6 @@ class Player {
    */
   getName() {
     return this.username;
-  }
-
-  /**
-   * Add entity managed by the player
-   *
-   * @param entity
-   */
-  addEntity(entity) {
-    this.entities.push(entity);
   }
 
   /**

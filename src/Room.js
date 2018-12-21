@@ -35,6 +35,24 @@ class Room {
   }
 
   /**
+   * Remove player from room and all linked entities
+   *
+   * @param player
+   * @returns {boolean}
+   */
+  removePlayer(player) {
+    const index = this.players.findIndex(player);
+    if(index < 0) return false;
+
+    this.world.getAll().forEach(entity => {
+      if(entity.getOwner() === player) this.world.remove(entity.getId());
+    });
+
+    this.players.splice(index, 1);
+    return true;
+  }
+
+  /**
    * Broadcast event to players in room
    *
    * @param {string} event
@@ -49,12 +67,20 @@ class Room {
   broadcastMatchMade() {
     const players = [];
     this.players.forEach(player => players.push({
+      'i': player.id,
       'u': player.username
     }));
 
     this.broadcast('room match made', {
       players
     });
+  }
+
+  /**
+   * @param {Player} player
+   */
+  broadcastPlayerQuit(player) {
+    this.broadcast('room player quit', player.id);
   }
 
   /**

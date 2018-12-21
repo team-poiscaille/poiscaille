@@ -41,6 +41,16 @@ class Server {
         this.addMatchingPlayer(that.player);
 
         that.socket.emit('ack player match');
+
+        this.matchRooms();
+      });
+
+      // Player is quitting
+      socket.on('player quit', (data) => {
+        const room = that.player.getRoom();
+        if(room !== null) {
+          room.removePlayer(that.player);
+        }
       });
 
       this.socket = socket;
