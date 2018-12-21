@@ -24,6 +24,7 @@ class Server {
       res.sendFile(path.join(__dirname, '/index.html'));
     });
 
+    const tthat = this;
     // See https://socket.io/docs/#Using-with-Express
     io.on('connection', (socket) => {
       socket.emit('news', { hello: 'world' });
@@ -38,11 +39,12 @@ class Server {
 
       // Start match making
       socket.on('player match', () => {
-        this.addMatchingPlayer(that.player);
+        tthat.addMatchingPlayer(that.player);
 
         that.socket.emit('ack player match');
 
-        this.matchRooms();
+        tthat.matchRooms();
+        tthat.broadcastMatchedPlayers();
       });
 
       // Player is quitting
@@ -50,6 +52,13 @@ class Server {
         const room = that.player.getRoom();
         if(room !== null) {
           room.removePlayer(that.player);
+        }
+      });
+
+      // Player quit finding match
+      socket.on('player match cancel', () => {
+        if(tthat.removeMatchingPlayer()) {
+          tthat.broadcastMatchedPlayers();
         }
       });
 
@@ -64,6 +73,14 @@ class Server {
      */
     this.matching = [];
     this.rooms = [];
+  }
+
+  broadcastToMatching(event, data) {
+    this.matching.forEach(player => player.getSocket().emit(event, data));
+  }
+
+  broadcastMatchedPlayers() {
+    this.broadcastToMatching('match players', this.matching.length);
   }
 
   /**
@@ -93,6 +110,14 @@ class Server {
 
   addMatchingPlayer(player) {
     this.matching.push(player);
+  }
+
+  removeMatchingPlayer(player) {
+    const index = this.matching.findIndex(player);
+    if(index < 0) return false;
+
+    this.matching.splice(index, 1);
+    return true;
   }
 
   /**
