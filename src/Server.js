@@ -38,6 +38,8 @@ class Server {
 
       // Start match making
       socket.on('player match', () => {
+        if (socket.player) return;
+
         this.addMatchingPlayer(socket.player);
 
         socket.emit('player match');
@@ -100,7 +102,7 @@ class Server {
       socket.on('cell dna update', (data) => {
         /**
          * @var {number} id The ID of cell which is requested to update DNA
-         * @var {number} dnas The list of DNA being updated
+         * @var {number} dnaList The list of DNA being updated
          */
         const { id, dnaList } = data;
         if (!Utils.validateNumber(id)) { // TODO validate dnaList {Array.<String>}

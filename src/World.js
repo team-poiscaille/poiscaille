@@ -8,6 +8,7 @@ class World {
    * @param {Room} room
    */
   constructor(room) {
+    /** @type {Room} */
     this.room = room;
     this.width = 1000;
     this.height = 1000;
@@ -22,8 +23,17 @@ class World {
    * @param {string} eventName
    * @param {Object} data
    */
-  broadcast(eventName, data) {
-    this.room.broadcast(eventName, data);
+  broadcastGlobally(eventName, data) {
+    this.room.broadcastGlobally(eventName, data);
+  }
+
+  /**
+   * @param {Vector2} position
+   * @param {string} eventName
+   * @param data
+   */
+  broadcastNearby(position, eventName, data) {
+    this.room.broadcastNearby(position, eventName, data);
   }
 
   /** */
