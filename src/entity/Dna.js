@@ -12,7 +12,7 @@ class Dna extends Item {
    */
   constructor(id, position, information) {
     super(id, position, information);
-    this.addOnCollectedListener((cell, item) => {
+    this.addCollectedListener((cell, item) => {
       const owner = cell.getOwner();
       owner.getInventory().addItem(item);
     });
