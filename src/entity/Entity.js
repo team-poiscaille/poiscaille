@@ -1,26 +1,29 @@
+const EventEmitter = require('events');
+
 /**
  * Class representing an entity.
+ * @extends EventEmitter
  */
-class Entity {
+class Entity extends EventEmitter {
   /**
    * @param {number} id
    * @param {Vector2} position
    */
   constructor(id, position) {
+    super();
     this.id = id;
-    this.pos = position;
-    this.onUpdatedListeners = [];
+    this.position = position;
   }
 
   /**
-   * @callback Entity~onUpdatedListener
+   * @callback Entity~onUpdated
    * @param {Entity} entity
    */
   /**
-   * @param {Entity~onUpdatedListener} onUpdatedListener
+   * @param {Entity~onUpdated} onUpdated
    */
-  addOnUpdatedListener(onUpdatedListener) {
-    this.onUpdatedListeners.push(onUpdatedListener);
+  addUpdateListener(onUpdated) {
+    this.addListener('update', onUpdated);
   }
 
   /**
@@ -49,19 +52,19 @@ class Entity {
    * @returns {number}
    */
   getX() {
-    return this.x;
+    return this.position.x;
   }
 
   /**
    * @returns {number}
    */
   getY() {
-    return this.y;
+    return this.position.y;
   }
 
   /** */
-  removeAllOnUpdatedListeners() {
-    this.onUpdatedListeners = [];
+  removeAllUpdateListeners() {
+    this.removeAllListeners('update');
   }
 
   /**
@@ -82,19 +85,19 @@ class Entity {
    * @param {number} x
    */
   setX(x) {
-    this.position.setX(x);
+    this.position.x = x;
   }
 
   /**
    * @param {number} y
    */
   setY(y) {
-    this.position.setY(y);
+    this.position.y = y;
   }
 
   /** */
   update() {
-    this.onUpdatedListeners.forEach(onUpdatedListener => onUpdatedListener(this));
+    this.emit('update', this);
   }
 }
 

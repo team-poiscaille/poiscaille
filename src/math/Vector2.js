@@ -10,14 +10,6 @@ class Vector2 {
   }
 
   /**
-   * @param {number} x
-   * @param {number} y
-   */
-  static create(x, y) {
-    return new Vector2(x, y);
-  }
-
-  /**
    * @param {Vector2} vec1
    * @param {Vector2} vec2
    */
@@ -30,34 +22,6 @@ class Vector2 {
    */
   equals(vec) {
     return this.x === vec.x && this.y === vec.y;
-  }
-
-  /**
-   * @returns {number}
-   */
-  getX() {
-    return this.x;
-  }
-
-  /**
-   * @returns {number}
-   */
-  getY() {
-    return this.y;
-  }
-
-  /**
-   * @param val
-   */
-  setX(val) {
-    this.x = val;
-  }
-
-  /**
-   * @param val
-   */
-  setY(val) {
-    this.y = val;
   }
 
   /**

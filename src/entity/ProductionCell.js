@@ -1,3 +1,6 @@
+const {
+  CollectBehavior, CompoundAttackBehavior, MeleeAttackBehavior, MoveBehavior, RangedAttackBehavior,
+} = require('./behavior');
 const Cell = require('./Cell');
 
 /**
@@ -5,18 +8,21 @@ const Cell = require('./Cell');
  * @extends Cell
  */
 class ProductionCell extends Cell {
-  // /**
-  //  * @param {number} id
-  //  * @param {Vector2} pos
-  //  * @param {Player} owner
-  //  * @param {number} hp
-  //  * @param {number} atk
-  //  * @param {number} def
-  //  * @param {Cell.Colors} color
-  //  */
-  // constructor(id, pos, owner, hp, atk, def, color) {
-  //   super(id, pos, owner, hp, atk, def, color);
-  // }
+  /**
+   * @param {number} id
+   * @param {Vector2} position
+   * @param {Player} owner
+   * @param {Cell.State} state
+   */
+  constructor(id, position, owner, state) {
+    super(id, position, owner, state);
+    this.setAttackBehavior(new CompoundAttackBehavior(this, [
+      new MeleeAttackBehavior(this),
+      new RangedAttackBehavior(this),
+    ]));
+    this.setCollectBehavior(new CollectBehavior(this));
+    this.setMoveBehavior(new MoveBehavior(this));
+  }
 }
 
 module.exports = ProductionCell;
