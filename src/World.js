@@ -1,5 +1,6 @@
 const { CellFactory, ItemFactory } = require('./entity');
 const { Vector2 } = require('./math');
+const Utils = require('./Utils');
 
 /** Class representing a world. */
 class World {
@@ -73,15 +74,32 @@ class World {
    * @param {Object} data
    */
   receive(eventName, data) {
+    const { cellFactory, itemFactory } = this;
     switch (eventName) {
       case 'cell create':
-        console.log(data);
+        {
+          const {
+            id, // production cell ID
+            amount, // how many produce cells
+          } = data;
+        }
         break;
       case 'cell move':
-        console.log(data);
+        {
+          const {
+            id, // cell ID
+            x, // desitnation x
+            y, // desitnation y
+          } = data;
+        }
         break;
       case 'cell dna update':
-        console.log(data);
+        {
+          const {
+            id, // production cell ID
+            dnaList, // DNA list
+          } = data;
+        }
         break;
       default:
         throw new Error();

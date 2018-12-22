@@ -1,3 +1,4 @@
+const { MoveBehavior } = require('./behavior');
 const Entity = require('./Entity');
 
 /**
@@ -17,7 +18,7 @@ class Cell extends Entity {
     this.state = state;
     this.attackBehavior = null;
     this.collectBehavior = null;
-    this.moveBehavior = null;
+    this.moveBehavior = new MoveBehavior(this);
   }
 
   /**

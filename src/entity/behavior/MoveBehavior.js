@@ -38,13 +38,14 @@ class MoveBehavior extends CellBehavior {
   }
 
   /**
-  * @todo Set limits
-  * @returns {boolean}
-  */
-  canMove() {
+   * @todo Set limits
+   * @param {Vector2} destination
+   * @returns {boolean}
+   */
+  canMove(destination) {
     const { limiter } = this;
     if (limiter) {
-      return limiter(this);
+      return limiter(this.getPerformer(), destination);
     }
     return true;
   }
@@ -60,7 +61,9 @@ class MoveBehavior extends CellBehavior {
    * @param {Vector2} destination
    */
   move(destination) {
-    this.destination = destination;
+    if (this.canMove(destination)) {
+      this.destination = destination;
+    }
   }
 
   /**
@@ -74,6 +77,7 @@ class MoveBehavior extends CellBehavior {
 /**
  * @callback MoveBehavior~limiter
  * @param {Cell} cell
+ * @param {Vector2} destination
  */
 
 module.exports = MoveBehavior;
