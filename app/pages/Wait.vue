@@ -28,8 +28,13 @@
           확인
         </button>
       </form>
-      <div class="Dialog Play" v-else-if="!startedMatchmaking">
+      <div class="Dialog Play" key="play" v-else-if="!startedMatchmaking">
         <button class="Button Play__button" @click="startWait">플레이!</button>
+      </div>
+      <div class="Dialog Waiting" key="waiting" v-else>
+        <div>
+          <i class="mdi mdi-loading mdi-spin"></i> 기다리는 중...
+        </div>
       </div>
     </transition>
   </main>
@@ -150,6 +155,12 @@
     &:active {
       background: darken(#00bcd4, 5%);
     }
+  }
+
+  .Waiting {
+    color: #fff;
+    font-family: 'Noto Sans CJK KR', sans-serif;
+    font-size: 1.25rem;
   }
 </style>
 
