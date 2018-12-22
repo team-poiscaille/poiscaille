@@ -1,4 +1,5 @@
 import Player from './Player';
+import Render from "./render/Render";
 
 class Poiscaille {
   constructor() {
@@ -6,6 +7,11 @@ class Poiscaille {
     this.items = new Map();
     this.loadedChunk = [];
     this.player = new Player(this);
+
+  }
+
+  initRenderer() {
+    this.renderer = new Render(this);
   }
 }
 

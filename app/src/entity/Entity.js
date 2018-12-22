@@ -9,6 +9,13 @@ class Entity {
     this.x = 0;
     this.y = 0;
   }
+
+  @context()
+  render(ctx, canvas, renderer) {
+    this.doRender(ctx, canvas, renderer);
+  }
+
+  doRender() {}
 }
 
 export default Entity;
