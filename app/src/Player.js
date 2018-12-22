@@ -3,7 +3,7 @@ import UnitSelection from './utils/UnitSelection';
 class Player {
   constructor(game) {
     this.game = game;
-    this.cursor = {x: 0, y: 0};
+    this.cursor = { x: 0, y: 0 };
     this.selectedUnits = null;
     this.selectStart = null;
     this.nutrients = 0;

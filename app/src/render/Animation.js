@@ -8,7 +8,7 @@ class Animation {
   init() {}
 
   render() {
-    this.tick++;
+    this.tick += 1;
     this.doRender();
 
     return this.tick < this.duration;

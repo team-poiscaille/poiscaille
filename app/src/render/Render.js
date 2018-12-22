@@ -1,8 +1,7 @@
 const context = (name = 'game') => (target, key, descriptor) => {
   console.log(target, key, descriptor);
 
-  let renderer = target;
-  if(target.renderer) renderer = target.renderer;
+  const renderer = target.renderer || target;
 
   descriptor.value = renderer.context(name, descriptor.value, target);
   return descriptor;
@@ -18,9 +17,9 @@ class Render {
     this.x = 0;
     this.y = 0;
 
-    canvas.forEach(name => {
+    canvas.forEach((name) => {
       this.namedCanvas[name] = {
-        canvas: document.querySelector(`#${name}`)
+        canvas: document.querySelector(`#${name}`),
       };
 
       this.namedCanvas[name].ctx = this.namedCanvas[name].canvas.getContext('2d');
@@ -30,7 +29,7 @@ class Render {
       this.renderBackground,
       this.renderEntities,
       this.renderCursor,
-      this.renderMinimap
+      this.renderMinimap,
     ];
   }
 
@@ -39,8 +38,8 @@ class Render {
   }
 
   iterate(f) {
-    Object.keys(this.namedCanvas).forEach(k => {
-      const {ctx, canvas} = this.namedCanvas[k];
+    Object.keys(this.namedCanvas).forEach((k) => {
+      const { ctx, canvas } = this.namedCanvas[k];
       f(ctx, canvas);
     });
   }
@@ -57,7 +56,7 @@ class Render {
   getRenderPosition(position) {
     return {
       x: position.x - this.x,
-      y: position.y - this.y
+      y: position.y - this.y,
     };
   }
 
@@ -78,7 +77,7 @@ class Render {
   }
 
   @context()
-  renderBackground(canvas, ctx) {
+  renderBackground() {
 
   }
 
@@ -99,4 +98,4 @@ class Render {
 }
 
 export default Render;
-export {context};
+export { context };

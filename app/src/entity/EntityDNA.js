@@ -1,4 +1,4 @@
-import EntityItem from "./EntityItem";
+import EntityItem from './EntityItem';
 
 class EntityDNA extends EntityItem {
   type = 'DNA';
@@ -8,8 +8,8 @@ class EntityDNA extends EntityItem {
     this.dna = dna;
   }
 
-  doRender(ctx, canvas) {
-
+  doRender(ctx) {
+    ctx.drawImage(); // TODO
   }
 }
 

@@ -1,3 +1,5 @@
+import { context } from '../render/Render';
+
 class Entity {
   constructor(game) {
     // To keep variable names

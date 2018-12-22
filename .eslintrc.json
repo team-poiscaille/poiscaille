@@ -6,6 +6,8 @@
     },
     "rules": {
       "no-param-reassign": "off",
-      "no-restricted-syntax": "off"
-    }
+      "no-restricted-syntax": "off",
+      "class-methods-use-this": "off"
+    },
+    "parser": "babel-eslint"
 }

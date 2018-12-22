@@ -1,6 +1,7 @@
-import {context} from "./Render";
+import Animation from './Animation';
+import { context } from './Render';
 
-class AnimationMove {
+class AnimationMove extends Animation {
   constructor(renderer, x, y) {
     super(48, renderer);
 
@@ -8,19 +9,18 @@ class AnimationMove {
     this.y = y;
   }
 
-  @context('canvas');
+  @context('canvas')
   doRender(ctx, canvas, renderer) {
     ctx.fillStyle = '#00bcd4';
     ctx.save();
 
     const pos = renderer.getRenderPosition(this);
 
-    for(let i = -1; i <= 1; i++) {
+    for (let i = -1; i <= 1; i += 1) {
       ctx.translate(-pos.x, -pos.y);
       ctx.rotate(i * 120 * renderer.RADIAN);
     }
-
   }
 }
 
-export default Animation;
+export default AnimationMove;
