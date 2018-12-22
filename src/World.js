@@ -1,25 +1,34 @@
-const { ProductionCell } = require('./entity');
+const { CellFactory, ItemFactory } = require('./entity');
+const { Vector2 } = require('./math');
 
 /** Class representing a world. */
 class World {
   /**
-   * @param {SocketIO.Socket} socket
+   * @param {Room} room
    */
-  constructor(socket) {
-    this.entities = [];
-    this.socket = socket;
+  constructor(room) {
+    this.room = room;
+    this.width = 1000;
+    this.height = 1000;
+    this.timeout = null;
+    this.cellFactory = new CellFactory();
+    this.itemFactory = new ItemFactory();
+    this.lastEntityId = 0; // DO NOT USE THIS VARIABLE!
+    this.entities = []; // Use World#createNewCell or World#createNewItem instead.
   }
 
   /**
-   * @param {Entity} entity
+   * @param {string} eventName
+   * @param {Object} data
    */
-  add(entity) {
-    this.entities.push(entity);
+  broadcast(eventName, data) {
+    this.room.broadcast(eventName, data);
   }
 
+  /** */
   close() {
-    const { socket } = this;
-    socket.removeAllListeners('cell move');
+    clearInterval(this.timeout);
+    this.timeout = null;
   }
 
   /**
@@ -45,15 +54,38 @@ class World {
     return this.entities.findIndex(entity => entity.getId() === id) >= 0;
   }
 
+  /**
+   * @returns {boolean}
+   */
+  isOpen() {
+    return Boolean(this.timeout);
+  }
+
   /** */
   open() {
-    const { socket } = this;
-    socket.on('cell move', (id, x, y) => {
-      const entity = this.find(id);
-      if (entity && entity instanceof ProductionCell) {
-        entity.moveTo(x, y);
-      }
-    });
+    this.timeout = setInterval(() => {
+      this.entities.forEach(entity => entity.update());
+    }, 50); // interval: 20ms
+  }
+
+  /**
+   * @param {string} eventName
+   * @param {Object} data
+   */
+  receive(eventName, data) {
+    switch (eventName) {
+      case 'cell create':
+        console.log(data);
+        break;
+      case 'cell move':
+        console.log(data);
+        break;
+      case 'cell dna update':
+        console.log(data);
+        break;
+      default:
+        throw new Error();
+    }
   }
 
   /**
@@ -65,11 +97,6 @@ class World {
     if (index >= 0) {
       entities.splice(index, 1);
     }
-  }
-
-  /** */
-  update() {
-    this.entities.forEach(entity => entity.update());
   }
 }
 
