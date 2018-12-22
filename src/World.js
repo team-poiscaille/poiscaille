@@ -3,11 +3,11 @@ const { ProductionCell } = require('./entity');
 /** Class representing a world. */
 class World {
   /**
-   * @param {SocketIO.Socket} socket
+   * @param {Room} room
    */
-  constructor(socket) {
+  constructor(room) {
     this.entities = [];
-    this.socket = socket;
+    this.room = room;
   }
 
   /**
@@ -17,9 +17,17 @@ class World {
     this.entities.push(entity);
   }
 
+  /**
+   * Redirection of Room.broadcast
+   * @param event
+   * @param data
+   */
+  broadcast(event, data) {
+    this.room.broadcast(event, data);
+  }
+
   close() {
-    const { socket } = this;
-    socket.removeAllListeners('cell move');
+    // TODO
   }
 
   /**

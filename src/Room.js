@@ -12,7 +12,7 @@ class Room {
      */
     this.players = [];
     this.server = server;
-    this.world = new World(server.getSocket());
+    this.world = new World(this);
   }
 
   /**
