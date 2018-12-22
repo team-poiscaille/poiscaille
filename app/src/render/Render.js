@@ -7,7 +7,9 @@ const context = (name = 'game') => (target, key, descriptor) => {
 
 class Render {
   GRID_DISTANCE = 200;
+
   PIXEL_DISTANCE_COEFFICIENT = 1;
+
   RADIAN = Math.PI / 180;
 
   constructor(game, canvas = ['game', 'minimap']) {
@@ -83,7 +85,7 @@ class Render {
   }
 
   @context()
-  renderSpotlight(ctx, canvas) {
+  renderSpotlight() {
 
   }
 
@@ -91,9 +93,9 @@ class Render {
   renderGrid(ctx, canvas) {
     const distance = this.GRID_DISTANCE / this.PIXEL_DISTANCE_COEFFICIENT;
     const offsetX = this.x % distance;
-    const offsetY = this.y % distnace;
+    const offsetY = this.y % distance;
 
-    for(let x = offsetX; x < canvas.width; x += distance) {
+    for (let x = offsetX; x < canvas.width; x += distance) {
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, canvas.height);
@@ -102,7 +104,7 @@ class Render {
       ctx.stroke();
     }
 
-    for(let y = offsetY; y < canvas.height; y += distance) {
+    for (let y = offsetY; y < canvas.height; y += distance) {
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(canvas.width, y);

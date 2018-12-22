@@ -1,5 +1,5 @@
-import Color from "color";
-import Entity from "./Entity";
+import Color from 'color';
+import Entity from './Entity';
 
 class EntityCell extends Entity {
   type = 'EntityCell';

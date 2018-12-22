@@ -1,4 +1,4 @@
-const MoveBehavior = require('./behavior/MeleeAttackBehavior');
+const MoveBehavior = require('./behavior/MoveBehavior');
 const Entity = require('./Entity');
 
 /**
