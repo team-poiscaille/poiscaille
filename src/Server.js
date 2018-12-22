@@ -24,41 +24,39 @@ class Server {
       res.sendFile(path.join(__dirname, '/index.html'));
     });
 
-    const tthat = this;
     // See https://socket.io/docs/#Using-with-Express
     io.on('connection', (socket) => {
       socket.emit('news', { hello: 'world' });
-      this.player = null;
+      socket.player = null;
 
-      const that = this;
       socket.on('init', (data) => {
         const id = Utils.getRandomString(32);
         const { username } = data;
-        that.player = new Player(socket, id, username, null);
+        socket.player = new Player(socket, id, username, null);
       });
 
       // Start match making
       socket.on('player match', () => {
-        tthat.addMatchingPlayer(that.player);
+        this.addMatchingPlayer(socket.player);
 
-        that.socket.emit('ack player match');
+        socket.emit('ack player match');
 
-        tthat.matchRooms();
-        tthat.broadcastMatchedPlayers();
+        this.matchRooms();
+        this.broadcastMatchedPlayers();
       });
 
       // Player is quitting
       socket.on('player quit', (data) => {
-        const room = that.player.getRoom();
+        const room = socket.player.getRoom();
         if (room !== null) {
-          room.removePlayer(that.player);
+          room.removePlayer(socket.player);
         }
       });
 
       // Player quit finding match
       socket.on('player match cancel', () => {
-        if (tthat.removeMatchingPlayer()) {
-          tthat.broadcastMatchedPlayers();
+        if (this.removeMatchingPlayer()) {
+          this.broadcastMatchedPlayers();
         }
       });
 
