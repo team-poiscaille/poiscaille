@@ -17,6 +17,7 @@ class Entity extends EventEmitter {
 
   /**
    * @callback Entity~onUpdated
+   * @param {World} world
    * @param {Entity} entity
    */
   /**
@@ -102,9 +103,11 @@ class Entity extends EventEmitter {
     this.position.y = y;
   }
 
-  /** */
-  update() {
-    this.emit('update', this);
+  /**
+   * @param {World} world
+   */
+  update(world) {
+    this.emit('update', world, this);
   }
 }
 

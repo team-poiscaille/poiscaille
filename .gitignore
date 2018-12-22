@@ -65,3 +65,6 @@ typings/
 
 # JSDoc
 docs/
+
+# Webpack
+dist/

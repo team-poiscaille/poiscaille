@@ -72,7 +72,7 @@ class Room {
         this.world.getAll()
           .filter(e => e instanceof Cell
             && e.getOwner() === p
-            && e.getPosition().distance(pos) < Config.RENDER_MAX_DISTANCE)
+            && e.calculateDistance(pos) < Config.RENDER_MAX_DISTANCE)
           .forEach(() => p.getSocket().emit(pk[1], pk[2]));
       });
     });
