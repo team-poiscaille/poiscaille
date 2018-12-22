@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -17,7 +18,6 @@ Vue.prototype.$socket = {
   on() {},
 };
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   store,
@@ -25,4 +25,3 @@ new Vue({
     return h(App);
   },
 });
-/* eslint-enable no-new */

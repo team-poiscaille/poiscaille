@@ -59,8 +59,8 @@ class AttackBehavior extends CellBehavior {
    * @param {Cell} cell
    * @returns {boolean}
    */
-  canAttack(cell) {
-    return this.getPerformer().calculateDistance(cell) <= 10;
+  canAttack() {
+    throw new Error('not implemented');
   }
 }
 

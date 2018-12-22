@@ -6,12 +6,12 @@ const CellBehavior = require('./CellBehavior');
  */
 class CollectBehavior extends CellBehavior {
   /**
-  * @todo Set min distance (temp = 10)
   * @param {Item} item
   * @returns {boolean}
   */
   canCollect(item) {
-    return this.getPerformer().calculateDistance(item) <= 10;
+    const performer = this.getPerformer();
+    return performer.calculateDistance(item) <= performer.getState().collectableDistance;
   }
 
   /**

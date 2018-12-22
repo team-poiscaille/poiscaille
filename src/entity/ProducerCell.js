@@ -1,3 +1,4 @@
+const { MoveBehavior } = require('./behavior');
 const Cell = require('./Cell');
 
 /**
@@ -9,12 +10,11 @@ class ProducerCell extends Cell {
    * @param {number} id
    * @param {Vector2} position
    * @param {Player} owner
-   * @param {number} hp
-   * @param {number} def
-   * @param {number} speed
+   * @param {Cell.State} state
    */
-  constructor(id, position, owner, hp, def, speed) {
-    super(id, position, owner, hp, 0, def, speed, Cell.Colors.NONE);
+  constructor(id, position, owner, state) {
+    super(id, position, owner, state);
+    this.setMoveBehavior(new MoveBehavior(this));
   }
 }
 

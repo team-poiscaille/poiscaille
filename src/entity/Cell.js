@@ -7,49 +7,42 @@ const Entity = require('./Entity');
 class Cell extends Entity {
   /**
    * @param {number} id
-   * @param {Vector2} pos
+   * @param {Vector2} position
    * @param {Player} owner
-   * @param {number} hp
-   * @param {number} atk
-   * @param {number} def
-   * @param {Cell.Colors} color
+   * @param {Cell.State} state
    */
-  constructor(id, pos, owner, hp, atk, def, color) {
-    super(id, pos);
+  constructor(id, position, owner, state) {
+    super(id, position);
     this.owner = owner;
-    this.hp = hp;
-    this.atk = atk;
-    this.def = def;
-    this.color = color;
+    this.state = state;
     this.attackBehavior = null;
     this.collectBehavior = null;
-    this.onDamagedListeners = [];
-    this.onKilledListeners = [];
+    this.moveBehavior = null;
   }
 
   /**
-   * @callback Cell~onDamagedListener
+   * @callback Cell~onDamaged
    * @param {?Cell} attackerCell
    * @param {Cell} victimCell
-   * @param {number} hp
+   * @param {number} damage
    */
   /**
-   * @param {Cell~onDamagedListener} onDamagedListener
+   * @param {Cell~onDamaged} onDamaged
    */
-  addOnDamagedListener(onDamagedListener) {
-    this.onDamagedListeners.push(onDamagedListener);
+  addDamagedListener(onDamaged) {
+    this.addListener('damaged', onDamaged);
   }
 
   /**
-   * @callback Cell~onKilledListener
+   * @callback Cell~onKilled
    * @param {?Cell} murderCell
    * @param {Cell} victimCell
    */
   /**
-   * @param {Cell~onKilledListener} onKilledListener
+   * @param {Cell~onKilled} onKilled
    */
-  addOnKilledListener(onKilledListener) {
-    this.onKilledListeners.push(onKilledListener);
+  addKilledListener(onKilled) {
+    this.addListener('killed', onKilled);
   }
 
   /**
@@ -57,7 +50,7 @@ class Cell extends Entity {
    */
   damage(hp) {
     this.hp = hp;
-    this.onDamagedListeners.forEach(onDamagedListener => onDamagedListener(null, this, hp));
+    this.emit('damaged', null, this, hp);
   }
 
   /**
@@ -66,35 +59,7 @@ class Cell extends Entity {
    */
   damagedBy(attackerCell, hp) {
     this.hp = hp;
-    this.onDamagedListeners.forEach(onDamagedListener => onDamagedListener(attackerCell, this, hp));
-  }
-
-  /**
-   * @returns {number}
-   */
-  getAtk() {
-    return this.atk;
-  }
-
-  /**
-   * @returns {number}
-   */
-  getColor() {
-    return this.color;
-  }
-
-  /**
-   * @returns {number}
-   */
-  getDef() {
-    return this.def;
-  }
-
-  /**
-   * @returns {number}
-   */
-  getHp() {
-    return this.hp;
+    this.emit('damaged', attackerCell, this, hp);
   }
 
   /**
@@ -105,10 +70,17 @@ class Cell extends Entity {
     return this.owner;
   }
 
+  /**
+   * @returns {Cell.State}
+   */
+  getState() {
+    return this.state;
+  }
+
   /** */
   kill() {
     this.hp = 0;
-    this.onKilledListeners.forEach(onKilledListener => onKilledListener(null, this));
+    this.emit('killed', null, this);
   }
 
   /**
@@ -116,16 +88,7 @@ class Cell extends Entity {
    */
   killedBy(murderCell) {
     this.hp = 0;
-    this.onKilledListeners.forEach(onKilledListener => onKilledListener(murderCell, this));
-  }
-
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  moveTo(x, y) {
-    this.setX(x);
-    this.setY(y);
+    this.emit('killed', murderCell, this);
   }
 
   /**
@@ -148,21 +111,24 @@ class Cell extends Entity {
     }
   }
 
-  /** */
-  removeAllOnDamagedListeners() {
-    this.onDamagedListeners = [];
-  }
-
-  /** */
-  removeAllOnKilledListeners() {
-    this.onKilledListeners = [];
-  }
-
   /**
-   * @param {number} atk
+   * @param {Vector2} destination
    */
-  setAtk(atk) {
-    this.atk = atk;
+  performMove(destination) {
+    const { moveBehavior } = this;
+    if (moveBehavior) {
+      moveBehavior.move(destination);
+    }
+  }
+
+  /** */
+  removeAllDamagedListeners() {
+    this.removeAllListeners('damaged');
+  }
+
+  /** */
+  removeAllKilledListeners() {
+    this.removeAllListeners('killed');
   }
 
   /**
@@ -180,31 +146,10 @@ class Cell extends Entity {
   }
 
   /**
-   * @param {number} color
+   * @param {MoveBehavior} moveBehavior
    */
-  setColor(color) {
-    this.color = color;
-  }
-
-  /**
-   * @param {number} def
-   */
-  setDef(def) {
-    this.def = def;
-  }
-
-  /**
-   * @param {number} hp
-   */
-  setHp(hp) {
-    if (hp < this.hp) {
-      this.damage(hp);
-      if (hp <= 0) {
-        this.kill();
-      }
-    } else {
-      this.hp = hp;
-    }
+  setMoveBehavior(moveBehavior) {
+    this.moveBehavior = moveBehavior;
   }
 
   /**
@@ -212,6 +157,13 @@ class Cell extends Entity {
    */
   setOwner(owner) {
     this.owner = owner;
+  }
+
+  /**
+   * @param {Cell.State} state
+   */
+  setState(state) {
+    this.state = state;
   }
 }
 
@@ -240,10 +192,50 @@ const Colors = {
   NONE: 3,
 };
 
+/**
+ * Class representing a cell state.
+ * @memberof Cell
+ */
+class State {
+  /**
+   * @param {Object} details
+   * @param {number} details.hp
+   * @param {number} details.atk
+   * @param {number} details.def
+   * @param {number} details.speed
+   * @param {Cell.Colors} details.color
+   * @param {number} details.collectableDistance
+   * @param {number} details.meleeAttackDistance
+   * @param {number} details.rangedAttackDistance
+   */
+  constructor({
+    hp, atk, def, speed, color,
+    collectableDistance, meleeAttackDistance, rangedAttackDistance,
+  }) {
+    /** @type {number} */
+    this.hp = hp;
+    /** @type {number} */
+    this.atk = atk;
+    /** @type {number} */
+    this.def = def;
+    /** @type {number} */
+    this.speed = speed;
+    /** @type {Cell.Colors} */
+    this.color = color;
+    /** @type {number} */
+    this.collectableDistance = collectableDistance;
+    /** @type {number} */
+    this.meleeAttackDistance = meleeAttackDistance;
+    /** @type {number} */
+    this.rangedAttackDistance = rangedAttackDistance;
+  }
+}
+
 Object.freeze(Advantages);
 Object.freeze(Colors);
 
 Cell.Advantages = Advantages;
 Cell.Colors = Colors;
+Cell.State = State;
 
 module.exports = Cell;
