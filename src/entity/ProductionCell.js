@@ -1,6 +1,7 @@
-const {
-  CollectBehavior, CompoundAttackBehavior, MeleeAttackBehavior, RangedAttackBehavior,
-} = require('./behavior');
+const CollectBehavior = require('./behavior/CollectBehavior');
+const CompoundAttackBehavior = require('./behavior/CompoundAttackBehavior');
+const MeleeAttackBehavior = require('./behavior/MeleeAttackBehavior');
+const RangedAttackBehavior = require('./behavior/RangedAttackBehavior');
 const Cell = require('./Cell');
 
 /**

@@ -1,5 +1,5 @@
-const { CellFactory, ItemFactory } = require('./entity');
-const { Vector2 } = require('./math');
+const Entity = require('./entity/Entity');
+const Vector2 = require('./math/Vector2');
 const Utils = require('./Utils');
 
 /** Class representing a world. */
@@ -13,10 +13,27 @@ class World {
     this.width = 1000;
     this.height = 1000;
     this.timeout = null;
-    this.cellFactory = new CellFactory();
-    this.itemFactory = new ItemFactory();
     this.lastEntityId = 0; // DO NOT USE THIS VARIABLE!
-    this.entities = []; // Use World#createNewCell or World#createNewItem instead.
+    this.entities = [];
+  }
+
+  add(entity) {
+    if (entity.hasId()) {
+      entity.setId(this.lastEntityId);
+      this.lastEntityId += 1;
+      this.entities.push(entity);
+    } else {
+      throw new Error('ID allocated entity was found');
+    }
+  }
+
+  attachCellListener(cell) {
+    cell.addKilledListener((murderCell, victimCell) => {
+      if (murderCell) {
+        murderCell.getOwner().addNutrients();
+      }
+      this.remove(victimCell);
+    });
   }
 
   /**
@@ -84,7 +101,6 @@ class World {
    * @param {Object} data
    */
   receive(eventName, data) {
-    const { cellFactory, itemFactory } = this;
     switch (eventName) {
       case 'cell create':
         {
@@ -92,6 +108,13 @@ class World {
             id, // production cell ID
             amount, // how many produce cells
           } = data;
+          const producerCell = this.find(id);
+          if (producerCell) {
+            const cells = producerCell.performProduce(amount);
+            for (const cell of cells) {
+              this.add(cell);
+            }
+          }
         }
         break;
       case 'cell move':
@@ -101,6 +124,10 @@ class World {
             x, // desitnation x
             y, // desitnation y
           } = data;
+          const cell = this.find(id);
+          if (cell) {
+            cell.performMove(new Vector2(x, y));
+          }
         }
         break;
       case 'cell dna update':
@@ -109,6 +136,10 @@ class World {
             id, // production cell ID
             dnaList, // DNA list
           } = data;
+          const producerCell = this.find(id);
+          if (producerCell) {
+            producerCell.setDnaList(Utils.createDnaListFromNames(dnaList));
+          }
         }
         break;
       default:
@@ -117,11 +148,19 @@ class World {
   }
 
   /**
-   * @param {number} id
+   * @param {(Entity|number)} entity
    */
-  remove(id) {
+  remove(entity) {
+    let id;
+    if (typeof entity === 'number') {
+      id = entity;
+    } else if (entity instanceof Entity) {
+      id = entity.getId();
+    } else {
+      throw new TypeError('invalid argument');
+    }
     const { entities } = this;
-    const index = entities.findIndex(entity => entity.getId() === id);
+    const index = entities.findIndex(element => element.getId() === id);
     if (index >= 0) {
       entities.splice(index, 1);
     }

@@ -41,12 +41,12 @@ class Player {
     return this.room;
   }
 
-  addNutrient(value) {
+  addNutrients(value) {
     this.nutrients += value;
     this.updateNutrients();
   }
 
-  subtractNutrient(value) {
+  subtractNutrients(value) {
     this.nutrients -= value;
     this.updateNutrients();
   }
