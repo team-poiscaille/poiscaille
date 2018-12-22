@@ -34,6 +34,7 @@ class Server {
         const id = Utils.getRandomString(32);
         const { username } = data;
         socket.player = new Player(socket, id, username, null);
+        socket.emit('init', id);
       });
 
       // Start match making

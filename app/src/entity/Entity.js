@@ -1,15 +1,15 @@
 import { context } from '../render/Render';
 
 class Entity {
-  constructor(game) {
-    // To keep variable names
-    this.game = game;
-    this.id = null;
-    this.isDead = false;
-    this.type = null;
+  type = 'Entity';
 
-    this.x = 0;
-    this.y = 0;
+  constructor(game, x, y) {
+    this.id = null;
+    this.game = game;
+    this.isDead = false;
+
+    this.x = x;
+    this.y = y;
   }
 
   @context()

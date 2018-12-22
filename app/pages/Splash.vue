@@ -94,11 +94,6 @@
 <script>
   export default {
     mounted() {
-      if((process.env.NODE_ENV || 'development') === 'development') {
-        this.$store.commit('phase', 'wait');
-        return;
-      }
-
       setTimeout(() => this.$store.commit('phase', 'wait'), 7000);
     }
   };

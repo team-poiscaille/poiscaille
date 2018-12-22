@@ -1,6 +1,4 @@
 const context = (name = 'game') => (target, key, descriptor) => {
-  console.log(target, key, descriptor);
-
   const renderer = target.renderer || target;
 
   descriptor.value = renderer.context(name, descriptor.value, target);
