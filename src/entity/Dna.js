@@ -8,14 +8,25 @@ class Dna extends Item {
   /**
    * @param {number} id
    * @param {Vector2} position
+   * @param {Dna.Information} information
    */
-  constructor(id, position) {
-    super(id, position);
-    this.addOnCollectedListner((cell, item) => {
+  constructor(id, position, information) {
+    super(id, position, information);
+    this.addOnCollectedListener((cell, item) => {
       const owner = cell.getOwner();
       owner.getInventory().addItem(item);
     });
   }
 }
+
+/**
+ * Class representing DNA information.
+ * @memberof Dna
+ */
+class Information extends Item.Information {
+
+}
+
+Dna.Information = Information;
 
 module.exports = Dna;
