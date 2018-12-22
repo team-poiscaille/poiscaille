@@ -27,7 +27,6 @@ class Server {
 
     // See https://socket.io/docs/#Using-with-Express
     io.on('connection', (socket) => {
-      socket.emit('news', { hello: 'world' });
       socket.player = null;
 
       socket.on('init', (data) => {
