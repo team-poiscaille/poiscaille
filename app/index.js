@@ -26,5 +26,5 @@ new Vue({
 });
 
 if((process.env.NODE_ENV || 'development') === 'development') {
-  //store.commit('phase', 'wait');
+  store.commit('phase', 'wait');
 }

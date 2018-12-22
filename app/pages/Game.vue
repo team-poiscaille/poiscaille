@@ -1,5 +1,7 @@
 <template>
   <main class="Game">
+    <canvas id="game"></canvas>
+
     <section class="ControlBar">
       <minimap></minimap>
       <div class="NutrientsView">

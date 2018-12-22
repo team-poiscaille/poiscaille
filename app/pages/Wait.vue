@@ -222,8 +222,14 @@
     },
 
     mounted() {
-      this.$socket.on('match players', i => {
-        this.current = i
+      this.$socket.on('match players', ({m, c}) => {
+        this.current = c;
+        this.all = m;
+      });
+
+      this.$socket.once('room match made', () => {
+        this.$store.commit('phase', 'game');
+        this.$game.initGame();
       });
     }
   };
