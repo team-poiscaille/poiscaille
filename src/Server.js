@@ -40,7 +40,7 @@ class Server {
       socket.on('player match', () => {
         this.addMatchingPlayer(socket.player);
 
-        socket.emit('ack player match');
+        socket.emit('player match');
 
         this.matchRooms();
         this.broadcastMatchedPlayers();
@@ -168,7 +168,10 @@ class Server {
   }
 
   broadcastMatchedPlayers() {
-    this.broadcastToMatching('match players', this.matching.length);
+    this.broadcastToMatching('match players', {
+      m: Config.PLAYERS_PER_ROOM,
+      c: this.matching.length,
+    });
   }
 
   /**
