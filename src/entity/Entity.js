@@ -62,6 +62,13 @@ class Entity extends EventEmitter {
     return this.position.y;
   }
 
+  /**
+   * @returns {boolean}
+   */
+  hasId() {
+    return this.id !== -1;
+  }
+
   /** */
   removeAllUpdateListeners() {
     this.removeAllListeners('update');

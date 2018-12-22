@@ -2,6 +2,14 @@ const DEFAULT_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012
 
 class Utils {
   /**
+   * @param {Array.<string>} names
+   * @returns {Array.<Dna.Information>}
+   */
+  static createDnaListFromNames(names) {
+    // To do
+  }
+
+  /**
    * Generates random string with provided length
    *
    * @param {number} length
