@@ -4,9 +4,12 @@ const World = require('./World');
 /** Class representing a room. */
 class Room {
   /**
+   * DO NOT USE THIS CONSTRUCTOR! Use {@link Server#createNewRoom} instead.
    * @param {Server} server
+   * @param {number} id
    */
-  constructor(server) {
+  constructor(server, id) {
+    this.id = id;
     /**
      * @type {Array.<Player>}
      */
@@ -77,7 +80,7 @@ class Room {
     if (index < 0) return false;
 
     this.world.getAll().forEach((entity) => {
-      if(entity instanceof Cell) {
+      if (entity instanceof Cell) {
         if (entity.getOwner() === player) this.world.remove(entity.getId());
       }
     });
