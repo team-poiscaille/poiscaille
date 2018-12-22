@@ -71,6 +71,38 @@ class Server {
      */
     this.matching = [];
     this.rooms = [];
+    /**
+     * A variable for allocating room ID.
+     * DO NOT USE THIS VARIABLE! Use {@link Server#createNewRoom} instead.
+     * @private
+     * @type {number}
+     */
+    this.lastRoomId = 0;
+  }
+
+  /** */
+  createNewRoom() {
+    this.rooms.push(new Room(this, this.lastRoomId));
+    this.lastRoomId += 1;
+  }
+
+  /**
+   * @param {number} roomId
+   * @returns {boolean}
+   */
+  hasRoom(roomId) {
+    return this.rooms.findIndex(room => room.getId() === roomId) >= 0;
+  }
+
+  /**
+   * @param {number} roomId
+   */
+  removeRoom(roomId) {
+    const { rooms } = this;
+    const index = rooms.findIndex(room => room.getId() === roomId);
+    if (index >= 0) {
+      rooms.splice(index, 1);
+    }
   }
 
   broadcastToMatching(event, data) {
