@@ -11,6 +11,7 @@ class Player {
     this.id = id;
     this.username = username;
     this.room = room;
+    this.nutrients = 0;
   }
 
   getSocket() {
@@ -38,6 +39,24 @@ class Player {
    */
   getRoom() {
     return this.room;
+  }
+
+  addNutrient(value) {
+    this.nutrients += value;
+    this.updateNutrients();
+  }
+
+  subtractNutrient(value) {
+    this.nutrients -= value;
+    this.updateNutrients();
+  }
+
+  getNutrients() {
+    return this.nutrients;
+  }
+
+  updateNutrients() {
+    this.socket.emit('player nutrient update', this.nutrients);
   }
 }
 
