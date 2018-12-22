@@ -38,7 +38,7 @@ class Server {
 
       // Start match making
       socket.on('player match', () => {
-        if (socket.player) return;
+        if (socket.player === null) return;
 
         this.addMatchingPlayer(socket.player);
 
@@ -48,76 +48,18 @@ class Server {
         this.broadcastMatchedPlayers();
       });
 
-      // Player is quitting
-      socket.on('player quit', () => {
-        const room = socket.player.getRoom();
-        if (room !== null) {
-          room.removePlayer(socket.player);
-          socket.emit('player quit');
-        } else {
-          socket.emit('player quit error', Errors.PLAYER_NOROOM);
-        }
-      });
-
       // Player quit finding match
       socket.on('player match cancel', () => {
+        if (socket.player === null) return;
+
         if (this.removeMatchingPlayer(socket.player)) {
           this.broadcastMatchedPlayers();
         }
       });
 
-      // Player requested to move cell to the position
-      socket.on('cell move', (data) => {
-        const { id, x, y } = data;
-        if (!Utils.validateNumber(x) || !Utils.validateNumber(y) || !Utils.validateNumber(id)) {
-          socket.emit('cell move error', Errors.INVALID_ARGUMENTS); return;
-        }
-
-        const room = socket.player.getRoom();
-        if (room === null) {
-          socket.emit('cell move error', Errors.PLAYER_NOROOM); return;
-        }
-
-        room.handlePacket(socket.player, 'cell move', { id, x, y });
-      });
-
-      // Player requested cell creation
-      socket.on('cell create', (data) => {
-        /**
-         * @var {number} parent The ID of parent cell
-         */
-        const { parent, count } = data;
-        if (!Utils.validateNumber(parent) || !Utils.validateNumber(count)) {
-          socket.emit('cell create error', Errors.INVALID_ARGUMENTS); return;
-        }
-
-        const room = socket.player.getRoom();
-        if (room === null) {
-          socket.emit('cell create error', Errors.PLAYER_NOROOM); return;
-        }
-
-        room.handlePacket(socket.player, 'cell create', { parent, count });
-      });
-
-      socket.on('cell dna update', (data) => {
-        /**
-         * @var {number} id The ID of cell which is requested to update DNA
-         * @var {number} dnaList The list of DNA being updated
-         */
-        const { id, dnaList } = data;
-        if (!Utils.validateNumber(id)) { // TODO validate dnaList {Array.<String>}
-          socket.emit('cell dna update error', Errors.INVALID_ARGUMENTS); return;
-        }
-
-        const room = socket.player.getRoom();
-        if (room === null) {
-          socket.emit('cell dna update error', Errors.PLAYER_NOROOM); return;
-        }
-
-        room.handlePacket(socket.player, 'cell dna update', { id, dnaList });
-      });
-
       socket.on('disconnect', () => {
+        if (socket.player === null) return;
+
         const room = socket.player.getRoom();
         if (room !== null) room.removePlayer(socket.player);
         else if (this.removeMatchingPlayer(socket.player)) {

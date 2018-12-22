@@ -1,6 +1,8 @@
 const Cell = require('./entity/Cell');
 const Config = require('./Config');
+const Errors = require('./Errors');
 const Player = require('./Player');
+const Utils = require('./Utils');
 const World = require('./World');
 
 /** Class representing a room. */
@@ -94,6 +96,70 @@ class Room {
 
     this.players.push(player);
     player.setRoom(this);
+
+    const socket = player.getSocket();
+    // Player is quitting
+    socket.on('player quit', () => {
+      const room = socket.player.getRoom();
+      if (room !== null) {
+        room.removePlayer(socket.player);
+        socket.emit('player quit');
+      } else {
+        socket.emit('player quit error', Errors.PLAYER_NOROOM);
+      }
+    });
+
+    // Player requested to move cell to the position
+    socket.on('cell move', (data) => {
+      const { id, x, y } = data;
+      if (!Utils.validateNumber(x) || !Utils.validateNumber(y) || !Utils.validateNumber(id)) {
+        socket.emit('cell move error', Errors.INVALID_ARGUMENTS); return;
+      }
+
+      const room = socket.player.getRoom();
+      if (room === null) {
+        socket.emit('cell move error', Errors.PLAYER_NOROOM); return;
+      }
+
+      room.handlePacket(socket.player, 'cell move', { id, x, y });
+    });
+
+    // Player requested cell creation
+    socket.on('cell create', (data) => {
+      /**
+       * @var {number} parent The ID of parent cell
+       */
+      const { parent, count } = data;
+      if (!Utils.validateNumber(parent) || !Utils.validateNumber(count)) {
+        socket.emit('cell create error', Errors.INVALID_ARGUMENTS); return;
+      }
+
+      const room = socket.player.getRoom();
+      if (room === null) {
+        socket.emit('cell create error', Errors.PLAYER_NOROOM); return;
+      }
+
+      room.handlePacket(socket.player, 'cell create', { parent, count });
+    });
+
+    socket.on('cell dna update', (data) => {
+      /**
+       * @var {number} id The ID of cell which is requested to update DNA
+       * @var {number} dnaList The list of DNA being updated
+       */
+      const { id, dnaList } = data;
+      if (!Utils.validateNumber(id)) { // TODO validate dnaList {Array.<String>}
+        socket.emit('cell dna update error', Errors.INVALID_ARGUMENTS); return;
+      }
+
+      const room = socket.player.getRoom();
+      if (room === null) {
+        socket.emit('cell dna update error', Errors.PLAYER_NOROOM); return;
+      }
+
+      room.handlePacket(socket.player, 'cell dna update', { id, dnaList });
+    });
+
     return true;
   }
 
@@ -112,6 +178,10 @@ class Room {
         if (entity.getOwner() === player) this.world.remove(entity.getId());
       }
     });
+
+    [
+      'player quit', 'cell move', 'cell create', 'cell dna update',
+    ].forEach(player.getSocket().off);
 
     this.players.splice(index, 1);
     return true;
