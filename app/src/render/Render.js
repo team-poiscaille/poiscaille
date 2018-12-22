@@ -6,7 +6,9 @@ const context = (name = 'game') => (target, key, descriptor) => {
 };
 
 class Render {
-  RADIAN = Math.PI / 180
+  GRID_DISTANCE = 200;
+  PIXEL_DISTANCE_COEFFICIENT = 1;
+  RADIAN = Math.PI / 180;
 
   constructor(game, canvas = ['game', 'minimap']) {
     this.animations = [];
@@ -53,8 +55,8 @@ class Render {
 
   getRenderPosition(position) {
     return {
-      x: position.x - this.x,
-      y: position.y - this.y,
+      x: (position.x - this.x) * this.PIXEL_DISTANCE_COEFFICIENT,
+      y: (position.y - this.y) * this.PIXEL_DISTANCE_COEFFICIENT,
     };
   }
 
@@ -78,6 +80,36 @@ class Render {
   renderBackground(ctx, canvas) {
     ctx.fillStyle = '#313131';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  @context()
+  renderSpotlight(ctx, canvas) {
+
+  }
+
+  @context()
+  renderGrid(ctx, canvas) {
+    const distance = this.GRID_DISTANCE / this.PIXEL_DISTANCE_COEFFICIENT;
+    const offsetX = this.x % distance;
+    const offsetY = this.y % distnace;
+
+    for(let x = offsetX; x < canvas.width; x += distance) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.strokeStyle = '#494747';
+      ctx.strokeWidth = 3;
+      ctx.stroke();
+    }
+
+    for(let y = offsetY; y < canvas.height; y += distance) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.strokeStyle = '#494747';
+      ctx.strokeWidth = 3;
+      ctx.stroke();
+    }
   }
 
   @context()
