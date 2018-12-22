@@ -25,8 +25,24 @@ class Room {
   handlePacket(player, id, data) {
     switch(id) {
       case 'cell move':
+        // data = {
+        //  id: id of cell,
+        //  x, y
+        // }
         this.world.receive('cell move', data); // FIXME receive does not exist
         break;
+      case 'cell create':
+        // data = {
+        //  parent: id of parent cell,
+        //  count: count of cells requested to create
+        // }
+        this.world.receive('cell create', data);
+      case 'cell dna update':
+        // data = {
+        //  id: id of cell
+        //  dnas: The list of dna name
+        // }
+        this.world.receive('cell dna update', data);
     }
   }
 
