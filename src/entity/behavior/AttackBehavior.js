@@ -20,16 +20,16 @@ class AttackBehavior extends CellBehavior {
         if (color1 === Colors.RED && color2 === Colors.GREEN) { // red > green
           return Advantages.EFFECTIVE;
         }
-        if (color1 === Colors.RED && color2 === Colors.GREEN) { // red < blue
+        if (color1 === Colors.RED && color2 === Colors.BLUE) { // red < blue
           return Advantages.NOT_EFFECTIVE;
         }
-        if (color1 === Colors.RED && color2 === Colors.GREEN) { // green < red
+        if (color1 === Colors.GREEN && color2 === Colors.RED) { // green < red
           return Advantages.NOT_EFFECTIVE;
         }
-        if (color1 === Colors.RED && color2 === Colors.GREEN) { // green > blue
+        if (color1 === Colors.GREEN && color2 === Colors.BLUE) { // green > blue
           return Advantages.EFFECTIVE;
         }
-        if (color1 === Colors.RED && color2 === Colors.GREEN) { // blue > red
+        if (color1 === Colors.BLUE && color2 === Colors.RED) { // blue > red
           return Advantages.EFFECTIVE;
         }
         return Advantages.NOT_EFFECTIVE; // blue < green

@@ -181,7 +181,7 @@ class Room {
 
     [
       'player quit', 'cell move', 'cell create', 'cell dna update',
-    ].forEach(player.getSocket().off);
+    ].forEach(v => player.getSocket().off(v));
 
     this.players.splice(index, 1);
     return true;
