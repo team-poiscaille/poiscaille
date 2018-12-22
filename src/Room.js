@@ -1,4 +1,5 @@
 const Cell = require('./entity/Cell');
+const Player = require('./Player');
 const World = require('./World');
 
 /** Class representing a room. */
@@ -55,11 +56,12 @@ class Room {
 
   /**
    * Returns if room has player
-   * @param {string} playerName
+   * @param {Player|string} player
    * @returns {boolean}
    */
-  hasPlayer(playerName) {
-    return this.players.findIndex(player => player.getName() === playerName) >= 0;
+  hasPlayer(player) {
+    if (player instanceof Player) player = player.getName();
+    return this.players.findIndex(p => p.getName() === player) >= 0;
   }
 
   /**
