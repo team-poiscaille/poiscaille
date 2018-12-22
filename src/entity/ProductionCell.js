@@ -1,5 +1,5 @@
 const {
-  CollectBehavior, CompoundAttackBehavior, MeleeAttackBehavior, MoveBehavior, RangedAttackBehavior,
+  CollectBehavior, CompoundAttackBehavior, MeleeAttackBehavior, RangedAttackBehavior,
 } = require('./behavior');
 const Cell = require('./Cell');
 
@@ -21,7 +21,6 @@ class ProductionCell extends Cell {
       new RangedAttackBehavior(this),
     ]));
     this.setCollectBehavior(new CollectBehavior(this));
-    this.setMoveBehavior(new MoveBehavior(this));
   }
 }
 

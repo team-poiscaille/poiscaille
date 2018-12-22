@@ -11,11 +11,26 @@ class Dna extends Item {
    * @param {Dna.Information} information
    */
   constructor(id, position, information) {
-    super(id, position, information);
+    super(id, position);
+    this.information = information;
     this.addCollectedListener((cell, item) => {
       const owner = cell.getOwner();
-      owner.getInventory().addItem(item);
+      owner.addDna(item);
     });
+  }
+
+  /**
+   * @returns {Dna.Information}
+   */
+  getInformation() {
+    return this.information;
+  }
+
+  /**
+   * @param {Dna.Information} information
+   */
+  setInformation(information) {
+    this.information = information;
   }
 }
 
@@ -23,7 +38,7 @@ class Dna extends Item {
  * Class representing DNA information.
  * @memberof Dna
  */
-class Information extends Item.Information {
+class Information {
 
 }
 

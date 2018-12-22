@@ -1,4 +1,4 @@
-const { MoveBehavior } = require('./behavior');
+const { ProduceBehavior } = require('./behavior');
 const Cell = require('./Cell');
 
 /**
@@ -14,7 +14,24 @@ class ProducerCell extends Cell {
    */
   constructor(id, position, owner, state) {
     super(id, position, owner, state);
-    this.setMoveBehavior(new MoveBehavior(this));
+    this.produceBehavior = new ProduceBehavior(this);
+  }
+
+  /**
+   * @param {number} amount
+   */
+  performProduce(amount) {
+    const { produceBehavior } = this;
+    if (produceBehavior) {
+      produceBehavior.produce(amount);
+    }
+  }
+
+  /**
+   * @param {ProduceBehavior} produceBehavior
+   */
+  setProduceBehavior(produceBehavior) {
+    this.produceBehavior = produceBehavior;
   }
 }
 

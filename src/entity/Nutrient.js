@@ -8,14 +8,29 @@ class Nutrient extends Item {
   /**
    * @param {number} id
    * @param {Vector2} position
-   * @param {Item.Information} information
+   * @param {number} amount
    */
-  constructor(id, position, information) {
-    super(id, position, information);
+  constructor(id, position, amount) {
+    super(id, position);
+    this.amount = amount;
     this.addCollectedListener((cell, item) => {
       const owner = cell.getOwner();
-      owner.getInventory().addItem(item);
+      owner.addNutrients(item.getAmount());
     });
+  }
+
+  /**
+   * @returns {number}
+   */
+  getAmount() {
+    return this.amount;
+  }
+
+  /**
+   * @param {number} amount
+   */
+  setAmount(amount) {
+    this.amount = amount;
   }
 }
 
