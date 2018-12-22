@@ -166,6 +166,10 @@ class Room {
     ].forEach(v => player.getSocket().removeAllListeners(v));
 
     this.players.splice(index, 1);
+
+    if (this.players.length <= 0) {
+      this.server.removeRoom(this.id);
+    }
     return true;
   }
 
