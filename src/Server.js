@@ -33,13 +33,14 @@ class Server {
         const id = Utils.getRandomString(32);
         const { username } = data;
         socket.player = new Player(socket, id, username, null);
+        socket.emit('init', id);
       });
 
       // Start match making
       socket.on('player match', () => {
         this.addMatchingPlayer(socket.player);
 
-        socket.emit('ack player match');
+        socket.emit('player match');
 
         this.matchRooms();
         this.broadcastMatchedPlayers();
