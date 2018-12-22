@@ -1,32 +1,41 @@
 const Entity = require('./Entity');
 
+/**
+ * Class representing an item.
+ * @extends Entity
+ */
 class Item extends Entity {
   /**
    * @param {number} id
-   * @param {Vector2} pos
-   * @param {Player} owner
+   * @param {Vector2} position
    */
-  constructor(id, pos, owner) {
-    super('item', id, pos, owner);
+  constructor(id, position) {
+    super(id, position);
+    this.onCollectedListeners = [];
+  }
 
-    this.onCollectedListener = null;
+  /**
+   * @callback Item~onCollectedListener
+   * @param {Cell} cell
+   * @param {Item} item
+   */
+  /**
+   * @param {Item~onCollectedListener} onCollectedListener
+   */
+  addOnCollectedListner(onCollectedListener) {
+    this.onCollectedListners.push(onCollectedListener);
   }
 
   /**
    * @param {Cell} cell
    */
   collectedBy(cell) {
-    const { onCollectedListener } = this;
-    if (typeof onCollectedListener === 'function') {
-      onCollectedListener.onCollected(cell);
-    }
+    this.onCollectedListeners.forEach(onCollectedListener => onCollectedListener(cell, this));
   }
 
-  /**
-   * @param {OnCollectedListener} onCollectedListener
-   */
-  setOnCollectedListner(onCollectedListener) {
-    this.onCollectedListner = onCollectedListener;
+  /** */
+  removeAllOnCollectedListners() {
+    this.onCollectedListners = [];
   }
 }
 

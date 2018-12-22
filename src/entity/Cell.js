@@ -12,29 +12,61 @@ class Cell extends Entity {
    * @param {number} hp
    * @param {number} atk
    * @param {number} def
-   * @param {CellColors} color
+   * @param {Cell.Colors} color
    */
   constructor(id, pos, owner, hp, atk, def, color) {
-    super('cell', id, pos, owner);
+    super(id, pos);
+    this.owner = owner;
     this.hp = hp;
     this.atk = atk;
     this.def = def;
     this.color = color;
     this.attackBehavior = null;
     this.collectBehavior = null;
-    this.onDamagedListener = null;
-    this.onKilledListener = null;
+    this.onDamagedListeners = [];
+    this.onKilledListeners = [];
+  }
+
+  /**
+   * @callback Cell~onDamagedListener
+   * @param {?Cell} attackerCell
+   * @param {Cell} victimCell
+   * @param {number} hp
+   */
+  /**
+   * @param {Cell~onDamagedListener} onDamagedListener
+   */
+  addOnDamagedListener(onDamagedListener) {
+    this.onDamagedListeners.push(onDamagedListener);
+  }
+
+  /**
+   * @callback Cell~onKilledListener
+   * @param {?Cell} murderCell
+   * @param {Cell} victimCell
+   */
+  /**
+   * @param {Cell~onKilledListener} onKilledListener
+   */
+  addOnKilledListener(onKilledListener) {
+    this.onKilledListeners.push(onKilledListener);
   }
 
   /**
    * @param {number} hp
    */
   damage(hp) {
-    const { onDamagedListener } = this;
     this.hp = hp;
-    if (onDamagedListener) {
-      onDamagedListener.onDamaged(hp);
-    }
+    this.onDamagedListeners.forEach(onDamagedListener => onDamagedListener(null, this, hp));
+  }
+
+  /**
+   * @param {Cell} attackerCell
+   * @param {number} hp
+   */
+  damagedBy(attackerCell, hp) {
+    this.hp = hp;
+    this.onDamagedListeners.forEach(onDamagedListener => onDamagedListener(attackerCell, this, hp));
   }
 
   /**
@@ -65,12 +97,26 @@ class Cell extends Entity {
     return this.hp;
   }
 
+  /**
+   * Returns owner of the entity
+   * @returns {Player}
+   */
+  getOwner() {
+    return this.owner;
+  }
+
+  /** */
   kill() {
-    const { onKilledListener } = this;
     this.hp = 0;
-    if (onKilledListener) {
-      onKilledListener.onKilled();
-    }
+    this.onKilledListeners.forEach(onKilledListener => onKilledListener(null, this));
+  }
+
+  /**
+   * @param {Cell} murderCell
+   */
+  killedBy(murderCell) {
+    this.hp = 0;
+    this.onKilledListeners.forEach(onKilledListener => onKilledListener(murderCell, this));
   }
 
   /**
@@ -100,6 +146,16 @@ class Cell extends Entity {
     if (collectBehavior) {
       collectBehavior.collect(targetItem);
     }
+  }
+
+  /** */
+  removeAllOnDamagedListeners() {
+    this.onDamagedListeners = [];
+  }
+
+  /** */
+  removeAllOnKilledListeners() {
+    this.onKilledListeners = [];
   }
 
   /**
@@ -152,18 +208,42 @@ class Cell extends Entity {
   }
 
   /**
-   * @param {OnDamagedListener} onDamagedListener
+   * @param {Player} owner
    */
-  setOnDamagedListener(onDamagedListener) {
-    this.onDamagedListener = onDamagedListener;
-  }
-
-  /**
-   * @param {OnKilledListener} onKilledListener
-   */
-  setOnKilledListener(onKilledListener) {
-    this.onKilledListener = onKilledListener;
+  setOwner(owner) {
+    this.owner = owner;
   }
 }
+
+/**
+ * Enum representing cell advantages.
+ * @readonly
+ * @memberof Cell
+ * @enum {number}
+ */
+const Advantages = {
+  EFFECTIVE: 2,
+  NORMAL: 1,
+  NOT_EFFECTIVE: 0.5,
+};
+
+/**
+ * Enum representing cell colors.
+ * @readonly
+ * @memberof Cell
+ * @enum {number}
+ */
+const Colors = {
+  RED: 0,
+  GREEN: 1,
+  BLUE: 2,
+  NONE: 3,
+};
+
+Object.freeze(Advantages);
+Object.freeze(Colors);
+
+Cell.Advantages = Advantages;
+Cell.Colors = Colors;
 
 module.exports = Cell;

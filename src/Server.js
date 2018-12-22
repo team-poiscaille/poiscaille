@@ -50,14 +50,14 @@ class Server {
       // Player is quitting
       socket.on('player quit', (data) => {
         const room = that.player.getRoom();
-        if(room !== null) {
+        if (room !== null) {
           room.removePlayer(that.player);
         }
       });
 
       // Player quit finding match
       socket.on('player match cancel', () => {
-        if(tthat.removeMatchingPlayer()) {
+        if (tthat.removeMatchingPlayer()) {
           tthat.broadcastMatchedPlayers();
         }
       });
@@ -114,7 +114,7 @@ class Server {
 
   removeMatchingPlayer(player) {
     const index = this.matching.findIndex(player);
-    if(index < 0) return false;
+    if (index < 0) return false;
 
     this.matching.splice(index, 1);
     return true;

@@ -5,9 +5,15 @@ const Item = require('./Item');
  * @extends Item
  */
 class Dna extends Item {
-  constructor() {
-    super(() => {
-
+  /**
+   * @param {number} id
+   * @param {Vector2} position
+   */
+  constructor(id, position) {
+    super(id, position);
+    this.addOnCollectedListner((cell, item) => {
+      const owner = cell.getOwner();
+      owner.getInventory().addItem(item);
     });
   }
 }

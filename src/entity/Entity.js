@@ -1,21 +1,34 @@
-const Vector2 = require('../math/Vector2');
-
 /**
  * Class representing an entity.
- * @extends Vector2
  */
-class Entity extends Vector2 {
+class Entity {
   /**
-   * @param {string} name
    * @param {number} id
-   * @param {Vector2} pos
-   * @param {Player} owner
+   * @param {Vector2} position
    */
-  constructor(name, id, pos, owner) {
-    super(pos.x, pos.y);
-    this.name = name;
+  constructor(id, position) {
     this.id = id;
-    this.owner = owner;
+    this.pos = position;
+    this.onUpdatedListeners = [];
+  }
+
+  /**
+   * @callback Entity~onUpdatedListener
+   * @param {Entity} entity
+   */
+  /**
+   * @param {Entity~onUpdatedListener} onUpdatedListener
+   */
+  addOnUpdatedListener(onUpdatedListener) {
+    this.onUpdatedListeners.push(onUpdatedListener);
+  }
+
+  /**
+   * @param {Entity} entity
+   * @returns {number}
+   */
+  calculateDistance(entity) {
+    return this.position.distance(entity.getPosition());
   }
 
   /**
@@ -26,18 +39,29 @@ class Entity extends Vector2 {
   }
 
   /**
-   * @returns {string}
+   * @returns {Vector2}
    */
-  getName() {
-    return this.name;
+  getPosition() {
+    return this.position;
   }
 
   /**
-   * Returns owner of the entity
-   * @returns {Player}
+   * @returns {number}
    */
-  getOwner() {
-    return this.owner;
+  getX() {
+    return this.x;
+  }
+
+  /**
+   * @returns {number}
+   */
+  getY() {
+    return this.y;
+  }
+
+  /** */
+  removeAllOnUpdatedListeners() {
+    this.onUpdatedListeners = [];
   }
 
   /**
@@ -48,17 +72,29 @@ class Entity extends Vector2 {
   }
 
   /**
-   * @param {string} name
+   * @param {Vector2} position
    */
-  setName(name) {
-    this.name = name;
+  setPosition(position) {
+    this.position = position;
   }
 
   /**
-   * @param {Player} owner
+   * @param {number} x
    */
-  setOwner(owner) {
-    this.owner = owner;
+  setX(x) {
+    this.position.setX(x);
+  }
+
+  /**
+   * @param {number} y
+   */
+  setY(y) {
+    this.position.setY(y);
+  }
+
+  /** */
+  update() {
+    this.onUpdatedListeners.forEach(onUpdatedListener => onUpdatedListener(this));
   }
 }
 

@@ -1,7 +1,13 @@
+const { ProductionCell } = require('./entity');
+
 /** Class representing a world. */
 class World {
-  constructor() {
+  /**
+   * @param {SocketIO.Socket} socket
+   */
+  constructor(socket) {
     this.entities = [];
+    this.socket = socket;
   }
 
   /**
@@ -9,6 +15,11 @@ class World {
    */
   add(entity) {
     this.entities.push(entity);
+  }
+
+  close() {
+    const { socket } = this;
+    socket.removeAllListeners('cell move');
   }
 
   /**
@@ -34,6 +45,17 @@ class World {
     return this.entities.findIndex(entity => entity.getId() === id) >= 0;
   }
 
+  /** */
+  open() {
+    const { socket } = this;
+    socket.on('cell move', (id, x, y) => {
+      const entity = this.find(id);
+      if (entity && entity instanceof ProductionCell) {
+        entity.moveTo(x, y);
+      }
+    });
+  }
+
   /**
    * @param {number} id
    */
@@ -43,6 +65,11 @@ class World {
     if (index >= 0) {
       entities.splice(index, 1);
     }
+  }
+
+  /** */
+  update() {
+    this.entities.forEach(entity => entity.update());
   }
 }
 

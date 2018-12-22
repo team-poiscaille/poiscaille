@@ -10,6 +10,29 @@ class Vector2 {
   }
 
   /**
+   * @param {number} x
+   * @param {number} y
+   */
+  static create(x, y) {
+    return new Vector2(x, y);
+  }
+
+  /**
+   * @param {Vector2} vec1
+   * @param {Vector2} vec2
+   */
+  static equals(vec1, vec2) {
+    return vec1.x === vec2.x && vec1.y === vec2.y;
+  }
+
+  /**
+   * @param {Vector2} vec
+   */
+  equals(vec) {
+    return this.x === vec.x && this.y === vec.y;
+  }
+
+  /**
    * @returns {number}
    */
   getX() {
