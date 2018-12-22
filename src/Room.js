@@ -25,7 +25,7 @@ class Room {
   handlePacket(player, id, data) {
     switch(id) {
       case 'cell move':
-        this.world.receive('cell move', player, data); // FIXME receive does not exist
+        this.world.receive('cell move', data); // FIXME receive does not exist
         break;
     }
   }

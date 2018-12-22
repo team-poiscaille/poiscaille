@@ -13,7 +13,7 @@ class Item extends Entity {
   /**
    * @param {Item~onCollected} onCollected
    */
-  addCollectedListner(onCollected) {
+  addOnCollectedListener(onCollected) {
     this.addListener('collected', onCollected);
   }
 
