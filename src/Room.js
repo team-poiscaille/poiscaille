@@ -45,7 +45,7 @@ class Room {
       case 'cell dna update':
         // data = {
         //  id: id of cell
-        //  dnas: The list of dna name
+        //  dnaList: The list of dna name
         // }
         this.world.receive('cell dna update', data);
         break;

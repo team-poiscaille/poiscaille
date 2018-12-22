@@ -51,6 +51,9 @@ class Server {
         const room = socket.player.getRoom();
         if (room !== null) {
           room.removePlayer(socket.player);
+          socket.emit('player quit');
+        } else {
+          socket.emit('player quit error', Errors.PLAYER_NOROOM);
         }
       });
 
@@ -99,8 +102,8 @@ class Server {
          * @var {number} id The ID of cell which is requested to update DNA
          * @var {number} dnas The list of DNA being updated
          */
-        const { id, dnas } = data;
-        if (!Utils.validateNumber(id)) { // TODO validate dnas {Array.<String>}
+        const { id, dnaList } = data;
+        if (!Utils.validateNumber(id)) { // TODO validate dnaList {Array.<String>}
           socket.emit('cell dna update error', Errors.INVALID_ARGUMENTS); return;
         }
 
@@ -109,7 +112,7 @@ class Server {
           socket.emit('cell dna update error', Errors.PLAYER_NOROOM); return;
         }
 
-        room.handlePacket(socket.player, 'cell dna update', { id, dnas });
+        room.handlePacket(socket.player, 'cell dna update', { id, dnaList });
       });
 
       socket.on('disconnect', () => {
