@@ -19,10 +19,18 @@ class Room {
   }
 
   /**
-   * @returns {number}
+   * This function is for handling requests from players.
+   *
+   * @param {Player} player
+   * @param {string} id
+   * @param data
    */
-  getId() {
-    return this.id;
+  handlePacket(player, id, data) {
+    switch(id) {
+      case 'cell move':
+        this.world.receive('cell move', data); // FIXME receive does not exist
+        break;
+    }
   }
 
   /**
@@ -63,6 +71,16 @@ class Room {
 
     this.players.splice(index, 1);
     return true;
+  }
+
+  /**
+   * Returns player with provided ID if player is joined in this room
+   *
+   * @param id
+   * @returns {Player}
+   */
+  getPlayerById(id) {
+    return this.players.find(p => p.id === id);
   }
 
   /**
