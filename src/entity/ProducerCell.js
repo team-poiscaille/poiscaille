@@ -1,4 +1,4 @@
-const { ProduceBehavior } = require('./behavior');
+const ProduceBehavior = require('./behavior/ProduceBehavior');
 const Cell = require('./Cell');
 
 /**
@@ -11,20 +11,38 @@ class ProducerCell extends Cell {
    * @param {Vector2} position
    * @param {Player} owner
    * @param {Cell.State} state
+   * @param {Array.<DnaInformation>} dnaList
    */
-  constructor(id, position, owner, state) {
+  constructor(id, position, owner, state, dnaList) {
     super(id, position, owner, state);
+    this.dnaList = dnaList;
     this.produceBehavior = new ProduceBehavior(this);
   }
 
   /**
+   * @returns {Array.<Dna.Information>}
+   */
+  getDnaList() {
+    return this.dnaList;
+  }
+
+  /**
    * @param {number} amount
+   * @returns {?Array.<Cell>}
    */
   performProduce(amount) {
     const { produceBehavior } = this;
     if (produceBehavior) {
-      produceBehavior.produce(amount);
+      return produceBehavior.produce(amount);
     }
+    return null;
+  }
+
+  /**
+   * @param {Array.<Dna.Information>} dnaList
+   */
+  setDnaList(dnaList) {
+    this.dnaList = dnaList;
   }
 
   /**

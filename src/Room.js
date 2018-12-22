@@ -1,4 +1,5 @@
 const Cell = require('./entity/Cell');
+const Config = require('./Config');
 const Player = require('./Player');
 const World = require('./World');
 
@@ -17,6 +18,9 @@ class Room {
     this.players = [];
     this.server = server;
     this.world = new World(this);
+
+    this.globalPackets = [];
+    this.nearbyPackets = [];
   }
 
   /**
@@ -52,6 +56,24 @@ class Room {
       default:
         // throw new Error();
     }
+  }
+
+  processTick() { // TODO make it called
+    this.globalPackets.forEach(pk => this.players.forEach(p => p.getSocket().emit(pk[0], pk[1])));
+
+    this.nearbyPackets.forEach((pk) => {
+      /** @type {Vector2} pos */
+      const pos = pk[0];
+
+      this.players.forEach((p) => {
+        /** @type {Player} p */
+        this.world.getAll()
+          .filter(e => e instanceof Cell
+            && e.getOwner() === p
+            && e.getPosition().distance(pos) < Config.RENDER_MAX_DISTANCE)
+          .forEach(() => p.getSocket().emit(pk[1], pk[2]));
+      });
+    });
   }
 
   /**
@@ -106,15 +128,23 @@ class Room {
   }
 
   /**
+   * Broadcast event to nearby entities
+   * @param {Vector2} position
+   * @param {string} event
+   * @param data
+   */
+  broadcastNearby(position, event, data) {
+    this.nearbyPackets.push([position, event, data]);
+  }
+
+  /**
    * Broadcast event to players in room
    *
    * @param {string} event
    * @param {object} data
    */
-  broadcast(event, data) {
-    this.players.forEach((player) => {
-      player.getSocket().emit(event, data);
-    });
+  broadcastGlobally(event, data) {
+    this.globalPackets.push([event, data]);
   }
 
   broadcastMatchMade() {
@@ -124,7 +154,7 @@ class Room {
       u: player.username,
     }));
 
-    this.broadcast('room match made', {
+    this.broadcastGlobally('room match made', {
       players,
     });
   }
@@ -133,7 +163,7 @@ class Room {
    * @param {Player} player
    */
   broadcastPlayerQuit(player) {
-    this.broadcast('room player quit', player.id);
+    this.broadcastGlobally('room player quit', player.id);
   }
 
   /**
