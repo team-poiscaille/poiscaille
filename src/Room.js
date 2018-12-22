@@ -100,13 +100,8 @@ class Room {
     const socket = player.getSocket();
     // Player is quitting
     socket.on('player quit', () => {
-      const room = socket.player.getRoom();
-      if (room !== null) {
-        room.removePlayer(socket.player);
-        socket.emit('player quit');
-      } else {
-        socket.emit('player quit error', Errors.PLAYER_NOROOM);
-      }
+      this.removePlayer(player);
+      socket.emit('player quit');
     });
 
     // Player requested to move cell to the position
@@ -116,12 +111,7 @@ class Room {
         socket.emit('cell move error', Errors.INVALID_ARGUMENTS); return;
       }
 
-      const room = socket.player.getRoom();
-      if (room === null) {
-        socket.emit('cell move error', Errors.PLAYER_NOROOM); return;
-      }
-
-      room.handlePacket(socket.player, 'cell move', { id, x, y });
+      this.handlePacket(player, 'cell move', { id, x, y });
     });
 
     // Player requested cell creation
@@ -134,12 +124,7 @@ class Room {
         socket.emit('cell create error', Errors.INVALID_ARGUMENTS); return;
       }
 
-      const room = socket.player.getRoom();
-      if (room === null) {
-        socket.emit('cell create error', Errors.PLAYER_NOROOM); return;
-      }
-
-      room.handlePacket(socket.player, 'cell create', { parent, count });
+      this.handlePacket(player, 'cell create', { parent, count });
     });
 
     socket.on('cell dna update', (data) => {
@@ -152,12 +137,7 @@ class Room {
         socket.emit('cell dna update error', Errors.INVALID_ARGUMENTS); return;
       }
 
-      const room = socket.player.getRoom();
-      if (room === null) {
-        socket.emit('cell dna update error', Errors.PLAYER_NOROOM); return;
-      }
-
-      room.handlePacket(socket.player, 'cell dna update', { id, dnaList });
+      this.handlePacket(player, 'cell dna update', { id, dnaList });
     });
 
     return true;
@@ -181,7 +161,7 @@ class Room {
 
     [
       'player quit', 'cell move', 'cell create', 'cell dna update',
-    ].forEach(v => player.getSocket().off(v));
+    ].forEach(v => player.getSocket().removeAllListeners(v));
 
     this.players.splice(index, 1);
     return true;
