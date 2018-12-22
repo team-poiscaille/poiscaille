@@ -138,10 +138,16 @@ class Server {
     this.lastRoomId = 0;
   }
 
-  /** */
+  /**
+   * Creates new room
+   * @returns {Room}
+   */
   createNewRoom() {
-    this.rooms.push(new Room(this, this.lastRoomId));
+    const room = new Room(this, this.lastRoomId);
+    this.rooms.push(room);
     this.lastRoomId += 1;
+
+    return room;
   }
 
   /**
@@ -220,13 +226,12 @@ class Server {
    */
   matchRooms() {
     while (this.matching.length >= Config.PLAYERS_PER_ROOM) {
-      const room = new Room(this);
+      const room = this.createNewRoom();
       for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
         const player = this.matching.shift();
         room.addPlayer(player);
       }
       room.broadcastMatchMade();
-      this.rooms.push(room);
     }
   }
 
