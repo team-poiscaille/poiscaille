@@ -75,8 +75,9 @@ class Render {
   }
 
   @context()
-  renderBackground() {
-
+  renderBackground(ctx, canvas) {
+    ctx.fillStyle = '#313131';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   @context()
