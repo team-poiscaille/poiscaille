@@ -46,7 +46,7 @@ class Server {
       });
 
       // Player is quitting
-      socket.on('player quit', (data) => {
+      socket.on('player quit', () => {
         const room = socket.player.getRoom();
         if (room !== null) {
           room.removePlayer(socket.player);
@@ -55,12 +55,18 @@ class Server {
 
       // Player quit finding match
       socket.on('player match cancel', () => {
-        if (this.removeMatchingPlayer()) {
+        if (this.removeMatchingPlayer(socket.player)) {
           this.broadcastMatchedPlayers();
         }
       });
 
-      this.socket = socket;
+      socket.on('disconnect', () => {
+        const room = socket.player.getRoom();
+        if(room !== null) room.removePlayer(socket.player);
+        else if(this.removeMatchingPlayer(socket.player)) {
+          this.broadcastMatchedPlayers();
+        }
+      })
     });
 
     this.app = app;
@@ -110,8 +116,12 @@ class Server {
     this.matching.push(player);
   }
 
+  /**
+   * @param {Player} player
+   * @returns {boolean}
+   */
   removeMatchingPlayer(player) {
-    const index = this.matching.findIndex(player);
+    const index = this.matching.findIndex(p => player === p);
     if (index < 0) return false;
 
     this.matching.splice(index, 1);

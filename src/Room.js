@@ -1,3 +1,4 @@
+const Cell = require('./entity/Cell');
 const World = require('./World');
 
 /** Class representing a room. */
@@ -37,15 +38,17 @@ class Room {
   /**
    * Remove player from room and all linked entities
    *
-   * @param player
+   * @param {Player} player
    * @returns {boolean}
    */
   removePlayer(player) {
-    const index = this.players.findIndex(player);
+    const index = this.players.findIndex(p => p === player);
     if (index < 0) return false;
 
     this.world.getAll().forEach((entity) => {
-      if (entity.getOwner() === player) this.world.remove(entity.getId());
+      if(entity instanceof Cell) {
+        if (entity.getOwner() === player) this.world.remove(entity.getId());
+      }
     });
 
     this.players.splice(index, 1);
