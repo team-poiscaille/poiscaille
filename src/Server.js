@@ -63,17 +63,17 @@ class Server {
 
       // Player requested to move cell to the position
       socket.on('cell move', (data) => {
-        const {id, x, y} = data;
-        if(!Utils.validateNumber(x) || !Utils.validateNumber(y) || !Utils.validateNumber(id)) {
+        const { id, x, y } = data;
+        if (!Utils.validateNumber(x) || !Utils.validateNumber(y) || !Utils.validateNumber(id)) {
           socket.emit('cell move error', Errors.INVALID_ARGUMENTS); return;
         }
 
         const room = socket.player.getRoom();
-        if(room === null) {
+        if (room === null) {
           socket.emit('cell move error', Errors.PLAYER_NOROOM); return;
         }
 
-        room.handlePacket(socket.player, 'cell move', {id, x, y});
+        room.handlePacket(socket.player, 'cell move', { id, x, y });
       });
 
       // Player requested cell creation
@@ -81,17 +81,17 @@ class Server {
         /**
          * @var {number} parent The ID of parent cell
          */
-        const {parent, count} = data;
-        if(!Utils.validateNumber(parent) || !Utils.validateNumber(count)) {
+        const { parent, count } = data;
+        if (!Utils.validateNumber(parent) || !Utils.validateNumber(count)) {
           socket.emit('cell create error', Errors.INVALID_ARGUMENTS); return;
         }
 
         const room = socket.player.getRoom();
-        if(room === null) {
+        if (room === null) {
           socket.emit('cell create error', Errors.PLAYER_NOROOM); return;
         }
 
-        room.handlePacket(socket.player, 'cell create', {parent, count});
+        room.handlePacket(socket.player, 'cell create', { parent, count });
       });
 
       socket.on('cell dna update', (data) => {
@@ -99,26 +99,26 @@ class Server {
          * @var {number} id The ID of cell which is requested to update DNA
          * @var {number} dnas The list of DNA being updated
          */
-        const {id, dnas} = data;
-        if(!Utils.validateNumber(id)) { // TODO validate dnas {Array.<String>}
+        const { id, dnas } = data;
+        if (!Utils.validateNumber(id)) { // TODO validate dnas {Array.<String>}
           socket.emit('cell dna update error', Errors.INVALID_ARGUMENTS); return;
         }
 
         const room = socket.player.getRoom();
-        if(room === null) {
+        if (room === null) {
           socket.emit('cell dna update error', Errors.PLAYER_NOROOM); return;
         }
 
-        room.handlePacket(socket.player, 'cell dna update', {id, dnas});
+        room.handlePacket(socket.player, 'cell dna update', { id, dnas });
       });
 
       socket.on('disconnect', () => {
         const room = socket.player.getRoom();
-        if(room !== null) room.removePlayer(socket.player);
-        else if(this.removeMatchingPlayer(socket.player)) {
+        if (room !== null) room.removePlayer(socket.player);
+        else if (this.removeMatchingPlayer(socket.player)) {
           this.broadcastMatchedPlayers();
         }
-      })
+      });
     });
 
     this.app = app;

@@ -34,7 +34,7 @@ class Utils {
     return typeof value === 'number';
   }
 
-  static validateString(vallue) {
+  static validateString(value) {
     return typeof value === 'string';
   }
 }

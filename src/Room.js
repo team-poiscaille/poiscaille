@@ -26,7 +26,7 @@ class Room {
    * @param data
    */
   handlePacket(player, id, data) {
-    switch(id) {
+    switch (id) {
       case 'cell move':
         // data = {
         //  id: id of cell,
@@ -40,12 +40,16 @@ class Room {
         //  count: count of cells requested to create
         // }
         this.world.receive('cell create', data);
+        break;
       case 'cell dna update':
         // data = {
         //  id: id of cell
         //  dnas: The list of dna name
         // }
         this.world.receive('cell dna update', data);
+        break;
+      default:
+        // throw new Error();
     }
   }
 
