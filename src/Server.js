@@ -4,6 +4,7 @@ const path = require('path');
 const socketio = require('socket.io');
 
 const Config = require('./Config');
+const Errors = require('./Errors');
 const Player = require('./Player');
 const Room = require('./Room');
 const Utils = require('./Utils');
@@ -58,6 +59,20 @@ class Server {
         if (this.removeMatchingPlayer(socket.player)) {
           this.broadcastMatchedPlayers();
         }
+      });
+
+      socket.on('cell move', (data) => {
+        const {id, x, y} = data;
+        if(!Utils.validateNumber(x) || !Utils.validateNumber(y) || !Utils.validateNumber(id)) {
+          socket.emit('cell move error', Errors.INVALID_ARGUMENTS); return;
+        }
+
+        const room = socket.player.getRoom();
+        if(room === null) {
+          socket.emit('cell move error', Errors.PLAYER_NOROOM); return;
+        }
+
+        room.handlePacket(socket.player, 'cell move', {id, x, y});
       });
 
       socket.on('disconnect', () => {

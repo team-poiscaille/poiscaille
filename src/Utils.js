@@ -29,6 +29,14 @@ class Utils {
   static getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
+  static validateNumber(value) {
+    return typeof value === 'number';
+  }
+
+  static validateString(vallue) {
+    return typeof value === 'string';
+  }
 }
 
 module.exports = Utils;
