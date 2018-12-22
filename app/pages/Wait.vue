@@ -2,6 +2,7 @@
   <main id="Wait">
     <div class="Information">
       <h1 class="Information__title">빠른 대전</h1>
+      <div class="Information__divider"></div>
       <transition name="Fadein" mode="out-in">
         <span class="Information__description" v-if="!startedMatchmaking" key="desc">
           빠르게 상대방과 매칭합니다.
@@ -29,7 +30,10 @@
         </button>
       </form>
       <div class="Dialog Play" key="play" v-else-if="!startedMatchmaking">
-        <button class="Button Play__button" @click="startWait">플레이!</button>
+        <button class="Button Play__button" @click="startWait">
+          <i class="mdi mdi-loading mdi-spin" v-if="waitingForResponse"></i>
+          플레이!
+        </button>
       </div>
       <div class="Dialog Waiting" key="waiting" v-else>
         <div>
@@ -66,6 +70,14 @@
       margin-top: 20px;
       font-size: 1.5rem;
       font-weight: 400;
+    }
+
+    &__divider {
+      width: 7vw;
+      height: 20px;
+      background: #fff;
+      margin-bottom: 50px;
+      margin-top: 10px;
     }
   }
 
@@ -169,6 +181,7 @@
     data() {
       return {
         username: null,
+        waitingForResponse: false,
         startedMatchmaking: false,
         usernameCandidate: '',
         current: 0,
@@ -192,11 +205,18 @@
       },
 
       setName(event) {
-        this.username = this.usernameCandidate;
         event.preventDefault();
+
+        this.$socket.apiCall('init', {username: this.usernameCandidate}).then(id => {
+          this.username = this.usernameCandidate;
+          this.$game.username = this.usernameCandidate;
+          this.$game.player.id = id;
+        });
       },
 
-      startWait() {
+      async startWait() {
+        this.waitingForResponse = true;
+        await this.$socket.apiCall('player match');
         this.startedMatchmaking = true;
       }
     },

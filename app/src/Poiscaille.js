@@ -1,5 +1,8 @@
+import io from 'socket.io-client';
 import Player from './Player';
 import Render from './render/Render';
+
+import api from './utils/api';
 
 class Poiscaille {
   port = '3000';
@@ -10,7 +13,9 @@ class Poiscaille {
     this.loadedChunk = [];
     this.player = new Player(this);
 
-    this.serverUrl = `${location.protocol}//${location.host}:${this.PORT}`;
+    this.serverUrl = `${window.location.protocol}//${window.location.host.split(':').shift()}:${this.port}`;
+    this.socket = io(this.serverUrl);
+    this.api = api(this.socket);
   }
 
   initGame() {
