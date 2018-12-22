@@ -20,8 +20,7 @@ class Utils {
 
   /**
    * Returns random number min <= x <= max
-   * @link https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-   *
+   * @see {@link https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Math/random|MDN}
    * @param {number} min
    * @param {number} max
    * @returns {number}

@@ -4,7 +4,7 @@ const CollectBehavior = require('./CollectBehavior');
 const CompoundAttackBehavior = require('./CompoundAttackBehavior');
 const MeleeAttackBehavior = require('./MeleeAttackBehavior');
 const MoveBehavior = require('./MoveBehavior');
-const NoAttackBehavior = require('./NoAttackBehavior');
+const ProduceBehavior = require('./ProduceBehavior');
 const RangedAttackBehavior = require('./RangedAttackBehavior');
 
 module.exports = {
@@ -14,6 +14,6 @@ module.exports = {
   CompoundAttackBehavior,
   MeleeAttackBehavior,
   MoveBehavior,
-  NoAttackBehavior,
+  ProduceBehavior,
   RangedAttackBehavior,
 };

@@ -1,7 +1,7 @@
 const CellBehavior = require('./CellBehavior');
 
 /**
- * Class representing a collect behavior.
+ * Class representing a collecting behavior.
  * @extends CellBehavior
  */
 class CollectBehavior extends CellBehavior {
@@ -18,7 +18,9 @@ class CollectBehavior extends CellBehavior {
    * @param {Item} item
    */
   collect(item) {
-    item.collectedBy(this.getPerformer());
+    if (this.canCollect(item)) {
+      item.collectedBy(this.getPerformer());
+    }
   }
 }
 
