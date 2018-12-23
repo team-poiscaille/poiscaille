@@ -24,6 +24,24 @@
 </template>
 
 <style lang="less" scoped>
+  .Game {
+    width: 100vw;
+    height: 100vh;
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .ControlBar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 200px;
+  }
 </style>
 
 <script>
@@ -46,6 +64,10 @@
       selectedUnits() {
         return this.$store.state.selectedUnits;
       }
+    },
+
+    mounted() {
+      this.$game.initGame();
     }
   };
 </script>

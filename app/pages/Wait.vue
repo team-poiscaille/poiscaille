@@ -229,7 +229,6 @@
 
       this.$socket.once('room match made', () => {
         this.$store.commit('phase', 'game');
-        this.$game.initGame();
       });
     }
   };

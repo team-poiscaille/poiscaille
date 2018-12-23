@@ -26,5 +26,12 @@ new Vue({
 });
 
 if((process.env.NODE_ENV || 'development') === 'development') {
-  store.commit('phase', 'wait');
+  game.socket.once('room match made', () => {
+    store.commit('phase', 'game');
+  });
+  game.socket.apiCall('init', {username: 'asdf'}).then(id => {
+    game.username = 'asdf';
+    game.player.id = id;
+    game.socket.apiCall('player match');
+  });
 }

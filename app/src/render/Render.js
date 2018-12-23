@@ -1,8 +1,13 @@
-const context = (name = 'game') => (target, key, descriptor) => {
-  const renderer = target.renderer || target;
+const context = (name = 'game') => (decorator) => {
+  const oldFunction = decorator.descriptor.value;
 
-  descriptor.value = renderer.context(name, descriptor.value, target);
-  return descriptor;
+  decorator.descriptor.value = function() {
+    const thisArg = this;
+    const renderer = thisArg.renderer || thisArg;
+
+    renderer.context(name, oldFunction, thisArg);
+  }
+  return decorator;
 };
 
 class Render {
@@ -36,7 +41,7 @@ class Render {
   }
 
   context(name, f, thisArg) {
-    return () => f.call(thisArg, this.namedCanvas[name].ctx, this.namedCanvas[name].canvas, this);
+    return f.call(thisArg, this.namedCanvas[name].ctx, this.namedCanvas[name].canvas, this);
   }
 
   iterate(f) {
@@ -68,7 +73,7 @@ class Render {
 
   render() {
     this.iterate((ctx, canvas) => {
-      ctx.clearRect(canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
 
     this.renderPipeline.forEach(f => f.call(this));
@@ -82,6 +87,7 @@ class Render {
   renderBackground(ctx, canvas) {
     ctx.fillStyle = '#313131';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    this.renderGrid();
   }
 
   @context()
@@ -127,6 +133,15 @@ class Render {
   @context('minimap')
   renderMinimap() {
 
+  }
+
+  loop() {
+    const loopRender = () => {
+      this.render();
+      requestAnimationFrame(loopRender);
+    };
+
+    loopRender();
   }
 }
 

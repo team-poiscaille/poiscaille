@@ -24,6 +24,8 @@ class Poiscaille {
 
   initRenderer() {
     this.renderer = new Render(this);
+    this.renderer.resize();
+    this.renderer.loop();
   }
 }
 
