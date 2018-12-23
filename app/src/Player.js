@@ -1,3 +1,4 @@
+import AnimationMove from './render/AnimationMove';
 import UnitSelection from './utils/UnitSelection';
 
 class Player {
@@ -10,6 +11,12 @@ class Player {
     this.dnas = {};
 
     this.clearSelections();
+
+    this.savedSelections = [];
+  }
+
+  get renderer() {
+    return this.game.renderer;
   }
 
   addNutrients(amount) {
@@ -32,11 +39,11 @@ class Player {
   }
 
   startSelect() {
-    this.selectStart = this.game.renderer.getRealPosition(this.cursor);
+    this.selectStart = this.renderer.getRealPosition(this.cursor);
   }
 
   endSelect() {
-    const selectEnd = this.game.renderer.getRealPosition(this.cursor);
+    const selectEnd = this.renderer.getRealPosition(this.cursor);
     this.clearSelections();
 
     this.game.entities.forEach((value) => {
@@ -58,6 +65,22 @@ class Player {
 
   clearSelections() {
     this.selectedUnits = new UnitSelection(this.game);
+  }
+
+  moveUnitsToPosition() {
+    if (this.selectedUnits.units.length < 1) return;
+
+    const realPosition = this.renderer.getRealPosition(this.cursor);
+    const moveAnimation = new AnimationMove(this.renderer, realPosition.x, realPosition.y);
+    this.renderer.addAnimation(moveAnimation);
+
+    this.selectedUnits.units.forEach((unit) => {
+      this.game.socket.emit('cell move', {
+        id: unit.id,
+        x: unit.x,
+        y: unit.y,
+      });
+    });
   }
 
   get dnaList() {

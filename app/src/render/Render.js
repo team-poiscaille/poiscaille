@@ -35,6 +35,7 @@ class Render {
     this.renderPipeline = [
       this.renderBackground,
       this.renderEntities,
+      this.renderAnimations,
       this.renderSelection,
       this.renderCursor,
       this.renderMinimap,
@@ -71,8 +72,8 @@ class Render {
   getRealPosition(position) {
     return {
       x: (position.x + this.x) / this.PIXEL_DISTANCE_COEFFICIENT,
-      y: (position.y + this.y) / this.PIXEL_DISTANCE_COEFFICIENT
-    }
+      y: (position.y + this.y) / this.PIXEL_DISTANCE_COEFFICIENT,
+    };
   }
 
   addAnimation(animation) {
@@ -120,7 +121,7 @@ class Render {
 
   @context()
   renderSelection(ctx) {
-    if(this.game.player.selectStart) {
+    if (this.game.player.selectStart) {
       const renderStart = this.game.renderer.getRenderPosition(this.game.player.selectStart);
       const current = this.game.player.cursor;
 
@@ -129,11 +130,11 @@ class Render {
       const maxX = Math.max(current.x, renderStart.x);
       const maxY = Math.max(current.y, renderStart.y);
 
-      ctx.fillStyle = "rgba(0, 188, 212, 0.8)";
+      ctx.fillStyle = 'rgba(0, 188, 212, 0.3)';
       ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
     }
 
-    this.game.player.selectedUnits.units.forEach(unit => {
+    this.game.player.selectedUnits.units.forEach((unit) => {
       // TODO change with another icon about selected
       ctx.fillRect(unit.x, unit.y, 5, 5);
     });

@@ -138,7 +138,7 @@ class Room {
 
     // Player requested cell creation
     socket.on('cell create', (data) => {
-      console.log('data', data)
+      console.log('data', data);
       /**
        * @var {number} parent The ID of parent cell
        */
