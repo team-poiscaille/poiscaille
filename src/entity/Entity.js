@@ -8,11 +8,13 @@ class Entity extends EventEmitter {
   /**
    * @param {number} id
    * @param {Vector2} position
+   * @param {World} world
    */
-  constructor(id, position) {
+  constructor(id, position, world) {
     super();
     this.id = id;
     this.position = position;
+    this.world = world;
   }
 
   /**
@@ -104,10 +106,14 @@ class Entity extends EventEmitter {
   }
 
   /**
-   * @param {World} world
+   * @returns {World}
    */
-  update(world) {
-    this.emit('update', world, this);
+  getWorld() {
+    return this.world;
+  }
+
+  update() {
+    this.emit('update', this);
   }
 }
 

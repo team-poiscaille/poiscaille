@@ -10,10 +10,11 @@ class Cell extends Entity {
    * @param {number} id
    * @param {Vector2} position
    * @param {Player} owner
+   * @param {World} world
    * @param {Cell.State} state
    */
-  constructor(id, position, owner, state) {
-    super(id, position);
+  constructor(id, position, world, owner, state) {
+    super(id, position, world);
     this.owner = owner;
     this.state = state;
     this.attackBehavior = null;
