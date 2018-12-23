@@ -23,6 +23,8 @@ class Room {
 
     this.globalPackets = [];
     this.nearbyPackets = [];
+
+    this.timer = setInterval(this.processTick, 50); // 20 ticks per second
   }
 
   /**
@@ -164,6 +166,10 @@ class Room {
     ].forEach(v => player.getSocket().removeAllListeners(v));
 
     this.players.splice(index, 1);
+
+    if (this.players.length <= 0) {
+      this.server.removeRoom(this.id);
+    }
     return true;
   }
 
@@ -237,6 +243,10 @@ class Room {
    */
   setWorld(world) {
     this.world = world;
+  }
+
+  close() {
+    clearInterval(this.timer);
   }
 }
 

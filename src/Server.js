@@ -112,6 +112,9 @@ class Server {
     const { rooms } = this;
     const index = rooms.findIndex(room => room.getId() === roomId);
     if (index >= 0) {
+      const room = rooms[index];
+      room.close();
+
       rooms.splice(index, 1);
     }
   }

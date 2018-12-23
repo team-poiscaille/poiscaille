@@ -1,5 +1,8 @@
+const Cell = require('./entity/Cell');
 const Entity = require('./entity/Entity');
+const ProducerCell = require('./entity/ProducerCell');
 const Vector2 = require('./math/Vector2');
+const Config = require('./Config');
 const Utils = require('./Utils');
 
 /** Class representing a world. */
@@ -17,6 +20,9 @@ class World {
     this.entities = [];
   }
 
+  /**
+   * @param {Entity} entity
+   */
   add(entity) {
     if (entity.hasId()) {
       entity.setId(this.lastEntityId);
@@ -27,6 +33,9 @@ class World {
     }
   }
 
+  /**
+   * @param {Cell} cell
+   */
   attachCellListener(cell) {
     cell.addKilledListener((murderCell, victimCell) => {
       if (murderCell) {
@@ -60,11 +69,19 @@ class World {
   }
 
   /**
-   * @param {number} id
+   * @param {(Entity|number)} entity
    * @returns {?Entity}
    */
-  find(id) {
-    return this.entities.find(entity => entity.getId() === id) || null;
+  find(entity) {
+    let id;
+    if (typeof entity === 'number') {
+      id = entity;
+    } else if (entity instanceof Entity) {
+      id = entity.getId();
+    } else {
+      throw new TypeError('invalid argument');
+    }
+    return this.entities.find(element => element.getId() === id) || null;
   }
 
   /**
@@ -92,8 +109,19 @@ class World {
   /** */
   open() {
     this.timeout = setInterval(() => {
-      this.entities.forEach(entity => entity.update());
+      this.entities.forEach(entity => entity.update(this));
     }, 50); // interval: 20ms
+    const players = this.room.getPlayers();
+    for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
+      const producerCell = new ProducerCell(
+        -1,
+        Utils.createRandomVector2(0, this.width, 0, this.height),
+        players[i],
+        Cell.State.createDefaultState(),
+      );
+      this.attachCellListener(producerCell);
+      this.add(producerCell);
+    }
   }
 
   /**
@@ -112,6 +140,7 @@ class World {
           if (producerCell) {
             const cells = producerCell.performProduce(amount);
             for (const cell of cells) {
+              this.attachCellListener(cell);
               this.add(cell);
             }
           }

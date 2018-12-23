@@ -11,8 +11,7 @@ class MoveBehavior extends CellBehavior {
   constructor(performer) {
     super(performer);
     this.destination = null;
-    this.limiter = null;
-    performer.addUpdateListener((cell) => {
+    performer.addUpdateListener((world, cell) => {
       const destinationNow = this.destination;
       if (destinationNow) {
         const positionNow = cell.getPosition();
@@ -38,46 +37,11 @@ class MoveBehavior extends CellBehavior {
   }
 
   /**
-   * @todo Set limits
-   * @param {Vector2} destination
-   * @returns {boolean}
-   */
-  canMove(destination) {
-    const { limiter } = this;
-    if (limiter) {
-      return limiter(this.getPerformer(), destination);
-    }
-    return true;
-  }
-
-  /**
-   * @returns {?MoveBehavior~limiter}
-   */
-  getLimiter() {
-    return this.limiter;
-  }
-
-  /**
    * @param {Vector2} destination
    */
   move(destination) {
-    if (this.canMove(destination)) {
-      this.destination = destination;
-    }
-  }
-
-  /**
-   * @param {?MoveBehavior~limiter} limiter
-   */
-  setLimiter(limiter) {
-    this.limiter = limiter;
+    this.destination = destination;
   }
 }
-
-/**
- * @callback MoveBehavior~limiter
- * @param {Cell} cell
- * @param {Vector2} destination
- */
 
 module.exports = MoveBehavior;

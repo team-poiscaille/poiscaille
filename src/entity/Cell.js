@@ -230,6 +230,19 @@ class State {
     /** @type {number} */
     this.rangedAttackDistance = rangedAttackDistance;
   }
+
+  static createDefaultState() {
+    return new State({
+      hp: 1,
+      atk: 1,
+      def: 1,
+      speed: 1,
+      color: Colors.NONE,
+      collectableDistance: 10,
+      meleeAttackDistance: 10,
+      rangedAttackDistance: 10,
+    });
+  }
 }
 
 Object.freeze(Advantages);

@@ -1,3 +1,5 @@
+const Vector2 = require('./math/Vector2');
+
 const DEFAULT_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 class Utils {
@@ -7,6 +9,13 @@ class Utils {
    */
   static createDnaListFromNames(names) {
     // To do
+  }
+
+  static createRandomVector2(minX, minY, maxX, maxY) {
+    return new Vector2(
+      Utils.getRandomIntInclusive(minX, maxX),
+      Utils.getRandomIntInclusive(minY, maxY),
+    );
   }
 
   /**
