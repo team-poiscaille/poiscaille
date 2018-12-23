@@ -247,6 +247,26 @@ class State {
       rangedAttackDistance: 10,
     });
   }
+
+  /**
+   * @returns {Object}
+   */
+  toObject() {
+    const {
+      hp, atk, def, speed, color,
+      collectableDistance, meleeAttackDistance, rangedAttackDistance,
+    } = this;
+    return {
+      hp,
+      atk,
+      def,
+      speed,
+      color,
+      collectableDistance,
+      meleeAttackDistance,
+      rangedAttackDistance,
+    };
+  }
 }
 
 Object.freeze(Advantages);

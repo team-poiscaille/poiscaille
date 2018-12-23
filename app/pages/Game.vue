@@ -3,10 +3,10 @@
     <canvas id="game"></canvas>
 
     <section class="ControlBar">
-      <minimap></minimap>
       <div class="NutrientsView">
-
       </div>
+
+      <minimap></minimap>
     </section>
 
     <transition name="Dialog">
@@ -27,20 +27,21 @@
   .Game {
     width: 100vw;
     height: 100vh;
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
   }
 
   .ControlBar {
+    display: flex;
     position: fixed;
-    left: 0;
+    right: 0;
     bottom: 0;
-    width: 100vw;
     height: 200px;
+
+    .Minimap {
+      width: 200px;
+      padding: 20px;
+      background: #3A3A3A;
+      box-sizing: border-box;
+    }
   }
 </style>
 
