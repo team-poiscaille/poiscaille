@@ -63,6 +63,13 @@ class Room {
         // }
         this.world.receive('cell state', data);
         break;
+      case 'cell info':
+        // data = {
+        //  player: the player requested
+        //  idList: the list of cell ID
+        // }
+        this.world.receive('cell info', { player, idList: data.idList });
+        break;
       default:
         // throw new Error();
     }
@@ -162,6 +169,13 @@ class Room {
       }
 
       this.handlePacket(player, 'cell state', { id });
+    });
+
+    socket.on('cell info', (data) => {
+      const { idList } = data;
+      // TODO validate idList (Array.<int>)
+
+      this.handlePacket(player, 'cell info', { idList });
     });
 
     return true;
