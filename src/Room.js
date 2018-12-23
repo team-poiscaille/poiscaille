@@ -138,6 +138,7 @@ class Room {
 
     // Player requested cell creation
     socket.on('cell create', (data) => {
+      console.log('data', data)
       /**
        * @var {number} parent The ID of parent cell
        */
@@ -205,6 +206,7 @@ class Room {
 
     if (this.players.length <= 0) {
       this.server.removeRoom(this.id);
+      this.world.close();
     }
     return true;
   }
@@ -254,7 +256,7 @@ class Room {
       i: player.id,
       u: player.username,
     }));
-
+    this.world.open();
     this.broadcastGlobally('room match made', {
       players,
     });
