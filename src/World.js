@@ -40,21 +40,18 @@ class World {
    */
   attachCellListener(cell) {
     cell.addDamagedListener((attackerCell, victimCell) => {
-      const attackerCellId = attackerCell.getId();
-      const victimCellId = victimCell.getId();
-      attackerCell.getOwner().getSocket().emit('cell attack', attackerCellId, victimCellId);
-      victimCell.getOwner().getSocket().emit('cell damaged', attackerCellId, victimCellId);
+      if (attackerCell) {
+        this.broadcastNearby(victimCell.getPosition(), 'cell kill', attackerCell.getId(), victimCell.getId());
+      } else {
+        this.broadcastNearby(victimCell.getPosition(), 'cell kill', -1, victimCell.getId());
+      }
     });
     cell.addKilledListener((murderCell, victimCell) => {
-      const victimCellId = victimCell.getId();
       if (murderCell) {
-        const murderCellId = murderCell.getId();
-        const murderCellOwner = murderCell.getOwner();
-        murderCellOwner.addNutrients(Config.CELL_NUTRIENTS);
-        murderCellOwner.getSocket().emit('cell kill', murderCellId, victimCellId);
-        victimCell.getOwner().getSocket().emit('cell killed', murderCellId, victimCellId);
+        murderCell.getOwner().addNutrients(Config.CELL_NUTRIENTS);
+        this.broadcastNearby(victimCell.getPosition(), 'cell kill', murderCell.getId(), victimCell.getId());
       } else {
-        victimCell.getOwner().getSocket().emit('cell killed', -1, victimCellId);
+        this.broadcastNearby(victimCell.getPosition(), 'cell kill', -1, victimCell.getId());
       }
       this.remove(victimCell);
     });
@@ -209,20 +206,25 @@ class World {
       case 'cell info':
         {
           const {
-            id, // cell ID
+            player, // requesting player
+            idList, // cell ID list
           } = data;
-          const cell = this.find(id);
-          if (cell) {
-            let type = 'cell';
-            if (cell instanceof ProducerCell) {
-              type = 'producer cell';
-            } else if (cell instanceof ProductionCell) {
-              type = 'production cell';
+          const infoList = [];
+          for (const id of idList) {
+            const cell = this.find(id);
+            if (cell) {
+              let type = 'cell';
+              if (cell instanceof ProducerCell) {
+                type = 'producer cell';
+              } else if (cell instanceof ProductionCell) {
+                type = 'production cell';
+              }
+              infoList.push([id, type, cell.getPosition().toArray(), cell.getState().toObject()]);
+            } else {
+              infoList.push([id, 'null', 'null', 'null']);
             }
-            cell.getOwner().emit('cell state', type, cell.getState().toObject());
-          } else {
-            cell.getOwner().emit('cell state', 'null', 'null');
           }
+          player.setSocket().emit('cell info', infoList);
         }
         break;
       case 'cell dna update':

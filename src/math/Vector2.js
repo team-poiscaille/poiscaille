@@ -75,6 +75,13 @@ class Vector2 {
   asVector2() {
     return new Vector2(this.x, this.y);
   }
+
+  /**
+   * @returns {Array.<number>}
+   */
+  toArray() {
+    return [this.x, this.y];
+  }
 }
 
 module.exports = Vector2;
