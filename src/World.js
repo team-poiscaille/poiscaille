@@ -2,6 +2,7 @@ const Cell = require('./entity/Cell');
 const Entity = require('./entity/Entity');
 const Item = require('./entity/Item');
 const ProducerCell = require('./entity/ProducerCell');
+const ProductionCell = require('./entity/ProductionCell');
 const Vector2 = require('./math/Vector2');
 const Config = require('./Config');
 const Utils = require('./Utils');
@@ -38,9 +39,22 @@ class World {
    * @param {Cell} cell
    */
   attachCellListener(cell) {
+    cell.addDamagedListener((attackerCell, victimCell) => {
+      const attackerCellId = attackerCell.getId();
+      const victimCellId = victimCell.getId();
+      attackerCell.getOwner().getSocket().emit('cell attack', attackerCellId, victimCellId);
+      victimCell.getOwner().getSocket().emit('cell damaged', attackerCellId, victimCellId);
+    });
     cell.addKilledListener((murderCell, victimCell) => {
+      const victimCellId = victimCell.getId();
       if (murderCell) {
-        murderCell.getOwner().addNutrients();
+        const murderCellId = murderCell.getId();
+        const murderCellOwner = murderCell.getOwner();
+        murderCellOwner.addNutrients();
+        murderCellOwner.getSocket().emit('cell kill', murderCellId, victimCellId);
+        victimCell.getOwner().getSocket().emit('cell killed', murderCellId, victimCellId);
+      } else {
+        victimCell.getOwner().getSocket().emit('cell killed', -1, victimCellId);
       }
       this.remove(victimCell);
     });
@@ -188,6 +202,25 @@ class World {
           const cell = this.find(id);
           if (cell) {
             cell.performMove(new Vector2(x, y));
+          }
+        }
+        break;
+      case 'cell info':
+        {
+          const {
+            id, // cell ID
+          } = data;
+          const cell = this.find(id);
+          if (cell) {
+            let type = 'cell';
+            if (cell instanceof ProducerCell) {
+              type = 'producer cell';
+            } else if (cell instanceof ProductionCell) {
+              type = 'production cell';
+            }
+            cell.getOwner().emit('cell state', type, cell.getState().toObject());
+          } else {
+            cell.getOwner().emit('cell state', 'null', 'null');
           }
         }
         break;
