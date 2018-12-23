@@ -39,9 +39,22 @@ class World {
    * @param {Cell} cell
    */
   attachCellListener(cell) {
+    cell.addDamagedListener((attackerCell, victimCell) => {
+      const attackerCellId = attackerCell.getId();
+      const victimCellId = victimCell.getId();
+      attackerCell.getOwner().getSocket().emit('cell attack', attackerCellId, victimCellId);
+      victimCell.getOwner().getSocket().emit('cell damaged', attackerCellId, victimCellId);
+    });
     cell.addKilledListener((murderCell, victimCell) => {
+      const victimCellId = victimCell.getId();
       if (murderCell) {
-        murderCell.getOwner().addNutrients();
+        const murderCellId = murderCell.getId();
+        const murderCellOwner = murderCell.getOwner();
+        murderCellOwner.addNutrients();
+        murderCellOwner.getSocket().emit('cell kill', murderCellId, victimCellId);
+        victimCell.getOwner().getSocket().emit('cell killed', murderCellId, victimCellId);
+      } else {
+        victimCell.getOwner().getSocket().emit('cell killed', -1, victimCellId);
       }
       this.remove(victimCell);
     });
