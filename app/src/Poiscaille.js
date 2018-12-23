@@ -29,27 +29,51 @@ class Poiscaille {
   }
 
   attachListeners() {
-    this.socket.on('cell', async cellList => {
+    this.socket.on('cell position', async (cellList) => {
       const unfulfilledCells = [];
-      cellList.forEach(({id, x, y}) => {
-        if(!this.entities[id]) {
+
+      cellList.forEach(({ id, x, y }) => {
+        if (!this.entities[id]) {
           unfulfilledCells.push(id);
           return;
         }
 
         this.entities[id].x = x;
         this.entities[id].y = y;
+        this.entities[id].updated = true;
       });
 
       const cells = await this.socket.apiCall('cell info', unfulfilledCells);
-      cells.forEach(cellObject => {
-        this.entities.set(cellObject.id, createCellFromAttributes(cellObject));
+      cells.forEach(({
+        id, position, state, type,
+      }) => {
+        this.entities.set(id, this.createCellFromAttributes({ position, state, type }));
       });
+
+      this.entities = this.entities.filter((cell) => {
+        const {updated} = cell;
+        cell.updated = false;
+
+        return updated;
+      });
+    });
+
+    document.addEventListener('mousemove', ({screenX, screenY}) => {
+      this.player.cursor.x = screenX;
+      this.player.cursor.y = screenY;
+    });
+
+    document.addEventListener('mousedown', () => {
+      this.player.startSelect();
+    });
+
+    document.addEventListener('mouseup', () => {
+      this.player.endSelect();
     });
   }
 
-  createCellFromAttributes(attributes) {
-    //TODO
+  createCellFromAttributes({position, state, type}) {
+    // TODO
   }
 }
 

@@ -1,12 +1,12 @@
 const context = (name = 'game') => (decorator) => {
   const oldFunction = decorator.descriptor.value;
 
-  decorator.descriptor.value = function() {
+  decorator.descriptor.value = function () {
     const thisArg = this;
     const renderer = thisArg.renderer || thisArg;
 
     renderer.context(name, oldFunction, thisArg);
-  }
+  };
   return decorator;
 };
 
@@ -35,6 +35,7 @@ class Render {
     this.renderPipeline = [
       this.renderBackground,
       this.renderEntities,
+      this.renderSelection,
       this.renderCursor,
       this.renderMinimap,
     ];
@@ -67,6 +68,13 @@ class Render {
     };
   }
 
+  getRealPosition(position) {
+    return {
+      x: (position.x + this.x) / this.PIXEL_DISTANCE_COEFFICIENT,
+      y: (position.y + this.y) / this.PIXEL_DISTANCE_COEFFICIENT
+    }
+  }
+
   addAnimation(animation) {
     this.animations.push(animation);
   }
@@ -87,16 +95,7 @@ class Render {
   renderBackground(ctx, canvas) {
     ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    this.renderGrid();
-  }
 
-  @context()
-  renderSpotlight() {
-
-  }
-
-  @context()
-  renderGrid(ctx, canvas) {
     const distance = this.GRID_DISTANCE / this.PIXEL_DISTANCE_COEFFICIENT;
     const offsetX = this.x % distance;
     const offsetY = this.y % distance;
@@ -120,6 +119,27 @@ class Render {
   }
 
   @context()
+  renderSelection(ctx) {
+    if(this.game.player.selectStart) {
+      const renderStart = this.game.renderer.getRenderPosition(this.game.player.selectStart);
+      const current = this.game.player.cursor;
+
+      const minX = Math.min(current.x, renderStart.x);
+      const minY = Math.min(current.y, renderStart.y);
+      const maxX = Math.max(current.x, renderStart.x);
+      const maxY = Math.max(current.y, renderStart.y);
+
+      ctx.fillStyle = "rgba(0, 188, 212, 0.8)";
+      ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    this.game.player.selectedUnits.units.forEach(unit => {
+      // TODO change with another icon about selected
+      ctx.fillRect(unit.x, unit.y, 5, 5);
+    });
+  }
+
+  @context()
   renderCursor() {
 
   }
@@ -139,14 +159,14 @@ class Render {
     ctx.strokeStyle = '#505050';
     ctx.lineWidth = 1;
 
-    for(let x = gap / 2; x < canvas.width; x += gap) {
+    for (let x = gap / 2; x < canvas.width; x += gap) {
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, canvas.height);
       ctx.stroke();
     }
 
-    for(let y = gap / 2; y < canvas.height; y += gap) {
+    for (let y = gap / 2; y < canvas.height; y += gap) {
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(canvas.width, y);
