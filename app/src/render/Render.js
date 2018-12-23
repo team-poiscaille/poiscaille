@@ -85,7 +85,7 @@ class Render {
 
   @context()
   renderBackground(ctx, canvas) {
-    ctx.fillStyle = '#313131';
+    ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     this.renderGrid();
   }
@@ -101,12 +101,13 @@ class Render {
     const offsetX = this.x % distance;
     const offsetY = this.y % distance;
 
+    ctx.strokeStyle = '#e0e0e0';
+    ctx.lineWidth = 1;
+
     for (let x = offsetX; x < canvas.width; x += distance) {
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, canvas.height);
-      ctx.strokeStyle = '#494747';
-      ctx.strokeWidth = 3;
       ctx.stroke();
     }
 
@@ -114,8 +115,6 @@ class Render {
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(canvas.width, y);
-      ctx.strokeStyle = '#494747';
-      ctx.strokeWidth = 3;
       ctx.stroke();
     }
   }
@@ -131,8 +130,39 @@ class Render {
   }
 
   @context('minimap')
-  renderMinimap() {
+  renderMinimap(ctx, canvas) {
+    ctx.fillStyle = '#3A3A3A';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    const gap = canvas.width / 7;
+
+    ctx.strokeStyle = '#505050';
+    ctx.lineWidth = 1;
+
+    for(let x = gap / 2; x < canvas.width; x += gap) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.stroke();
+    }
+
+    for(let y = gap / 2; y < canvas.height; y += gap) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width / 2, canvas.height);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height / 2);
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
   }
 
   loop() {

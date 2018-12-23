@@ -27,6 +27,30 @@ class Poiscaille {
     this.renderer.resize();
     this.renderer.loop();
   }
+
+  attachListeners() {
+    this.socket.on('cell', async cellList => {
+      const unfulfilledCells = [];
+      cellList.forEach(({id, x, y}) => {
+        if(!this.entities[id]) {
+          unfulfilledCells.push(id);
+          return;
+        }
+
+        this.entities[id].x = x;
+        this.entities[id].y = y;
+      });
+
+      const cells = await this.socket.apiCall('cell info', unfulfilledCells);
+      cells.forEach(cellObject => {
+        this.entities.set(cellObject.id, createCellFromAttributes(cellObject));
+      });
+    });
+  }
+
+  createCellFromAttributes(attributes) {
+    //TODO
+  }
 }
 
 export default Poiscaille;
