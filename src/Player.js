@@ -21,6 +21,13 @@ class Player {
     this.dnaList = [];
   }
 
+  /**
+   * @returns {number}
+   */
+  getId() {
+    return this.id;
+  }
+
   getSocket() {
     return this.socket;
   }
