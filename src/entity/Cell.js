@@ -231,6 +231,9 @@ class State {
     this.rangedAttackDistance = rangedAttackDistance;
   }
 
+  /**
+   * @returns {Cell.State}
+   */
   static createDefaultState() {
     return new State({
       hp: 1,

@@ -24,7 +24,7 @@ class Room {
     this.globalPackets = [];
     this.nearbyPackets = [];
 
-    this.timer = setInterval(this.processTick, 50); // 20 ticks per second
+    this.timer = setInterval(() => this.processTick(), 50); // 20 ticks per second
   }
 
   /**
@@ -171,6 +171,15 @@ class Room {
       this.server.removeRoom(this.id);
     }
     return true;
+  }
+
+  /**
+   * @returns {Array.<Player>}
+   */
+  getPlayers() {
+    const arr = [];
+    this.players.forEach(v => arr.push(v));
+    return arr;
   }
 
   /**
