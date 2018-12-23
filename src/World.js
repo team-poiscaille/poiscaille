@@ -1,6 +1,7 @@
 const Cell = require('./entity/Cell');
 const Entity = require('./entity/Entity');
 const Item = require('./entity/Item');
+const Nutrient = require('./entity/Nutrient');
 const ProducerCell = require('./entity/ProducerCell');
 const ProductionCell = require('./entity/ProductionCell');
 const Vector2 = require('./math/Vector2');
@@ -147,18 +148,12 @@ class World {
       for (const [, { player, data }] of Object.entries(cellInfoForBroadcast)) {
         player.getSocket().emit('cell position', data);
       }
-      const itemDataForBroadcast = [];
-      const items = entities.filter(entity => entity instanceof Item);
-      items.forEach((item) => {
-        itemDataForBroadcast.push([item.getId(), item.getX(), item.getY()]);
-      });
-      this.broadcastGlobally('item position', itemDataForBroadcast);
     }, 50); // interval: 20ms
 
     const players = this.room.getPlayers();
     for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
       const producerCell = new ProducerCell(
-        -1,
+        -1, // id must be -1 to add to the world
         Utils.createRandomVector2(0, 0, this.width, this.height),
         this,
         players[i],
@@ -167,6 +162,28 @@ class World {
       this.attachCellListener(producerCell);
       this.add(producerCell);
     }
+
+    const items = [];
+    for (let i = 0; i < Config.DEFAULT_NUTRIENT_CREATION; i++) {
+      const nutrient = new Nutrient(
+        -1,
+        Utils.createRandomVector2(0, 0, this.width, this.height),
+        this,
+        Utils.getRandomIntInclusive(Config.MIN_NUTRIENT_AMOUNT, Config.MAX_NUTRIENT_AMOUNT)
+      );
+      this.add(nutrient);
+
+      items.push({
+        type: 'Nutrient',
+        id: nutrient.getId(),
+        position: [nutrient.getX(), nutrient.getY()],
+        attributes: {
+          amount: nutrient.getAmount(),
+        },
+      });
+    }
+
+    this.broadcastGlobally('item info', items);
   }
 
   /**
