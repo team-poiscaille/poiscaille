@@ -12,7 +12,6 @@ class Poiscaille {
     this.items = new Map();
     this.loadedChunk = [];
     this.player = new Player(this);
-
     this.serverUrl = `${window.location.protocol}//${window.location.host.split(':').shift()}:${this.port}`;
     this.socket = io(this.serverUrl);
     this.api = api(this.socket);
@@ -20,6 +19,8 @@ class Poiscaille {
 
   initGame() {
     this.initRenderer();
+
+    this.attachListeners();
   }
 
   initRenderer() {
@@ -58,17 +59,23 @@ class Poiscaille {
       });
     });
 
-    document.addEventListener('mousemove', ({screenX, screenY}) => {
-      this.player.cursor.x = screenX;
-      this.player.cursor.y = screenY;
+    document.addEventListener('mousemove', ({clientX, clientY}) => {
+      this.player.cursor.x = clientX;
+      this.player.cursor.y = clientY;
     });
 
-    document.addEventListener('mousedown', () => {
-      this.player.startSelect();
+    const eventTarget = this.renderer.namedCanvas['game'].canvas;
+    eventTarget.addEventListener('mousedown', ({button}) => {
+      if(button === 0) this.player.startSelect();
     });
 
-    document.addEventListener('mouseup', () => {
-      this.player.endSelect();
+    eventTarget.addEventListener('mouseup', ({button}) => {
+      if(button === 0) this.player.endSelect();
+    });
+
+    eventTarget.addEventListener('contextmenu', (event) => {
+      this.player.moveUnitsToPosition();
+      event.preventDefault();
     });
   }
 

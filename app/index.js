@@ -34,4 +34,6 @@ if((process.env.NODE_ENV || 'development') === 'development') {
     game.player.id = id;
     game.socket.apiCall('player match');
   });
+
+  window.game = game;
 }

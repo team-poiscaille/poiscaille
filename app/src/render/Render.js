@@ -35,6 +35,7 @@ class Render {
     this.renderPipeline = [
       this.renderBackground,
       this.renderEntities,
+      this.renderAnimations,
       this.renderSelection,
       this.renderCursor,
       this.renderMinimap,
