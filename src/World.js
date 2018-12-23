@@ -26,7 +26,7 @@ class World {
    * @param {Entity} entity
    */
   add(entity) {
-    if (entity.hasId()) {
+    if (!entity.hasId()) {
       entity.setId(this.lastEntityId);
       this.lastEntityId += 1;
       this.entities.push(entity);
@@ -144,7 +144,7 @@ class World {
             cellInfoForBroadcast[ownerId].data.push(elementData);
           });
       });
-      for (const { player, data } of cellInfoForBroadcast) {
+      for (const [, { player, data }] of Object.entries(cellInfoForBroadcast)) {
         player.getSocket().emit('cell position', data);
       }
       const itemDataForBroadcast = [];
