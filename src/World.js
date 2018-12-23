@@ -2,6 +2,7 @@ const Cell = require('./entity/Cell');
 const Entity = require('./entity/Entity');
 const Item = require('./entity/Item');
 const ProducerCell = require('./entity/ProducerCell');
+const ProductionCell = require('./entity/ProductionCell');
 const Vector2 = require('./math/Vector2');
 const Config = require('./Config');
 const Utils = require('./Utils');
@@ -188,6 +189,25 @@ class World {
           const cell = this.find(id);
           if (cell) {
             cell.performMove(new Vector2(x, y));
+          }
+        }
+        break;
+      case 'cell state':
+        {
+          const {
+            id, // cell ID
+          } = data;
+          const cell = this.find(id);
+          if (cell) {
+            let type = 'cell';
+            if (cell instanceof ProducerCell) {
+              type = 'producer cell';
+            } else if (cell instanceof ProductionCell) {
+              type = 'production cell';
+            }
+            cell.getOwner().emit('cell state', type, cell.getState().toObject());
+          } else {
+            cell.getOwner().emit('cell state', 'null');
           }
         }
         break;
