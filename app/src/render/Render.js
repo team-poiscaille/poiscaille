@@ -130,7 +130,7 @@ class Render {
       const maxX = Math.max(current.x, renderStart.x);
       const maxY = Math.max(current.y, renderStart.y);
 
-      ctx.fillStyle = "rgba(0, 188, 212, 0.8)";
+      ctx.fillStyle = "rgba(0, 188, 212, 0.3)";
       ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
     }
 

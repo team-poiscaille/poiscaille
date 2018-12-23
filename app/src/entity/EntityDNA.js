@@ -1,10 +1,10 @@
 import EntityItem from './EntityItem';
 
 class EntityDNA extends EntityItem {
-  type = 'DNA';
+  static TYPE = 'DNA';
 
-  constructor(x, y, dna) {
-    super(x, y);
+  constructor(game, x, y, dna) {
+    super(game, x, y);
     this.dna = dna;
   }
 
