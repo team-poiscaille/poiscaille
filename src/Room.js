@@ -24,7 +24,7 @@ class Room {
     this.globalPackets = [];
     this.nearbyPackets = [];
 
-    this.timer = setInterval(this.processTick, 50); // 20 ticks per second
+    this.timer = setInterval(() => this.processTick(), 50); // 20 ticks per second
   }
 
   /**
@@ -63,6 +63,7 @@ class Room {
   }
 
   processTick() { // TODO make it called
+    console.log(this.globalPackets)
     this.globalPackets.forEach(pk => this.players.forEach(p => p.getSocket().emit(pk[0], pk[1])));
 
     this.nearbyPackets.forEach((pk) => {
