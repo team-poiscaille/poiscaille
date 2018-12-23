@@ -5,8 +5,6 @@ const Item = require('./Item');
  * @extends Item
  */
 class Dna extends Item {
-  type = 'DNA';
-
   /**
    * @param {number} id
    * @param {Vector2} position

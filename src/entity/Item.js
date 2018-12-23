@@ -5,8 +5,6 @@ const Entity = require('./Entity');
  * @extends Entity
  */
 class Item extends Entity {
-  type = 'Item';
-
   /**
    * @callback Item~onCollected
    * @param {Cell} cell

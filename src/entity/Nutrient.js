@@ -5,8 +5,6 @@ const Item = require('./Item');
  * @extends Item
  */
 class Nutrient extends Item {
-  type = 'Nutrient';
-
   /**
    * @param {number} id
    * @param {Vector2} position
