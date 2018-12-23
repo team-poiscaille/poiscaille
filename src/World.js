@@ -61,8 +61,8 @@ class World {
    * @param {string} eventName
    * @param {Object} data
    */
-  broadcastGlobally(eventName, data) {
-    this.room.broadcastGlobally(eventName, data);
+  broadcastGlobally(eventName, ...data) {
+    this.room.broadcastGlobally(eventName, ...data);
   }
 
   /**
@@ -70,8 +70,8 @@ class World {
    * @param {string} eventName
    * @param data
    */
-  broadcastNearby(position, eventName, data) {
-    this.room.broadcastNearby(position, eventName, data);
+  broadcastNearby(position, eventName, ...data) {
+    this.room.broadcastNearby(position, eventName, ...data);
   }
 
   /** */
@@ -154,6 +154,7 @@ class World {
       });
       this.broadcastGlobally('item position', itemDataForBroadcast);
     }, 50); // interval: 20ms
+
     const players = this.room.getPlayers();
     for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
       const producerCell = new ProducerCell(

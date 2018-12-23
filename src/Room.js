@@ -75,7 +75,7 @@ class Room {
     }
   }
 
-  processTick() { // TODO make it called
+  processTick() {
     this.globalPackets.forEach(pk => this.players.forEach(p => p.getSocket().emit(pk[0], pk[1])));
 
     this.nearbyPackets.forEach((pk) => {
@@ -88,7 +88,7 @@ class Room {
           .filter(e => e instanceof Cell
             && e.getOwner() === p
             && e.getPosition().distance(pos) < Config.RENDER_MAX_DISTANCE)
-          .forEach(() => p.getSocket().emit(pk[1], pk[2]));
+          .forEach(() => p.getSocket().emit(pk[1], ...pk[2]));
       });
     });
   }
@@ -236,7 +236,7 @@ class Room {
    * @param {string} event
    * @param data
    */
-  broadcastNearby(position, event, data) {
+  broadcastNearby(position, event, ...data) {
     this.nearbyPackets.push([position, event, data]);
   }
 
@@ -246,7 +246,7 @@ class Room {
    * @param {string} event
    * @param {object} data
    */
-  broadcastGlobally(event, data) {
+  broadcastGlobally(event, ...data) {
     this.globalPackets.push([event, data]);
   }
 
