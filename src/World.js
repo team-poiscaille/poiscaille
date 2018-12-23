@@ -50,7 +50,7 @@ class World {
       if (murderCell) {
         const murderCellId = murderCell.getId();
         const murderCellOwner = murderCell.getOwner();
-        murderCellOwner.addNutrients();
+        murderCellOwner.addNutrients(Config.CELL_NUTRIENTS);
         murderCellOwner.getSocket().emit('cell kill', murderCellId, victimCellId);
         victimCell.getOwner().getSocket().emit('cell killed', murderCellId, victimCellId);
       } else {
