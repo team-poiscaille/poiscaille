@@ -110,32 +110,38 @@ class World {
   /** */
   open() {
     this.timeout = setInterval(() => {
-      const infoForBroadcast = {};
-      this.entities.forEach((entity) => {
-        entity.update(this);
-
-        if (entity instanceof Cell) {
-          const owner = entity.getOwner();
-          const ownerId = owner.getId();
-          const entityData = [entity.getId(), entity.getX(), entity.getY()];
-          if (ownerId in infoForBroadcast) {
-            infoForBroadcast[ownerId].data.push(entityData);
-          } else {
-            infoForBroadcast[ownerId] = {
-              player: owner,
-              data: [entityData],
-            };
-          }
-        } else if (entity instanceof Item) {
-          const entityData = [entity.getId(), entity.getX(), entity.getY()];
-          for (const { data } of infoForBroadcast) {
-            data.push(entityData);
-          }
+      const { entities } = this;
+      entities.forEach(entity => entity.update(this));
+      const cellInfoForBroadcast = {};
+      const cells = entities.filter(entity => entity instanceof Cell);
+      cells.forEach((cell) => {
+        const owner = cell.getOwner();
+        const ownerId = owner.getId();
+        const cellData = [cell.getId(), cell.getX(), cell.getY()];
+        if (ownerId in cellInfoForBroadcast) {
+          cellInfoForBroadcast[ownerId].data.push(cellData);
+        } else {
+          cellInfoForBroadcast[ownerId] = {
+            player: owner,
+            data: [cellData],
+          };
         }
+        cells.filter(element => element.getOwner().getId() !== ownerId
+          && element.calculateDistance(cell) <= Config.RENDER_MAX_DISTANCE)
+          .forEach((element) => {
+            const elementData = [element.getId(), element.getX(), element.getY()];
+            cellInfoForBroadcast[ownerId].data.push(elementData);
+          });
       });
-      for (const { player, data } of infoForBroadcast) {
+      for (const { player, data } of cellInfoForBroadcast) {
         player.getSocket().emit('cell position', data);
       }
+      const itemDataForBroadcast = [];
+      const items = entities.filter(entity => entity instanceof Item);
+      items.forEach((item) => {
+        itemDataForBroadcast.push([item.getId(), item.getX(), item.getY()]);
+      });
+      this.broadcastGlobally('item position', itemDataForBroadcast);
     }, 50); // interval: 20ms
     const players = this.room.getPlayers();
     for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
