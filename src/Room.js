@@ -81,6 +81,13 @@ class Room {
   }
 
   /**
+   * @returns {number}
+   */
+  getId() {
+    return this.id;
+  }
+
+  /**
    * Returns if room has player
    * @param {Player|string} player
    * @returns {boolean}
