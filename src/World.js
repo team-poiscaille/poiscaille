@@ -110,9 +110,10 @@ class World {
   /** */
   open() {
     this.timeout = setInterval(() => {
-      this.entities.forEach(entity => entity.update(this));
       const infoForBroadcast = {};
       this.entities.forEach((entity) => {
+        entity.update(this);
+
         if (entity instanceof Cell) {
           const owner = entity.getOwner();
           const ownerId = owner.getId();
