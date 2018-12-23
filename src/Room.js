@@ -57,6 +57,12 @@ class Room {
         // }
         this.world.receive('cell dna update', data);
         break;
+      case 'cell state':
+        // data = {
+        //  id: id of cell
+        // }
+        this.world.receive('cell state', data);
+        break;
       default:
         // throw new Error();
     }
@@ -147,6 +153,15 @@ class Room {
       }
 
       this.handlePacket(player, 'cell dna update', { id, dnaList });
+    });
+
+    socket.on('cell state', (data) => {
+      const { id } = data;
+      if (!Utils.validateNumber(id)) {
+        socket.emit('cell state error', Errors.INVALID_ARGUMENTS); return;
+      }
+
+      this.handlePacket(player, 'cell state', { id });
     });
 
     return true;

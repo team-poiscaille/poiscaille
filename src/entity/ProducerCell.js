@@ -9,12 +9,13 @@ class ProducerCell extends Cell {
   /**
    * @param {number} id
    * @param {Vector2} position
+   * @param {World} world
    * @param {Player} owner
    * @param {Cell.State} state
-   * @param {Array.<DnaInformation>} [dnaList=[]]
+   * @param {Array.<Dna.Information>} [dnaList=[]]
    */
-  constructor(id, position, owner, state, dnaList = []) {
-    super(id, position, owner, state);
+  constructor(id, position, world, owner, state, dnaList = []) {
+    super(id, position, world, owner, state);
     this.dnaList = dnaList;
     this.produceBehavior = new ProduceBehavior(this);
   }

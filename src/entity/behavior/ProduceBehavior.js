@@ -3,7 +3,7 @@ const ProductionCell = require('../ProductionCell');
 
 /**
  * Class representing a producing behavior.
- * @extends ProduceBehavior
+ * @extends CellBehavior
  */
 class ProduceBehavior extends CellBehavior {
   /**
@@ -11,7 +11,7 @@ class ProduceBehavior extends CellBehavior {
    * @returns {number}
    */
   static calculateRequiredNutrients(dnaList) {
-    // To do
+    // TODO
   }
 
   /**
@@ -19,7 +19,7 @@ class ProduceBehavior extends CellBehavior {
    * @returns {Cell.State}
    */
   static createStateFromDnaList(dnaList) {
-    // To do
+    // TODO
   }
 
   /**
@@ -48,7 +48,7 @@ class ProduceBehavior extends CellBehavior {
       owner.subtractNutrients(requiredNutrients * amount);
       const cells = [];
       for (let i = 0; i < amount; i += 1) {
-        cells.push(new ProductionCell(-1, position, owner, state));
+        cells.push(new ProductionCell(-1, position, this.performer.getWorld(), owner, state));
       }
       return cells;
     }

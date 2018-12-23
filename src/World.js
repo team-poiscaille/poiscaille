@@ -148,6 +148,7 @@ class World {
       const producerCell = new ProducerCell(
         -1,
         Utils.createRandomVector2(0, 0, this.width, this.height),
+        this,
         players[i],
         Cell.State.createDefaultState(),
       );

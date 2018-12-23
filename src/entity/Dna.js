@@ -8,10 +8,11 @@ class Dna extends Item {
   /**
    * @param {number} id
    * @param {Vector2} position
+   * @param {World} world
    * @param {Dna.Information} information
    */
-  constructor(id, position, information) {
-    super(id, position);
+  constructor(id, position, world, information) {
+    super(id, position, world);
     this.information = information;
     this.addCollectedListener((cell, item) => {
       const owner = cell.getOwner();
@@ -39,7 +40,15 @@ class Dna extends Item {
  * @memberof Dna
  */
 class Information {
-
+  /**
+   * Parses and creates Dna.Information
+   * @param data
+   * @returns {Dna.Information}
+   */
+  static parse(data) {
+    // TODO implement DNA information
+    return new Dna.Information();
+  }
 }
 
 Dna.Information = Information;

@@ -1,3 +1,5 @@
+const Dna = require('./entity/Dna');
+
 /** Class representing a player. */
 class Player {
   /**
@@ -12,6 +14,11 @@ class Player {
     this.username = username;
     this.room = room;
     this.nutrients = 0;
+    /**
+     * The list of DNA player have
+     * @type {Array.<Dna.Information>}
+     */
+    this.dnaList = [];
   }
 
   getSocket() {
@@ -39,6 +46,24 @@ class Player {
    */
   getRoom() {
     return this.room;
+  }
+
+  /**
+   * Adds DNA information player have
+   * @param {object|Dna.Information} dna
+   */
+  addDna(dna) {
+    if (!(dna instanceof Dna.Information)) {
+      dna = dna.parse(dna);
+    }
+
+    this.dnaList.push(dna);
+  }
+
+  getAllDna() {
+    const arr = [];
+    this.dnaList.forEach(dna => arr.push(dna));
+    return arr;
   }
 
   addNutrients(value) {
