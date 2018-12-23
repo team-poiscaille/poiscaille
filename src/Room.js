@@ -174,6 +174,15 @@ class Room {
   }
 
   /**
+   * @returns {Array.<Player>}
+   */
+  getPlayers() {
+    const arr = [];
+    this.players.forEach(v => arr.push(v));
+    return arr;
+  }
+
+  /**
    * Returns player with provided ID if player is joined in this room
    *
    * @param id

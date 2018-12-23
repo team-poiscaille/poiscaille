@@ -140,7 +140,7 @@ class World {
     for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
       const producerCell = new ProducerCell(
         -1,
-        Utils.createRandomVector2(0, this.width, 0, this.height),
+        Utils.createRandomVector2(0, 0, this.width, this.height),
         players[i],
         Cell.State.createDefaultState(),
       );
@@ -175,8 +175,8 @@ class World {
         {
           const {
             id, // cell ID
-            x, // desitnation x
-            y, // desitnation y
+            x, // destination x
+            y, // destination y
           } = data;
           const cell = this.find(id);
           if (cell) {
