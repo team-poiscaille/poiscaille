@@ -20,6 +20,7 @@ class Poiscaille {
 
   initGame() {
     this.initRenderer();
+    this.attachListeners();
   }
 
   initRenderer() {
@@ -56,6 +57,10 @@ class Poiscaille {
 
         return updated;
       });
+    });
+
+    this.socket.on('player nutrient update', (data) => {
+      this.player.addNutrients(data);
     });
 
     document.addEventListener('mousemove', ({screenX, screenY}) => {
