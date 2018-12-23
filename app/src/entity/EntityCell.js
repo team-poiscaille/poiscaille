@@ -13,7 +13,7 @@ const colorGenerated = colors.map((color) => {
 });
 
 class EntityCell extends Entity {
-  type = 'EntityCell';
+  static TYPE = 'Cell';
 
   static colors = colorGenerated;
 
@@ -31,7 +31,7 @@ class EntityCell extends Entity {
   }
 
   get colorList() {
-    return this.colors[this.color];
+    return EntityCell.colors[this.color];
   }
 
   doRender(ctx, canvas, renderer) {

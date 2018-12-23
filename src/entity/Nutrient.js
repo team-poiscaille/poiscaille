@@ -5,13 +5,16 @@ const Item = require('./Item');
  * @extends Item
  */
 class Nutrient extends Item {
+  type = 'Nutrient';
+
   /**
    * @param {number} id
    * @param {Vector2} position
+   * @param {World} world
    * @param {number} amount
    */
-  constructor(id, position, amount) {
-    super(id, position);
+  constructor(id, position, world, amount) {
+    super(id, position, world);
     this.amount = amount;
     this.addCollectedListener((cell, item) => {
       const owner = cell.getOwner();

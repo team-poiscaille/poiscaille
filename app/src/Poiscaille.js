@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
 import Player from './Player';
 import Render from './render/Render';
+import EntityProducer from './entity/EntityProducer';
+import EntityProduction from './entity/EntityProduction';
 
 import api from './utils/api';
 
@@ -77,8 +79,22 @@ class Poiscaille {
     });
   }
 
-  createCellFromAttributes({position, state, type}) {
-    // TODO
+  /**
+   * Creates new cell from provided attributes
+   * @param position
+   * @param state
+   * @param type
+   *
+   * @returns {EntityCell}
+   */
+  createCellFromAttributes({position, state, type}) { // TODO state
+    if (type === EntityProducer.TYPE) {
+      return new EntityProducer(this, position[0], position[1]);
+    } else if (type === EntityProduction.TYPE) {
+      return new EntityProduction(this, position[0], position[1]);
+    }
+
+    return null;
   }
 }
 

@@ -6,6 +6,8 @@ const Entity = require('./Entity');
  * @extends Entity
  */
 class Cell extends Entity {
+  type = 'Cell';
+
   /**
    * @param {number} id
    * @param {Vector2} position
