@@ -192,7 +192,7 @@ class World {
           }
         }
         break;
-      case 'cell state':
+      case 'cell info':
         {
           const {
             id, // cell ID
@@ -207,7 +207,7 @@ class World {
             }
             cell.getOwner().emit('cell state', type, cell.getState().toObject());
           } else {
-            cell.getOwner().emit('cell state', 'null');
+            cell.getOwner().emit('cell state', 'null', 'null');
           }
         }
         break;
