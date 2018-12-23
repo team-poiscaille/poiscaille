@@ -1,3 +1,5 @@
+import cursor from "../../images/Cursor.svg";
+
 const context = (name = 'game') => (decorator) => {
   const oldFunction = decorator.descriptor.value;
 
@@ -40,6 +42,21 @@ class Render {
       this.renderCursor,
       this.renderMinimap,
     ];
+
+    this.resources = {};
+    this.getResources();
+  }
+
+  getImage(src) {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.src = src;
+    });
+  }
+
+  async getResources() {
+    this.resources.cursor = await this.getImage(cursor);
   }
 
   context(name, f, thisArg) {
@@ -141,13 +158,21 @@ class Render {
   }
 
   @context()
-  renderCursor() {
+  renderCursor(ctx) {
+    if(!this.resources.cursor) return;
 
+    ctx.drawImage(this.resources.cursor, this.game.player.cursor.x, this.game.player.cursor.y);
   }
 
   @context()
   renderEntities() {
+    this.game.items.forEach(i => {
+      i.render();
+    });
 
+    this.game.entities.forEach(e => {
+      e.render();
+    });
   }
 
   @context('minimap')
