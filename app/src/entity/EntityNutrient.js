@@ -1,4 +1,4 @@
-import EntityItem from "./EntityItem";
+import EntityItem from './EntityItem';
 
 class EntityNutrient extends EntityItem {
   static TYPE = 'Nutrient';
@@ -11,11 +11,11 @@ class EntityNutrient extends EntityItem {
   doRender(ctx, canvas, renderer) {
     const position = this.renderer.getRealPosition(this);
 
-    if(this.amount < 5) {
-      ctx.font = "20px Material Design Icons";
+    if (this.amount < 5) {
+      ctx.font = '20px Material Design Icons';
       ctx.fillStyle = '#202020';
     } else {
-      ctx.font = "30px Material Design Icons";
+      ctx.font = '30px Material Design Icons';
       ctx.fillStyle = '#ffc107';
     }
 

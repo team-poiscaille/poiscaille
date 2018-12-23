@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
 import Player from './Player';
 import Render from './render/Render';
+import EntityProducer from './entity/EntityProducer';
+import EntityProduction from './entity/EntityProduction';
 
 import api from './utils/api';
 
@@ -19,7 +21,6 @@ class Poiscaille {
 
   initGame() {
     this.initRenderer();
-
     this.attachListeners();
   }
 
@@ -52,25 +53,29 @@ class Poiscaille {
       });
 
       this.entities = this.entities.filter((cell) => {
-        const {updated} = cell;
+        const { updated } = cell;
         cell.updated = false;
 
         return updated;
       });
     });
 
-    document.addEventListener('mousemove', ({clientX, clientY}) => {
+    this.socket.on('player nutrient update', (data) => {
+      this.player.addNutrients(data);
+    });
+
+    document.addEventListener('mousemove', ({ clientX, clientY }) => {
       this.player.cursor.x = clientX;
       this.player.cursor.y = clientY;
     });
 
-    const eventTarget = this.renderer.namedCanvas['game'].canvas;
-    eventTarget.addEventListener('mousedown', ({button}) => {
-      if(button === 0) this.player.startSelect();
+    const eventTarget = this.renderer.namedCanvas.game.canvas;
+    eventTarget.addEventListener('mousedown', ({ button }) => {
+      if (button === 0) this.player.startSelect();
     });
 
-    eventTarget.addEventListener('mouseup', ({button}) => {
-      if(button === 0) this.player.endSelect();
+    eventTarget.addEventListener('mouseup', ({ button }) => {
+      if (button === 0) this.player.endSelect();
     });
 
     eventTarget.addEventListener('contextmenu', (event) => {
@@ -79,8 +84,22 @@ class Poiscaille {
     });
   }
 
-  createCellFromAttributes({position, state, type}) {
-    // TODO
+  /**
+   * Creates new cell from provided attributes
+   * @param position
+   * @param state
+   * @param type
+   *
+   * @returns {EntityCell}
+   */
+  createCellFromAttributes({ position, state, type }) { // TODO state
+    if (type === EntityProducer.TYPE) {
+      return new EntityProducer(this, position[0], position[1]);
+    } if (type === EntityProduction.TYPE) {
+      return new EntityProduction(this, position[0], position[1]);
+    }
+
+    return null;
   }
 }
 

@@ -1,4 +1,4 @@
-import Entity from "./Entity"
+import Entity from './Entity';
 
 class EntityItem extends Entity {
   static TYPE = 'Item';

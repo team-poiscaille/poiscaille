@@ -1,4 +1,4 @@
-import AnimationMove from "./render/AnimationMove";
+import AnimationMove from './render/AnimationMove';
 import UnitSelection from './utils/UnitSelection';
 
 class Player {
@@ -68,17 +68,17 @@ class Player {
   }
 
   moveUnitsToPosition() {
-    if(this.selectedUnits.units.length < 1) return;
+    if (this.selectedUnits.units.length < 1) return;
 
     const realPosition = this.renderer.getRealPosition(this.cursor);
     const moveAnimation = new AnimationMove(this.renderer, realPosition.x, realPosition.y);
     this.renderer.addAnimation(moveAnimation);
 
-    this.selectedUnits.units.forEach(unit => {
+    this.selectedUnits.units.forEach((unit) => {
       this.game.socket.emit('cell move', {
         id: unit.id,
         x: unit.x,
-        y: unit.y
+        y: unit.y,
       });
     });
   }

@@ -5,6 +5,8 @@ const EventEmitter = require('events');
  * @extends EventEmitter
  */
 class Entity extends EventEmitter {
+  type = 'Entity';
+
   /**
    * @param {number} id
    * @param {Vector2} position
