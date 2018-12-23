@@ -129,7 +129,7 @@ class World {
       cells.forEach((cell) => {
         const owner = cell.getOwner();
         const ownerId = owner.getId();
-        const cellData = [cell.getId(), cell.getX(), cell.getY()];
+        const cellData = { id: cell.getId(), x: cell.getX(), y: cell.getY() };
         if (ownerId in cellInfoForBroadcast) {
           cellInfoForBroadcast[ownerId].data.push(cellData);
         } else {
@@ -141,7 +141,7 @@ class World {
         cells.filter(element => element.getOwner().getId() !== ownerId
           && element.calculateDistance(cell) <= Config.RENDER_MAX_DISTANCE)
           .forEach((element) => {
-            const elementData = [element.getId(), element.getX(), element.getY()];
+            const elementData = { id: element.getId(), x: element.getX(), y: element.getY() };
             cellInfoForBroadcast[ownerId].data.push(elementData);
           });
       });
