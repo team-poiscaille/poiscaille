@@ -1,3 +1,4 @@
+const Config = require('../Config');
 const MoveBehavior = require('./behavior/MoveBehavior');
 const Entity = require('./Entity');
 
@@ -6,8 +7,6 @@ const Entity = require('./Entity');
  * @extends Entity
  */
 class Cell extends Entity {
-  type = 'Cell';
-
   /**
    * @param {number} id
    * @param {Vector2} position
@@ -72,6 +71,21 @@ class Cell extends Entity {
    */
   getOwner() {
     return this.owner;
+  }
+
+
+  /**
+   * Returns whether entity is visible to player
+   * @param {Player} player
+   * @returns {boolean}
+   */
+  isVisibleTo(player) {
+    if (player === this.getOwner()) return true;
+
+    for (const entity of this.world.getAll()) {
+      if (entity.calculateDistance(this) < Config.RENDER_MAX_DISTANCE) return true;
+    }
+    return false;
   }
 
   /**

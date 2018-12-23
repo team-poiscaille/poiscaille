@@ -212,19 +212,22 @@ class World {
           const infoList = [];
           for (const id of idList) {
             const cell = this.find(id);
-            if (cell) {
-              let type = 'cell';
+
+            if (cell instanceof Cell) {
+              let type = 'Cell';
               if (cell instanceof ProducerCell) {
-                type = 'producer cell';
+                type = 'Producer';
               } else if (cell instanceof ProductionCell) {
-                type = 'production cell';
+                type = 'Production';
               }
-              infoList.push([id, type, cell.getPosition().toArray(), cell.getState().toObject()]);
-            } else {
-              infoList.push([id, 'null', 'null', 'null']);
+
+              if (cell.isVisibleTo(player)) {
+                infoList.push([id, type, cell.getPosition().toArray(), cell.getState().toObject()]);
+              }
             }
           }
-          player.setSocket().emit('cell info', infoList);
+
+          player.getSocket().emit('cell info', infoList);
         }
         break;
       case 'cell dna update':

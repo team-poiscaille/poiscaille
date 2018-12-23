@@ -9,8 +9,6 @@ const Cell = require('./Cell');
  * @extends Cell
  */
 class ProductionCell extends Cell {
-  type = 'Production';
-
   /**
    * @param {number} id
    * @param {Vector2} position
