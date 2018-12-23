@@ -19,7 +19,7 @@ class Render {
 
   RADIAN = Math.PI / 180;
 
-  constructor(game, canvas = ['game', 'minimap']) {
+  constructor(game, canvas = ['game', 'minimap', 'cursor']) {
     this.animations = [];
     this.game = game;
     this.namedCanvas = {};
@@ -157,7 +157,7 @@ class Render {
     });
   }
 
-  @context()
+  @context('cursor')
   renderCursor(ctx) {
     if(!this.resources.cursor) return;
 

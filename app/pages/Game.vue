@@ -9,6 +9,8 @@
       <minimap></minimap>
     </section>
 
+    <canvas id="cursor" class="Cursor"></canvas>
+
     <transition name="Dialog">
       <factory v-if="selectedUnits && selectedUnits.getType() === 'factory'"></factory>
     </transition>
@@ -42,6 +44,13 @@
       background: #3A3A3A;
       box-sizing: border-box;
     }
+  }
+
+  .Cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
   }
 </style>
 

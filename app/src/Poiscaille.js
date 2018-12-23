@@ -57,11 +57,11 @@ class Poiscaille {
         this.entities.set(id, this.createCellFromAttributes({ position, state, type }));
       });
 
-      this.entities = this.entities.filter((cell) => {
+      this.entities = this.entities.forEach((cell, key) => {
         const { updated } = cell;
         cell.updated = false;
 
-        return updated;
+        if(!updated) this.entities.delete(key);
       });
     });
 

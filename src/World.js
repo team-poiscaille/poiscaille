@@ -240,7 +240,7 @@ class World {
               }
 
               if (cell.isVisibleTo(player)) {
-                infoList.push([id, type, cell.getPosition().toArray(), cell.getState().toObject()]);
+                infoList.push({id, type, position: cell.getPosition().toArray(), state: cell.getState().toObject()});
               }
             }
           }
