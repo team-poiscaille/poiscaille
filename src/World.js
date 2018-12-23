@@ -1,5 +1,6 @@
 const Cell = require('./entity/Cell');
 const Entity = require('./entity/Entity');
+const Item = require('./entity/Item');
 const ProducerCell = require('./entity/ProducerCell');
 const Vector2 = require('./math/Vector2');
 const Config = require('./Config');
@@ -110,6 +111,30 @@ class World {
   open() {
     this.timeout = setInterval(() => {
       this.entities.forEach(entity => entity.update(this));
+      const infoForBroadcast = {};
+      this.entities.forEach((entity) => {
+        if (entity instanceof Cell) {
+          const owner = entity.getOwner();
+          const ownerId = owner.getId();
+          const entityData = [entity.getId(), entity.getX(), entity.getY()];
+          if (ownerId in infoForBroadcast) {
+            infoForBroadcast[ownerId].data.push(entityData);
+          } else {
+            infoForBroadcast[ownerId] = {
+              player: owner,
+              data: [entityData],
+            };
+          }
+        } else if (entity instanceof Item) {
+          const entityData = [entity.getId(), entity.getX(), entity.getY()];
+          for (const { data } of infoForBroadcast) {
+            data.push(entityData);
+          }
+        }
+      });
+      for (const { player, data } of infoForBroadcast) {
+        player.getSocket().emit('cell position', data);
+      }
     }, 50); // interval: 20ms
     const players = this.room.getPlayers();
     for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
