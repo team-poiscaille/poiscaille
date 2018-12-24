@@ -16,6 +16,7 @@ class Render {
   GRID_DISTANCE = 1;
 
   PIXEL_DISTANCE_COEFFICIENT = 0.1;
+
   MAP_SIZE = 1000;
 
   RADIAN = Math.PI / 180;
@@ -85,7 +86,7 @@ class Render {
 
     this.showingSize = {
       x: this.canvas.width * this.PIXEL_DISTANCE_COEFFICIENT,
-      y: this.canvas.height * this.PIXEL_DISTANCE_COEFFICIENT
+      y: this.canvas.height * this.PIXEL_DISTANCE_COEFFICIENT,
     };
   }
 
@@ -105,9 +106,9 @@ class Render {
 
   getMinimapPosition(position) {
     return {
-      x: position.x * (this.namedCanvas['minimap'].canvas.width / this.MAP_SIZE),
-      y: position.y * (this.namedCanvas['minimap'].canvas.height / this.MAP_SIZE),
-    }
+      x: position.x * (this.namedCanvas.minimap.canvas.width / this.MAP_SIZE),
+      y: position.y * (this.namedCanvas.minimap.canvas.height / this.MAP_SIZE),
+    };
   }
 
   isInRenderDistance(position, size) {

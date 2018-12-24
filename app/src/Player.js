@@ -5,7 +5,7 @@ class Player {
   constructor(game) {
     this.game = game;
     this.cursor = { x: 0, y: 0 };
-    this.selectedUnits = new UnitSelection(this.game);;
+    this.selectedUnits = new UnitSelection(this.game);
     this.selectStart = null;
     this.nutrients = 0;
     this.dnas = {};
