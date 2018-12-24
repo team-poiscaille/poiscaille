@@ -1,4 +1,3 @@
-const Cell = require('../Cell');
 const CellBehavior = require('./CellBehavior');
 const Config = require('../../Config');
 const Item = require('../Item');
@@ -14,13 +13,13 @@ class MoveBehavior extends CellBehavior {
   constructor(performer) {
     super(performer);
     this.destination = null;
-    performer.addUpdateListener((world, cell) => {
-      if (!(cell instanceof Cell)) return;
 
-      const dest = this.destination.asVector2();
-      const cur = cell.getPosition().asVector2();
-      if (dest) {
-        const magnitude = cell.getState().speed || 1;
+    performer.addUpdateListener((world, cell) => {
+      if (this.destination) {
+        const dest = this.destination.asVector2();
+        const cur = cell.getPosition().asVector2();
+
+        const magnitude = cell.getState().speed || Config.CELL_DEFAULT_SPEED;
 
         const delta = dest.subtract(cur);
         if (delta.length() === 0) {
