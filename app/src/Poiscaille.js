@@ -22,6 +22,8 @@ class Poiscaille {
     this.socket = io(this.serverUrl);
     this.api = api(this.socket);
     this.attachSocketListeners();
+
+    this.initialPosition = {x: 0, y: 0};
   }
 
   initGame() {
@@ -67,6 +69,16 @@ class Poiscaille {
 
         if (!updated) this.entities.delete(key);
       });
+    });
+
+    this.socket.on('cell producer position', ({position}) => {
+      const [x, y] = position;
+      this.initialPosition = {x, y};
+
+      if(this.renderer) {
+        this.renderer.x = x + this.renderer.showingSize.x / 2;
+        this.renderer.y = y + this.renderer.showingSize.y / 2;
+      }
     });
 
     this.socket.on('item info', (itemList) => {

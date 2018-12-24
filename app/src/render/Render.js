@@ -25,8 +25,6 @@ class Render {
     this.animations = [];
     this.game = game;
     this.namedCanvas = {};
-    this.x = 0;
-    this.y = 0;
     this.showingSize = {};
 
     canvas.forEach((name) => {
@@ -39,6 +37,10 @@ class Render {
 
     this.canvas = this.namedCanvas.game.canvas;
     this.ctx = this.namedCanvas.game.ctx;
+    this.resize();
+
+    this.x = game.initialPosition.x - this.showingSize.x / 2;
+    this.y = game.initialPosition.y - this.showingSize.y / 2;
 
     this.renderPipeline = [
       this.renderBackground,
