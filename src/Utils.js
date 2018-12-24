@@ -1,3 +1,4 @@
+const Dna = require('./entity/Dna');
 const Vector2 = require('./math/Vector2');
 
 const DEFAULT_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -8,9 +9,17 @@ class Utils {
    * @returns {Array.<Dna.Information>}
    */
   static createDnaListFromNames(names) {
-    // To do
+    return names.map(name => Dna.Information.parse(name))
+      .filter(information => information !== null);
   }
 
+  /**
+   * @param {number} minX
+   * @param {number} minY
+   * @param {number} maxX
+   * @param {number} maxY
+   * @returns {Vector2}
+   */
   static createRandomVector2(minX, minY, maxX, maxY) {
     return new Vector2(
       Utils.getRandomIntInclusive(minX, maxX),

@@ -1,6 +1,6 @@
 const Cell = require('./entity/Cell');
+const Dna = require('./entity/Dna');
 const Entity = require('./entity/Entity');
-const Item = require('./entity/Item');
 const Nutrient = require('./entity/Nutrient');
 const ProducerCell = require('./entity/ProducerCell');
 const ProductionCell = require('./entity/ProductionCell');
@@ -164,22 +164,39 @@ class World {
     }
 
     const items = [];
-    for (let i = 0; i < Config.DEFAULT_NUTRIENT_CREATION; i++) {
+    for (let i = 0; i < Config.DEFAULT_NUTRIENT_CREATION; i += 1) {
       const nutrient = new Nutrient(
         -1,
         Utils.createRandomVector2(0, 0, this.width, this.height),
         this,
-        Utils.getRandomIntInclusive(Config.MIN_NUTRIENT_AMOUNT, Config.MAX_NUTRIENT_AMOUNT)
+        Utils.getRandomIntInclusive(Config.MIN_NUTRIENT_AMOUNT, Config.MAX_NUTRIENT_AMOUNT),
       );
       this.add(nutrient);
 
       items.push({
-        type: 'Nutrient',
+        type: 'nutrient',
         id: nutrient.getId(),
         position: [nutrient.getX(), nutrient.getY()],
         attributes: {
           amount: nutrient.getAmount(),
         },
+      });
+    }
+
+    for (let i = 0; i < Config.DEFAULT_DNA_CREATION; i += 1) {
+      const dna = new Dna(
+        -1,
+        Utils.createRandomVector2(0, 0, this.width, this.height),
+        this,
+        Dna.Information.createRandomDnaInformation(),
+      );
+      this.add(dna);
+
+      items.push({
+        type: 'dna',
+        id: dna.getId(),
+        position: [dna.getX(), dna.getY()],
+        attributes: dna.getInformation().toObject(),
       });
     }
 
@@ -240,7 +257,12 @@ class World {
               }
 
               if (cell.isVisibleTo(player)) {
-                infoList.push({id, type, position: cell.getPosition().toArray(), state: cell.getState().toObject()});
+                infoList.push({
+                  id,
+                  type,
+                  position: cell.getPosition().toArray(),
+                  state: cell.getState().toObject(),
+                });
               }
             }
           }

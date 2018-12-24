@@ -40,6 +40,17 @@ class Dna extends Item {
  * @memberof Dna
  */
 class Information {
+  constructor(name) {
+    this.name = name;
+  }
+
+  /**
+   * @returns {Dna.Information}
+   */
+  static createRandomDnaInformation() {
+
+  }
+
   /**
    * Parses and creates Dna.Information
    * @param data
@@ -48,6 +59,16 @@ class Information {
   static parse(data) {
     // TODO implement DNA information
     return new Dna.Information();
+  }
+
+  /**
+   * @returns {Object}
+   */
+  toObject() {
+    const { name } = this;
+    return {
+      name,
+    };
   }
 }
 

@@ -255,10 +255,10 @@ class Room {
       i: player.id,
       u: player.username,
     }));
-    this.world.open();
     this.broadcastGlobally('room match made', {
       players,
     });
+    this.world.open();
   }
 
   /**
