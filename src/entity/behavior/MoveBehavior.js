@@ -1,8 +1,10 @@
 const CellBehavior = require('./CellBehavior');
+const Config = require('../../Config');
+const Item = require('../Item');
 
 /**
  * Class representing a move behavior.
- * @extends MoveBehavior
+ * @extends CellBehavior
  */
 class MoveBehavior extends CellBehavior {
   /**
@@ -32,6 +34,12 @@ class MoveBehavior extends CellBehavior {
             cell.setY(Math.max(y - speedNow, dy));
           }
         }
+
+        world
+          .getAll()
+          .filter(v => v instanceof Item
+            && v.calculateDistance(cell) < Config.ITEM_PICKUP_DISTANCE)
+          .forEach(v => v.collectedBy(cell));
       }
     });
   }
