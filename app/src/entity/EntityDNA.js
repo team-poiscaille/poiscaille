@@ -9,7 +9,7 @@ class EntityDNA extends EntityItem {
   }
 
   doRender(ctx) {
-    ctx.drawImage(); // TODO
+    //TODO
   }
 }
 

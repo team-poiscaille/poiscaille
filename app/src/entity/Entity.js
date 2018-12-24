@@ -18,6 +18,10 @@ class Entity {
   }
 
   doRender() {}
+
+  get renderer() {
+    return this.game.renderer;
+  }
 }
 
 export default Entity;

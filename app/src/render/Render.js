@@ -167,7 +167,6 @@ class Render {
   @context()
   renderEntities() {
     this.game.items.forEach((i) => {
-      console.log(this.game.items);
       i.render();
     });
 
