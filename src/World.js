@@ -152,15 +152,22 @@ class World {
 
     const players = this.room.getPlayers();
     for (let i = 0; i < Config.PLAYERS_PER_ROOM; i += 1) {
+      const player = players[i];
       const producerCell = new ProducerCell(
         -1, // id must be -1 to add to the world
         Utils.createRandomVector2(0, 0, this.width, this.height),
         this,
-        players[i],
+        player,
         Cell.State.createDefaultState(),
       );
       this.attachCellListener(producerCell);
       this.add(producerCell);
+      player.getSocket().emit('cell info', {
+        id: producerCell.getId(),
+        type: 'Producer',
+        position: producerCell.getPosition().toArray(),
+        state: producerCell.getState().toObject(),
+      });
     }
 
     const items = [];
@@ -174,7 +181,7 @@ class World {
       this.add(nutrient);
 
       items.push({
-        type: 'nutrient',
+        type: 'Nutrient',
         id: nutrient.getId(),
         position: [nutrient.getX(), nutrient.getY()],
         attributes: {
@@ -193,7 +200,7 @@ class World {
       this.add(dna);
 
       items.push({
-        type: 'dna',
+        type: 'DNA',
         id: dna.getId(),
         position: [dna.getX(), dna.getY()],
         attributes: dna.getInformation().toObject(),

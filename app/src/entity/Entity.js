@@ -17,7 +17,7 @@ class Entity {
   @context()
   render(ctx, canvas, renderer) {
     const renderPosition = this.renderer.getRenderPosition(this);
-    if(!this.renderer.isInRenderDistance(renderPosition, this.renderDistance)) return;
+    if (!this.renderer.isInRenderDistance(renderPosition, this.renderDistance)) return;
 
     this.doRender(ctx, canvas, renderer, renderPosition);
   }

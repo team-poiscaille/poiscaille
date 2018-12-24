@@ -36,8 +36,8 @@ class Render {
       this.namedCanvas[name].ctx = this.namedCanvas[name].canvas.getContext('2d');
     });
 
-    this.canvas = this.namedCanvas['game'].canvas;
-    this.ctx = this.namedCanvas['game'].ctx;
+    this.canvas = this.namedCanvas.game.canvas;
+    this.ctx = this.namedCanvas.game.ctx;
 
     this.renderPipeline = [
       this.renderBackground,
@@ -111,8 +111,8 @@ class Render {
   }
 
   isInRenderDistance(position, size) {
-    if(position.x < -size || position.x > this.canvas.width + size) return false;
-    if(position.y < -size || position.y > this.canvas.height + size) return false;
+    if (position.x < -size || position.x > this.canvas.width + size) return false;
+    if (position.y < -size || position.y > this.canvas.height + size) return false;
 
     return true;
   }
@@ -122,19 +122,19 @@ class Render {
   }
 
   update() {
-    if(this.game.player.cursor.x < 30) {
+    if (this.game.player.cursor.x < 30) {
       this.x -= 1;
     }
 
-    if(this.game.player.cursor.x > this.canvas.width - 30) {
+    if (this.game.player.cursor.x > this.canvas.width - 30) {
       this.x += 1;
     }
 
-    if(this.game.player.cursor.y < 30) {
+    if (this.game.player.cursor.y < 30) {
       this.y -= 1;
     }
 
-    if(this.game.player.cursor.y > this.canvas.height - 30) {
+    if (this.game.player.cursor.y > this.canvas.height - 30) {
       this.y += 1;
     }
 
@@ -160,8 +160,8 @@ class Render {
     ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const topLeft = this.getRealPosition({x: 0, y: 0});
-    const bottomRight = this.getRealPosition({x: canvas.width, y: canvas.height});
+    const topLeft = this.getRealPosition({ x: 0, y: 0 });
+    const bottomRight = this.getRealPosition({ x: canvas.width, y: canvas.height });
     const distance = this.GRID_DISTANCE / this.PIXEL_DISTANCE_COEFFICIENT;
 
     const offsetX = Math.floor(topLeft.x / distance) * distance;
@@ -171,7 +171,7 @@ class Render {
     ctx.lineWidth = 1;
 
     for (let x = offsetX; x < bottomRight.x; x += distance) {
-      const renderX = this.getRenderPosition({x, y: 0}).x;
+      const renderX = this.getRenderPosition({ x, y: 0 }).x;
 
       ctx.beginPath();
       ctx.moveTo(renderX, 0);
@@ -180,7 +180,7 @@ class Render {
     }
 
     for (let y = offsetY; y < bottomRight.y; y += distance) {
-      const renderY = this.getRenderPosition({x: 0, y}).y;
+      const renderY = this.getRenderPosition({ x: 0, y }).y;
 
       ctx.beginPath();
       ctx.moveTo(0, renderY);
