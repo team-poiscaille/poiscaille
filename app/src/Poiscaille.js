@@ -58,6 +58,7 @@ class Poiscaille {
         id, position, state, type,
       }) => {
         const cell = this.createCellFromAttributes({ position, state, type });
+        cell.id = id;
         cell.updated = true;
 
         this.entities.set(id, cell);
@@ -83,7 +84,10 @@ class Poiscaille {
 
     this.socket.on('item info', (itemList) => {
       itemList.forEach((info) => {
-        this.items.set(info.id, this.createItemFromAttributes(info));
+        const ent = this.createItemFromAttributes(info);
+        ent.id = info.id;
+
+        this.items.set(info.id, ent);
       });
     });
 
@@ -145,6 +149,9 @@ class Poiscaille {
         this.player.cursor.x = clientX;
         this.player.cursor.y = clientY;
       }
+
+      this.player.cursor.x = Math.min(Math.max(0, this.player.cursor.x), this.renderer.canvas.width);
+      this.player.cursor.y = Math.min(Math.max(0, this.player.cursor.y), this.renderer.canvas.height);
     });
 
     window.addEventListener('resize', () => this.renderer.resize());

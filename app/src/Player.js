@@ -74,7 +74,6 @@ class Player {
     const moveAnimation = new AnimationMove(this.renderer, realPosition.x, realPosition.y);
     this.renderer.addAnimation(moveAnimation);
 
-    console.log(unit.id, realPosition);
 
     this.selectedUnits.units.forEach((unit) => {
       this.game.socket.emit('cell move', {
