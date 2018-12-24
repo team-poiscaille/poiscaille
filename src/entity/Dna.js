@@ -16,7 +16,7 @@ class Dna extends Item {
     this.information = information;
     this.addCollectedListener((cell, item) => {
       const owner = cell.getOwner();
-      owner.addDna(item);
+      owner.addDna(item.getInformation());
     });
   }
 
