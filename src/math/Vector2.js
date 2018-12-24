@@ -34,6 +34,27 @@ class Vector2 {
   }
 
   /**
+   * Returns the length of the vector
+   *
+   * @returns {number}
+   */
+  length() {
+    return Math.hypot(this.x, this.y);
+  }
+
+  /**
+   * @returns {Vector2}
+   */
+  normalize() {
+    const len = this.length();
+    if (len > 0) {
+      return new Vector2(this.x / len, this.y / len);
+    }
+
+    return new Vector2(0, 0);
+  }
+
+  /**
    * Returns dot product of two vectors
    *
    * @param {Vector2} vec
@@ -67,6 +88,14 @@ class Vector2 {
     }
 
     return new Vector2(this.x - x, this.y - y);
+  }
+
+  /**
+   * @param {number} val
+   * @returns {Vector2}
+   */
+  multiply(val) {
+    return new Vector2(this.x * val, this.y * val);
   }
 
   /**
