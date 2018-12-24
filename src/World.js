@@ -239,7 +239,7 @@ class World {
             y, // destination y
           } = data;
           const cell = this.find(id);
-          if (cell) {
+          if (cell instanceof Cell) {
             cell.performMove(new Vector2(x, y));
           }
         }

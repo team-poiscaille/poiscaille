@@ -1,3 +1,4 @@
+const Cell = require('../Cell');
 const CellBehavior = require('./CellBehavior');
 const Config = require('../../Config');
 const Item = require('../Item');
@@ -14,33 +15,43 @@ class MoveBehavior extends CellBehavior {
     super(performer);
     this.destination = null;
     performer.addUpdateListener((world, cell) => {
-      const destinationNow = this.destination;
-      if (destinationNow) {
-        const positionNow = cell.getPosition();
-        const speedNow = cell.getSpeed();
-        if (positionNow.equals(destinationNow)) {
+      if (!(cell instanceof Cell)) return;
+
+      const dest = this.destination.asVector2();
+      const cur = cell.getPosition().asVector2();
+      if (dest) {
+        const magnitude = cell.getState().speed || 1;
+
+        const delta = dest.subtract(cur);
+        if (delta.length() === 0) {
           this.destination = null;
-        } else {
-          const { x, y } = positionNow;
-          const { x: dx, y: dy } = destinationNow;
-          if (dx > x) {
-            cell.setX(Math.min(x + speedNow, dx));
-          } else if (dx < x) {
-            cell.setX(Math.max(x - speedNow, dx));
-          }
-          if (dy > y) {
-            cell.setY(Math.min(y + speedNow, dy));
-          } else if (dy < y) {
-            cell.setY(Math.max(y - speedNow, dy));
-          }
+          return;
         }
 
-        world
-          .getAll()
-          .filter(v => v instanceof Item
-            && v.calculateDistance(cell) < Config.ITEM_PICKUP_DISTANCE)
-          .forEach(v => v.collectedBy(cell));
+        const speed = delta.normalize().multiply(magnitude);
+
+        let speedX;
+        if (delta.x > 0) {
+          speedX = Math.min(delta.x, speed.x);
+        } else {
+          speedX = Math.max(delta.x, speed.x);
+        }
+
+        let speedY;
+        if (delta.y > 0) {
+          speedY = Math.min(delta.y, speed.y);
+        } else {
+          speedY = Math.max(delta.y, speed.y);
+        }
+        cell.setX(cur.x + speedX);
+        cell.setY(cur.y + speedY);
       }
+
+      world
+        .getAll()
+        .filter(v => v instanceof Item
+          && v.calculateDistance(cell) < Config.ITEM_PICKUP_DISTANCE)
+        .forEach(v => v.collectedBy(cell));
     });
   }
 
