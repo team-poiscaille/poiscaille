@@ -4,6 +4,8 @@
  */
 const Config = {
   CELL_NUTRIENTS: 10,
+  CELL_DEFAULT_SPEED: 5,
+
   PLAYERS_PER_ROOM: 1,
   RENDER_MAX_DISTANCE: 16,
 

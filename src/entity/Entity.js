@@ -113,7 +113,7 @@ class Entity extends EventEmitter {
   }
 
   update() {
-    this.emit('update', this);
+    this.emit('update', this.world, this);
   }
 }
 
