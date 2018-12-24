@@ -52,7 +52,9 @@ class Poiscaille {
       });
 
       const cells = await this.socket.apiCall('cell info', unfulfilledCells);
-      cells.forEach(({ id, position, state, type }) => {
+      cells.forEach(({
+        id, position, state, type,
+      }) => {
         const cell = this.createCellFromAttributes({ position, state, type });
         cell.updated = true;
 
@@ -100,13 +102,18 @@ class Poiscaille {
       if (eventTarget.requestPointerLock) eventTarget.requestPointerLock();
       else if (eventTarget.mozRequestPointerLock) eventTarget.mozRequestPointerLock();
 
-      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
-      else if (document.documentElement.mozRequestFullscreen) document.documentElement.mozRequestFullscreen();
-      else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullscreen) {
+        document.documentElement.mozRequestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      }
     });
 
     const lockHandler = () => {
-      locked = (document.pointerLockElement === eventTarget || document.mozPointerLockElement === eventTarget);
+      locked = (document.pointerLockElement === eventTarget
+        || document.mozPointerLockElement === eventTarget);
     };
 
     document.addEventListener('pointerlockchange', () => lockHandler());
@@ -146,11 +153,12 @@ class Poiscaille {
   }
 
   createItemFromAttributes({ position, attributes, type }) {
-    if (type === EntityNutrient.TYPE.toLowerCase()) {
+    if (type === EntityNutrient.TYPE) {
       return new EntityNutrient(this, position[0], position[1], attributes.amount);
-    } if (type === EntityDNA.TYPE.toLowerCase()) {
+    } if (type === EntityDNA.TYPE) {
       return new EntityDNA(this, position[0], position[1], DNA.fromAttribute(attributes));
     }
+    return null;
   }
 }
 
