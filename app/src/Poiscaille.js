@@ -68,8 +68,8 @@ class Poiscaille {
     });
 
     this.socket.on('item info', (itemList) => {
-      itemList.forEach((attributes) => {
-        this.items.set(attributes.id, this.createItemFromAttributes(attributes));
+      itemList.forEach((info) => {
+        this.items.set(info.id, this.createItemFromAttributes(info));
       });
     });
 
@@ -145,11 +145,11 @@ class Poiscaille {
     return null;
   }
 
-  createItemFromAttributes({ position, attribute, type }) {
-    if (type === EntityNutrient.TYPE) {
-      return new EntityNutrient(this, position[0], position[1], attribute.amount);
-    } if (type === EntityDNA.TYPE) {
-      return new EntityDNA(this, position[0], position[1], DNA.fromAttribute(attribute));
+  createItemFromAttributes({ position, attributes, type }) {
+    if (type === EntityNutrient.TYPE.toLowerCase()) {
+      return new EntityNutrient(this, position[0], position[1], attributes.amount);
+    } if (type === EntityDNA.TYPE.toLowerCase()) {
+      return new EntityDNA(this, position[0], position[1], DNA.fromAttribute(attributes));
     }
   }
 }

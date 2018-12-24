@@ -76,7 +76,7 @@ class Room {
   }
 
   processTick() {
-    this.globalPackets.forEach(pk => this.players.forEach(p => p.getSocket().emit(pk[0], pk[1])));
+    this.globalPackets.forEach(pk => this.players.forEach(p => p.getSocket().emit(pk[0], ...pk[1])));
     this.globalPackets = [];
 
     this.nearbyPackets.forEach((pk) => {
