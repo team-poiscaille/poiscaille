@@ -165,7 +165,7 @@ class World {
       player.getSocket().emit('cell producer position', {
         id: producerCell.getId(),
         type: 'Producer',
-        position: producerCell.getPosition().toArray()
+        position: producerCell.getPosition().toArray(),
       });
     }
 

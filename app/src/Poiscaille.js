@@ -23,7 +23,7 @@ class Poiscaille {
     this.api = api(this.socket);
     this.attachSocketListeners();
 
-    this.initialPosition = {x: 0, y: 0};
+    this.initialPosition = { x: 0, y: 0 };
   }
 
   initGame() {
@@ -71,11 +71,11 @@ class Poiscaille {
       });
     });
 
-    this.socket.on('cell producer position', ({position}) => {
+    this.socket.on('cell producer position', ({ position }) => {
       const [x, y] = position;
-      this.initialPosition = {x, y};
+      this.initialPosition = { x, y };
 
-      if(this.renderer) {
+      if (this.renderer) {
         this.renderer.x = x + this.renderer.showingSize.x / 2;
         this.renderer.y = y + this.renderer.showingSize.y / 2;
       }
@@ -98,7 +98,12 @@ class Poiscaille {
     let locked = false;
 
     eventTarget.addEventListener('mousedown', ({ button }) => {
-      if (button === 0) this.player.startSelect();
+      if (button === 0) {
+        this.player.startSelect();
+      }
+      else if (button === 2) {
+        this.player.moveUnitsToPosition();
+      }
     });
 
     eventTarget.addEventListener('mouseup', ({ button }) => {
@@ -106,7 +111,6 @@ class Poiscaille {
     });
 
     eventTarget.addEventListener('contextmenu', (event) => {
-      this.player.moveUnitsToPosition();
       event.preventDefault();
     });
 

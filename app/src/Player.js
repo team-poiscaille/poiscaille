@@ -57,7 +57,6 @@ class Player {
         || (selectEnd.y > value.y && value.y > this.selectStart.x)
       )) return;
 
-      console.log("add unit");
       this.selectedUnits.add(value);
     });
 
