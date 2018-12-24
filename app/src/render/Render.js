@@ -17,6 +17,8 @@ class Render {
 
   PIXEL_DISTANCE_COEFFICIENT = 0.1;
 
+  MAP_SIZE = 1000;
+
   RADIAN = Math.PI / 180;
 
   constructor(game, canvas = ['game', 'minimap', 'cursor']) {
@@ -25,6 +27,7 @@ class Render {
     this.namedCanvas = {};
     this.x = 0;
     this.y = 0;
+    this.showingSize = {};
 
     canvas.forEach((name) => {
       this.namedCanvas[name] = {
@@ -80,6 +83,11 @@ class Render {
       canvas.width = rect.width;
       canvas.height = rect.height;
     });
+
+    this.showingSize = {
+      x: this.canvas.width * this.PIXEL_DISTANCE_COEFFICIENT,
+      y: this.canvas.height * this.PIXEL_DISTANCE_COEFFICIENT,
+    };
   }
 
   getRenderPosition(position) {
@@ -93,6 +101,13 @@ class Render {
     return {
       x: position.x * this.PIXEL_DISTANCE_COEFFICIENT + this.x,
       y: position.y * this.PIXEL_DISTANCE_COEFFICIENT + this.y,
+    };
+  }
+
+  getMinimapPosition(position) {
+    return {
+      x: position.x * (this.namedCanvas.minimap.canvas.width / this.MAP_SIZE),
+      y: position.y * (this.namedCanvas.minimap.canvas.height / this.MAP_SIZE),
     };
   }
 
@@ -124,8 +139,8 @@ class Render {
       this.y += 1;
     }
 
-    this.x = Math.max(0, Math.min(1000, this.x));
-    this.y = Math.max(0, Math.min(1000, this.y));
+    this.x = Math.max(0, Math.min(this.MAP_SIZE - this.showingSize.x, this.x));
+    this.y = Math.max(0, Math.min(this.MAP_SIZE - this.showingSize.y, this.y));
   }
 
   render() {
@@ -216,9 +231,18 @@ class Render {
 
   @context('minimap')
   renderMinimap(ctx, canvas) {
+    // Draw Background
     ctx.fillStyle = '#3A3A3A';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // Draw watching area
+    const screenSize = this.getMinimapPosition(this.showingSize);
+    const xy = this.getMinimapPosition(this);
+
+    ctx.fillStyle = '#4a4a4a';
+    ctx.fillRect(xy.x, xy.y, screenSize.x, screenSize.y);
+
+    // Draw Grid
     const gap = canvas.width / 7;
 
     ctx.strokeStyle = '#505050';
