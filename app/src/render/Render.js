@@ -13,9 +13,9 @@ const context = (name = 'game') => (decorator) => {
 };
 
 class Render {
-  GRID_DISTANCE = 200;
+  GRID_DISTANCE = 1;
 
-  PIXEL_DISTANCE_COEFFICIENT = 1;
+  PIXEL_DISTANCE_COEFFICIENT = 0.1;
 
   RADIAN = Math.PI / 180;
 
@@ -33,6 +33,9 @@ class Render {
 
       this.namedCanvas[name].ctx = this.namedCanvas[name].canvas.getContext('2d');
     });
+
+    this.canvas = this.namedCanvas['game'].canvas;
+    this.ctx = this.namedCanvas['game'].ctx;
 
     this.renderPipeline = [
       this.renderBackground,
@@ -81,23 +84,52 @@ class Render {
 
   getRenderPosition(position) {
     return {
-      x: (position.x - this.x) * this.PIXEL_DISTANCE_COEFFICIENT,
-      y: (position.y - this.y) * this.PIXEL_DISTANCE_COEFFICIENT,
+      x: (position.x - this.x) / this.PIXEL_DISTANCE_COEFFICIENT,
+      y: (position.y - this.y) / this.PIXEL_DISTANCE_COEFFICIENT,
     };
   }
 
   getRealPosition(position) {
     return {
-      x: (position.x + this.x) / this.PIXEL_DISTANCE_COEFFICIENT,
-      y: (position.y + this.y) / this.PIXEL_DISTANCE_COEFFICIENT,
+      x: position.x * this.PIXEL_DISTANCE_COEFFICIENT + this.x,
+      y: position.y * this.PIXEL_DISTANCE_COEFFICIENT + this.y,
     };
+  }
+
+  isInRenderDistance(position, size) {
+    if(position.x < -size || position.x > this.canvas.width + size) return false;
+    if(position.y < -size || position.y > this.canvas.height + size) return false;
+
+    return true;
   }
 
   addAnimation(animation) {
     this.animations.push(animation);
   }
 
+  update() {
+    if(this.game.player.cursor.x < 30) {
+      this.x -= 1;
+    }
+
+    if(this.game.player.cursor.x > this.canvas.width - 30) {
+      this.x += 1;
+    }
+
+    if(this.game.player.cursor.y < 30) {
+      this.y -= 1;
+    }
+
+    if(this.game.player.cursor.y > this.canvas.height - 30) {
+      this.y += 1;
+    }
+
+    this.x = Math.max(0, Math.min(1000, this.x));
+    this.y = Math.max(0, Math.min(1000, this.y));
+  }
+
   render() {
+    this.update();
     this.iterate((ctx, canvas) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
@@ -114,24 +146,31 @@ class Render {
     ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    const topLeft = this.getRealPosition({x: 0, y: 0});
+    const bottomRight = this.getRealPosition({x: canvas.width, y: canvas.height});
     const distance = this.GRID_DISTANCE / this.PIXEL_DISTANCE_COEFFICIENT;
-    const offsetX = this.x % distance;
-    const offsetY = this.y % distance;
+
+    const offsetX = Math.floor(topLeft.x / distance) * distance;
+    const offsetY = Math.floor(topLeft.y / distance) * distance;
 
     ctx.strokeStyle = '#e0e0e0';
     ctx.lineWidth = 1;
 
-    for (let x = offsetX; x < canvas.width; x += distance) {
+    for (let x = offsetX; x < bottomRight.x; x += distance) {
+      const renderX = this.getRenderPosition({x, y: 0}).x;
+
       ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, canvas.height);
+      ctx.moveTo(renderX, 0);
+      ctx.lineTo(renderX, canvas.height);
       ctx.stroke();
     }
 
-    for (let y = offsetY; y < canvas.height; y += distance) {
+    for (let y = offsetY; y < bottomRight.y; y += distance) {
+      const renderY = this.getRenderPosition({x: 0, y}).y;
+
       ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(canvas.width, y);
+      ctx.moveTo(0, renderY);
+      ctx.lineTo(canvas.width, renderY);
       ctx.stroke();
     }
   }

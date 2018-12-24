@@ -48,15 +48,15 @@ class Poiscaille {
         const ent = this.entities.get(id);
         ent.x = x;
         ent.y = y;
-        ent.z = z;
         ent.updated = true;
       });
 
       const cells = await this.socket.apiCall('cell info', unfulfilledCells);
-      cells.forEach(({
-        id, position, state, type,
-      }) => {
-        this.entities.set(id, this.createCellFromAttributes({ position, state, type }));
+      cells.forEach(({ id, position, state, type }) => {
+        const cell = this.createCellFromAttributes({ position, state, type });
+        cell.updated = true;
+
+        this.entities.set(id, cell);
       });
 
       this.entities.forEach((cell, key) => {

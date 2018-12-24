@@ -34,8 +34,7 @@ class EntityCell extends Entity {
     return EntityCell.colors[this.color];
   }
 
-  doRender(ctx, canvas, renderer) {
-    const pos = renderer.getRenderPosition(this);
+  doRender(ctx, canvas, renderer, pos) {
     const [color10, color03, color02] = this.colorList;
     const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, this.radius);
     gradient.addColorStop(1, color03);

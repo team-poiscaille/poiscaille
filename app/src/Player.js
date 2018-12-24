@@ -57,7 +57,7 @@ class Player {
         || (selectEnd.y > value.y && value.y > this.selectStart.x)
       )) return;
 
-      this.selectedUnits.push(value);
+      this.selectedUnits.units.push(value);
     });
 
     this.selectStart = null;

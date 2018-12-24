@@ -8,9 +8,7 @@ class EntityNutrient extends EntityItem {
     this.amount = amount;
   }
 
-  doRender(ctx, canvas, renderer) {
-    const position = this.renderer.getRealPosition(this);
-
+  doRender(ctx, canvas, renderer, position) {
     if (this.amount < 5) {
       ctx.font = '20px Material Design Icons';
       ctx.fillStyle = '#202020';
