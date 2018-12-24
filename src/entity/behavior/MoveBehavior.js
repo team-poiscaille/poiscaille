@@ -23,6 +23,11 @@ class MoveBehavior extends CellBehavior {
         const magnitude = cell.getState().speed || 1;
 
         const delta = dest.subtract(cur);
+        if (delta.length() === 0) {
+          this.destination = null;
+          return;
+        }
+
         const speed = delta.normalize().multiply(magnitude);
 
         let speedX;
