@@ -48,7 +48,8 @@ class Information {
    * @returns {Dna.Information}
    */
   static createRandomDnaInformation() {
-
+    // To do
+    return new Information('random');
   }
 
   /**

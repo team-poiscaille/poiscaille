@@ -1,10 +1,10 @@
 import io from 'socket.io-client';
 
-import DNA from "./dna/DNA";
+import DNA from './dna/DNA';
 import Player from './Player';
 import Render from './render/Render';
-import EntityDNA from "./entity/EntityDNA";
-import EntityNutrient from "./entity/EntityNutrient";
+import EntityDNA from './entity/EntityDNA';
+import EntityNutrient from './entity/EntityNutrient';
 import EntityProducer from './entity/EntityProducer';
 import EntityProduction from './entity/EntityProduction';
 
@@ -63,15 +63,13 @@ class Poiscaille {
         const { updated } = cell;
         cell.updated = false;
 
-        if(!updated) this.entities.delete(key);
+        if (!updated) this.entities.delete(key);
       });
     });
 
-    this.socket.on('item info', itemList => {
-      itemList.forEach(attrs => {
-        const {id} = attrs;
-
-        this.items.set(id, this.createItemFromAttributes(attrs));
+    this.socket.on('item info', (itemList) => {
+      itemList.forEach((attributes) => {
+        this.items.set(attributes.id, this.createItemFromAttributes(attributes));
       });
     });
 
@@ -79,9 +77,9 @@ class Poiscaille {
       this.player.nutrients = data;
       this.player.updateNutrients();
     });
-}
+  }
 
-attachUiListeners() {
+  attachUiListeners() {
     const eventTarget = this.renderer.namedCanvas.game.canvas;
     let locked = false;
 
@@ -99,17 +97,12 @@ attachUiListeners() {
     });
 
     eventTarget.addEventListener('click', () => {
-      if(eventTarget.requestPointerLock)
-        eventTarget.requestPointerLock();
-      else if(eventTarget.mozRequestPointerLock)
-        eventTarget.mozRequestPointerLock();
+      if (eventTarget.requestPointerLock) eventTarget.requestPointerLock();
+      else if (eventTarget.mozRequestPointerLock) eventTarget.mozRequestPointerLock();
 
-      if(document.documentElement.requestFullscreen)
-        document.documentElement.requestFullscreen();
-      else if(document.documentElement.mozRequestFullscreen)
-        document.documentElement.mozRequestFullscreen();
-      else if(document.documentElement.webkitRequestFullscreen)
-        document.documentElement.webkitRequestFullscreen();
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+      else if (document.documentElement.mozRequestFullscreen) document.documentElement.mozRequestFullscreen();
+      else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
     });
 
     const lockHandler = () => {
@@ -118,9 +111,11 @@ attachUiListeners() {
 
     document.addEventListener('pointerlockchange', () => lockHandler());
     document.addEventListener('mozpointerlockchange', () => lockHandler());
-    document.addEventListener('mousemove', ({ movementX, movementY, clientX, clientY }) => {
+    document.addEventListener('mousemove', ({
+      movementX, movementY, clientX, clientY,
+    }) => {
       const sensitivity = 1.3;
-      if(locked) {
+      if (locked) {
         this.player.cursor.x += movementX * sensitivity;
         this.player.cursor.y += movementY * sensitivity;
       } else {
@@ -143,7 +138,7 @@ attachUiListeners() {
   createCellFromAttributes({ position, state, type }) { // TODO state
     if (type === EntityProducer.TYPE) {
       return new EntityProducer(this, position[0], position[1]);
-    } else if (type === EntityProduction.TYPE) {
+    } if (type === EntityProduction.TYPE) {
       return new EntityProduction(this, position[0], position[1]);
     }
 
@@ -151,9 +146,9 @@ attachUiListeners() {
   }
 
   createItemFromAttributes({ position, attribute, type }) {
-    if(type === EntityNutrient.TYPE) {
-      return new EntityNutrient(this, position[0], position[1], attribute);
-    } else if (type === EntityDNA.TYPE) {
+    if (type === EntityNutrient.TYPE) {
+      return new EntityNutrient(this, position[0], position[1], attribute.amount);
+    } if (type === EntityDNA.TYPE) {
       return new EntityDNA(this, position[0], position[1], DNA.fromAttribute(attribute));
     }
   }
