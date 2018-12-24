@@ -162,11 +162,10 @@ class World {
       );
       this.attachCellListener(producerCell);
       this.add(producerCell);
-      player.getSocket().emit('cell info', {
+      player.getSocket().emit('cell producer position', {
         id: producerCell.getId(),
         type: 'Producer',
-        position: producerCell.getPosition().toArray(),
-        state: producerCell.getState().toObject(),
+        position: producerCell.getPosition().toArray()
       });
     }
 

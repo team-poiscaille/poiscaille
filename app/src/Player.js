@@ -4,7 +4,7 @@ import UnitSelection from './utils/UnitSelection';
 class Player {
   constructor(game) {
     this.game = game;
-    this.cursor = { x: 0, y: 0 };
+    this.cursor = { x: 100, y: 100 };
     this.selectedUnits = new UnitSelection(this.game);
     this.selectStart = null;
     this.nutrients = 0;
@@ -57,6 +57,7 @@ class Player {
         || (selectEnd.y > value.y && value.y > this.selectStart.x)
       )) return;
 
+      console.log("add unit");
       this.selectedUnits.add(value);
     });
 
