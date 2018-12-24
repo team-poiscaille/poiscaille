@@ -53,8 +53,8 @@ class Player {
       )) return;
 
       if (!(
-        (selectEnd.y < value.y && value.y < this.selectStart.x)
-        || (selectEnd.y > value.y && value.y > this.selectStart.x)
+        (selectEnd.y < value.y && value.y < this.selectStart.y)
+        || (selectEnd.y > value.y && value.y > this.selectStart.y)
       )) return;
 
       this.selectedUnits.add(value);
@@ -74,11 +74,13 @@ class Player {
     const moveAnimation = new AnimationMove(this.renderer, realPosition.x, realPosition.y);
     this.renderer.addAnimation(moveAnimation);
 
+    console.log(unit.id, realPosition);
+
     this.selectedUnits.units.forEach((unit) => {
       this.game.socket.emit('cell move', {
         id: unit.id,
-        x: unit.x,
-        y: unit.y,
+        x: realPosition.x,
+        y: realPosition.y,
       });
     });
   }
