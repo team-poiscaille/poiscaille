@@ -5,7 +5,7 @@ class Player {
   constructor(game) {
     this.game = game;
     this.cursor = { x: 0, y: 0 };
-    this.selectedUnits = null;
+    this.selectedUnits = new UnitSelection(this.game);;
     this.selectStart = null;
     this.nutrients = 0;
     this.dnas = {};
@@ -57,14 +57,14 @@ class Player {
         || (selectEnd.y > value.y && value.y > this.selectStart.x)
       )) return;
 
-      this.selectedUnits.units.push(value);
+      this.selectedUnits.add(value);
     });
 
     this.selectStart = null;
   }
 
   clearSelections() {
-    this.selectedUnits = new UnitSelection(this.game);
+    this.selectedUnits.units = [];
   }
 
   moveUnitsToPosition() {
